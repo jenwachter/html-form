@@ -90,6 +90,13 @@ if ( isset( $_POST['submit'] ) ) {
 	$form->isValid();
 }
 
+$form->add_element( array (
+	'type'		=> 'text',
+	'name'		=> 'text_element_insert',
+	'label'		=> 'Text Element INSERT'
+), 5);
+
+
 ?>
 
 <link rel="stylesheet" href="style.css" />

@@ -1,36 +1,5 @@
 <?php
 
-
-/*-
-
-Still need to...
-- build in validation for types of date (dates, numbers, email, etc...)
-- add hint option (show someone how to format a field)
-- clean up radio/checkbox, select creation
-
-Potential issue:
-- having the action URL include the query string could potentially interfere with forms
-  submitted by get.
-  
-  
-Requirements:
-- sessions enabled
-
-
-Limitations:
-- cannot validate form fields brought in through AJAX
-
-
-How to:
-- upon form submission, $form->isValid();
-
-
-*/
-
-
-
-
-
 /** 
  * Class html_form
  * 
@@ -39,6 +8,16 @@ How to:
  * @author Jen Wachter <jwachter@umaryland.edu>
  * @copyright 2012 Jen Wachter
  */  
+
+
+/*-
+
+Still need to...
+
+- build in validation for types of date (dates, numbers, email, etc...)
+- clean up radio/checkbox, select creation
+
+*/
 
 
 class html_form {
@@ -227,6 +206,20 @@ class html_form {
 	}
 	
 	
+	/* inserts an element at a specific location in an array
+     * @param array $source the array to insert data into
+     * @param array $insert the array to insert into $source
+     * @param number $position the numeric position to enter $insert into $source
+     * @param number $replace the number of elements for $insert to replace
+     * @return boolean
+     */
+	private function array_insert( $source, $insert, $position, $replace = 0 ) {
+		if ( count( $source ) < $position ) return false;
+		array_splice( $source, $position, 0, $insert );
+		return $source;
+	}
+
+	
 	
 	/* creates a textarea form element
      * @param array $field an array that defines the form element
@@ -292,8 +285,8 @@ class html_form {
      * @param array $field an array that defines the form element
      * @return void
      */
-	public function add_element( $field = array() ) {
-	
+	public function add_element( $field = array(), $position = '' ) {
+		
 		// create defaults for all possibilities
 		$defaults = array(
 			'before_element'	=> '',
@@ -313,10 +306,21 @@ class html_form {
 		$field['attr'] = array_merge($defaults['attr'], $field['attr']);
 		$field['options'] = array_merge($defaults['options'], $field['options']);
 		
-		$this->form_elements[$field['name']] = array(
-			'field'	=> $field,
-			'html'	=> ''
-		);
+		if ( is_int( $position ) ) {
+			$this->form_elements = $this->array_insert( $this->form_elements, array (
+				array (
+					'field' => $field,
+					'id' => $field['name']
+				)
+			), $position );
+			
+		} else {
+			$this->form_elements[] = array(
+				'field'	=> $field,
+					'id' => $field['name']
+			);
+		}
+		
 	}
 	
 	
@@ -324,8 +328,38 @@ class html_form {
      * @param string $content a string of html
      * @return void
      */
-	public function add_content( $content ) {
-		$this->form_elements[]['html'] = $content;
+	public function add_content( $content, $id ='', $position = '' ) {
+		$id = ( $id ) ? $id : count( $this->form_elements );
+		
+		if ( is_int( $position ) ) {
+			$this->form_elements = $this->array_insert( $this->form_elements, array (
+				array (
+					'html' => $content,
+					'id' => $id
+				)
+			), $position );
+			
+		} else {
+			$this->form_elements[] = array (
+				'html' => $content,
+				'id' => $id
+			);
+		}
+	}
+	
+	/* removes a form element based on the form element's name
+     * @param string form element id
+     * @return void
+     */
+	public function remove_element( $id ) {
+		
+		foreach ( $this->form_elements as $k => $v ) {		
+			
+			if ( $v['id'] === $id ) {
+				unset($this->form_elements[$k]);
+			}
+			
+		}
 	}
 	
 	
@@ -373,6 +407,8 @@ class html_form {
      * @return void
      */
 	public function render() {
+		
+		print_r($this->form_elements);
 		
 		// see if there is a file field. if so, change the entype
 		foreach ( $this->form_elements as $k => $v ) {
