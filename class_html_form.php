@@ -395,7 +395,7 @@ class html_form {
 				// validate required fields
 				if ( $v['field']['required'] ) {
 					
-					if ( ! isset( $_POST[ $v['field']['name'] ] ) || ! strlen( trim( $_POST[ $v['field']['name'] ] ) ) ) {
+					if ( ! isset( $_POST[ $v['field']['name'] ] ) || $_POST[ $v['field']['name'] ] == '' ) {
 						$this->val_errors[] = '"' . $v['field']['label'] . '" is a required field.';
 					}
 				}
