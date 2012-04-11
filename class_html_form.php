@@ -41,7 +41,8 @@ class html_form {
 			'method'		=> 'post',
 			'action'		=> $_SERVER['PHP_SELF'] . $q,
 			'attr'			=> array(),
-			'repopulate'	=> true
+			'repopulate'	=> true,
+			'show_form_tag'	=> true
 		);
 	}
 	
@@ -62,8 +63,8 @@ class html_form {
 	
 	
 	// defines HTML to display before the form element
-	public function before_element() {
-		return '<div class="form_field clearfix">';
+	public function before_element( $classes = '' ) {
+		return '<div class="form_field clearfix ' . $classes . '">';
 	}
 	
 	// defines HTML to display after the form element
@@ -89,14 +90,16 @@ class html_form {
      */
 	private function get_attributes( $field ) {
 		$attr = array();
+		
 		$attr['class'] = '';
 		$attr['class'] .= ( $field['required'] ) ? 'required ' : '';
 		$attr['class'] .= ( $field['attr']['class'] ) ? $field['attr']['class'] : '';
 		
 		$attributes = '';
-		foreach ( $field['attr'] as $k => $v ) {
+		foreach ( $attr as $k => $v ) {
 		    $attributes .= "{$k}=\"{$v}\" ";
 		}
+		
 		return $attributes;
 	}
 	
@@ -289,8 +292,9 @@ class html_form {
 		
 		// create defaults for all possibilities
 		$defaults = array(
-			'before_element'	=> '',
-			'after_element'	=> '',
+			'prepend'		=> '',
+			'append'		=> '',
+			'inline_help'	=> '',
 			'type'			=> 'text', // text, hidden, textarea, select, radio, file, password, checkbox, button
 			'name'			=> '',
 			'label'			=> '',
@@ -391,7 +395,7 @@ class html_form {
 				// validate required fields
 				if ( $v['field']['required'] ) {
 					
-					if ( ! strlen( trim( $_POST[ $v['field']['name'] ] ) ) ) {
+					if ( ! isset( $_POST[ $v['field']['name'] ] ) || ! strlen( trim( $_POST[ $v['field']['name'] ] ) ) ) {
 						$this->val_errors[] = '"' . $v['field']['label'] . '" is a required field.';
 					}
 				}
@@ -407,9 +411,7 @@ class html_form {
      * @return void
      */
 	public function render() {
-		
-		print_r($this->form_elements);
-		
+				
 		// see if there is a file field. if so, change the entype
 		foreach ( $this->form_elements as $k => $v ) {
 			
@@ -431,8 +433,8 @@ class html_form {
 			$count = count($this->val_errors);
 			$message = ( $count > 1 ) ? 'The following ' . $count . ' errors were found:' : 'The following error was found:';
 			
-			echo '<div class="hfc-error ' . $this->config['id'] . '">';
-			echo '<p class="message">' . $message . '</p>';
+			echo '<div class="alert alert-error ' . $this->config['id'] . '">';
+			echo '<p class="alert-heading">' . $message . '</p>';
 			echo '<ul>';
 			
 			foreach ( $this->val_errors as $k => $v ) {
@@ -459,16 +461,25 @@ class html_form {
 				
 				$html = '';
 				
-				if ( $v['field']['type'] != 'hidden' )
-					$html .= $this->before_element();
+				if ( $v['field']['type'] != 'hidden' ) {
+					
+					$classes = '';
+					
+					if ( $v['field']['prepend'] != ''  )
+						$classes .= ' input-prepend';
+						
+					if ( $v['field']['append'] != '' )
+						$classes .= ' input-append';
+					
+					$html .= $this->before_element( $classes );
+				}
 				
 				
 				if ( $v['field']['show_label'] && $v['field']['type'] != 'hidden' )
 					$html .= $this->get_label( $v['field'] );
 				
-				if ( $v['field']['before_element'] ) {
-					$html .= '<span class="before">';
-					$html .= $v['field']['before_element'];
+				if ( $v['field']['prepend'] != '' ) {
+					$html .= '<span class="add-on">' . $v['field']['prepend'] . '</span>';
 				}
 				
 				switch( $v['field']['type'] ) {
@@ -492,9 +503,12 @@ class html_form {
 						break;
 				}
 				
-				if ( $v['field']['after_element'] ) {
-					$html .= $v['field']['after_element'];
-					$html .= '</span>';
+				if ( $v['field']['append'] != '' ) {
+					$html .= '<span class="add-on">' . $v['field']['append'] . '</span>';
+				}
+				
+				if( $v['field']['inline_help'] != '' ) {
+					$html .= '<span class="help-inline">' . $v['field']['inline_help'] . '</span>';
 				}
 				
 				if ( $v['field']['type'] != 'hidden' )
