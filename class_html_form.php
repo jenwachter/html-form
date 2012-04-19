@@ -17,6 +17,11 @@ Still need to...
 - build in validation for types of date (dates, numbers, email, etc...)
 - clean up radio/checkbox, select creation
 
+
+04.18.12
+- removed 'show_label'
+- if there is no 'label' given, the label elemetn is not shown.
+
 */
 
 
@@ -37,12 +42,12 @@ class html_form {
 		$q = ( $_SERVER['QUERY_STRING'] ) ? $q = '?' . $_SERVER['QUERY_STRING'] : '';
 		
 		$this->config = array (
-			'id'			=> 'hfc',
-			'method'		=> 'post',
-			'action'		=> $_SERVER['PHP_SELF'] . $q,
-			'attr'			=> array(),
+			'method'	=> 'post',
+			'action'	=> $_SERVER['PHP_SELF'] . $q,
+			'id'		=> 'hfc',
 			'repopulate'	=> true,
-			'show_form_tag'	=> true
+			'show_form_tag'	=> true,
+			'attr'		=> array()
 		);
 	}
 	
@@ -78,9 +83,12 @@ class html_form {
      * @return string the form element's HTML label
      */
 	private function get_label( $field ) {
+		
+		if ( ! $field['label'] )
+			return false;
+		
 		$required = ( $field['required'] ) ? '*' : '';
-		$label = ( $field['label'] ) ? $field['label'] : '';
-		return "<label for=\"{$field['name']}\">{$required}{$label}</label>";
+		return "<label for=\"{$field['name']}\">{$required}{$field['label']}</label>";
 	}
 	
 	
@@ -291,18 +299,17 @@ class html_form {
 	public function add_element( $field = array(), $position = '' ) {
 		
 		// create defaults for all possibilities
-		$defaults = array(
-			'prepend'		=> '',
-			'append'		=> '',
-			'inline_help'	=> '',
+		$defaults = array (
 			'type'			=> 'text', // text, hidden, textarea, select, radio, file, password, checkbox, button
 			'name'			=> '',
 			'label'			=> '',
 			'value'			=> '',
-			'show_label'	=> true,
 			'required'		=> false,
 			'attr'			=> array ( 'class' => '' ),
-			'options'		=> array ()
+			'options'		=> array (),
+			'prepend'		=> '',
+			'append'		=> '',
+			'inline_help'	=> ''
 		);
 		
 		// merge with the actual values sent to the function
@@ -370,7 +377,7 @@ class html_form {
 	/* checks basic validity of the form and enables repopulating
      * @return array of fields with errors
      */
-	public function isValid() {
+	public function is_valid() {
 		
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
 			$data = $_POST;
@@ -474,9 +481,7 @@ class html_form {
 					$html .= $this->before_element( $classes );
 				}
 				
-				
-				if ( $v['field']['show_label'] && $v['field']['type'] != 'hidden' )
-					$html .= $this->get_label( $v['field'] );
+				$html .= $this->get_label( $v['field'] );
 				
 				if ( $v['field']['prepend'] != '' ) {
 					$html .= '<span class="add-on">' . $v['field']['prepend'] . '</span>';

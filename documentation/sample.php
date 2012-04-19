@@ -1,13 +1,11 @@
 <?php
-session_start();
 
-//unset($_SESSION['hfc']);
-
-require_once 'class_html_form.php';
+require_once '../class_html_form.php';
 
 $form = new html_form;
+$form->set_config( array( 'id' => 'sample' ) );
 
-$form->add_content('<fieldset><legend>Reserve a Ticket</legend>');
+$form->add_content('<fieldset><legend>Sample Form</legend>');
 
 $form->add_element( array (
 	'type'		=> 'text',
@@ -43,7 +41,8 @@ $form->add_element( array (
 	'label'		=> 'Checkbox Element',
 	'options'	=> array (
 		'test1', 'test2', 'test3', 'test4'
-	)
+	),
+	'required'	=> true
 ));
 
 $form->add_element( array (
@@ -87,7 +86,7 @@ $form->add_element( array (
 ));
 
 if ( isset( $_POST['submit'] ) ) {
-	$form->isValid();
+	$form->is_valid();
 }
 
 $form->add_element( array (
@@ -96,14 +95,19 @@ $form->add_element( array (
 	'label'		=> 'Text Element INSERT'
 ), 5);
 
-
 ?>
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Sample</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="styles.css" />
+</head>
 
-<link rel="stylesheet" href="style.css" />
-
-
-<?php $form->render(); ?>
-
-<pre>
-<?php print_r($_SESSION); ?>
-</pre>
+<body>
+	
+	<h1>Sample Form</h1>
+	<?php $form->render(); ?>
+	
+</body>
+</html>
