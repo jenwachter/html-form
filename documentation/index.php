@@ -145,7 +145,7 @@ $form = new html_form;</pre>
 		</dl>
 		
 		<dl>
-			<dt>$attr</dt>
+			<dt>$options</dt>
 			<dd>(array) (required for <em>select</em>, <em>checkbox</em>, and <em>radio</em> elements) numeric or associative array of options for the form field. If passing a numeric array, the key will be used for both the value and text display of the option. If passing an associative array, the key will be used as the value of the option, while the value of the key will be used as the text display of the option.</dd>
 			<dd class="small">Default: <em>None</em></dd>
 		</dl>
