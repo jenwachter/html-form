@@ -453,7 +453,8 @@ class html_form {
 			
 		}
 		
-		echo "<form method=\"{$this->config['method']}\" action=\"{$this->config['action']}\" id=\"{$this->config['id']}\" {$attributes}>";
+		if ( $this->config['show_form_tag'] )
+			echo "<form method=\"{$this->config['method']}\" action=\"{$this->config['action']}\" id=\"{$this->config['id']}\" {$attributes}>";
 		
 		// render each form element
 		foreach ( $this->form_elements as $k => $v ) {
@@ -525,7 +526,9 @@ class html_form {
 			}
 			
 		}
-		echo "</form>";
+		
+		if ( $this->config['show_form_tag'] )
+			echo "</form>";
 	}
 	
 }
