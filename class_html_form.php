@@ -119,13 +119,13 @@ class html_form {
 	private function get_value( $field ) {
 		
 		if ( isset( $_SESSION[$this->config['id']][ $field['name'] ] ) ) {
-			return $_SESSION[$this->config['id']][ $field['name'] ];
+			return stripslashes( $_SESSION[$this->config['id']][ $field['name'] ] );
 			
 		} else if ( isset( $_POST[ $field['name'] ] ) ) {
-			return $_POST[ $field['name'] ];
+			return stripslashes( $_POST[ $field['name'] ] );
 		
 		} else {	
-			return $field['value'];
+			return stripslashes( $field['value'] );
 		}
 	}
 	
