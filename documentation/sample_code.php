@@ -2,6 +2,6 @@
 
 session_start();
 
-highlight_file('form.php');
+highlight_file('sample.php');
 
 ?>

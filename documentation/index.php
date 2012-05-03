@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>HTML Form Class | Docuemntation</title>
+	<title>HTML Form Class | Documentation</title>
 	<meta charset="utf-8" />
 	<link rel="stylesheet" href="styles.css" />
 </head>
