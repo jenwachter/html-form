@@ -1,0 +1,22 @@
+{
+    "name": "jenwachter/html-form",
+    "description": "A PHP library designed to make creating, validating, and maintaining forms easier.",
+    "keywords": ["form", "validation"],
+    "homepage": "http://github.com/jenwachter/html-form",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jen Wachter",
+            "email": "jenleighkelly@gmail.com",
+            "homepage": "http://www.jenwachter.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0" : {
+            "HtmlForm" : "src/"
+        }
+    }
+}
