@@ -39,7 +39,6 @@ class Form {
 		$this->tempField = new \HtmlForm\Fields\Input();
 	}
 	
-	
 	/**
 	 * Get HTML to display before a form element
 	 */
@@ -56,44 +55,13 @@ class Form {
 	{
 		return "</div>";
 	}
-	
-    
-	
-    
-	
-    
-	
-	
-	/**
-	 * Inserts an element at a specific location in an array
-	 *
-     * @param array $source the array to insert data into
-     * @param array $insert the array to insert into $source
-     * @param number $position the numeric position to enter $insert into $source
-     * @param number $replace the number of elements for $insert to replace
-     * @return boolean
-     */
-	protected function arrayInsert($source, $insert, $position, $replace = 0)
-	{
-		if (count($source) < $position) return false;
-		array_splice($source, $position, 0, $insert);
-		return $source;
-	}
 
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Defines the form element to be created and adds it to the $form_elements array
      * @param array $field an array that defines the form element
      * @return null
      */
-	public function addElement($field = array(), $position = "")
+	public function addElement($field = array())
 	{
 		
 		// create defaults for all possibilities
@@ -115,47 +83,25 @@ class Form {
 		$field["attr"] = array_merge($defaults["attr"], $field["attr"]);
 		$field["options"] = array_merge($defaults["options"], $field["options"]);
 		
-		if ( is_int( $position ) ) {
-			$this->form_elements = $this->arrayInsert( $this->form_elements, array (
-				array (
-					"field" => $field,
-					"id" => $field["name"]
-				)
-			), $position );
-			
-		} else {
-			$this->form_elements[] = array(
-				"field"	=> $field,
-					"id" => $field["name"]
-			);
-		}
-		
+		$this->form_elements[] = array(
+			"field"	=> $field,
+				"id" => $field["name"]
+		);
 	}
-	
 	
 	/**
 	 * Adds content other than form elements to the form
      * @param string $content a string of html
      * @return null
      */
-	public function addContent($content, $id = "", $position = "")
+	public function addContent($content, $id = "")
 	{
 		$id = $id ? $id : count($this->form_elements);
 		
-		if (is_int($position)) {
-			$this->form_elements = $this->arrayInsert($this->form_elements, array (
-				array(
-					"html" => $content,
-					"id" => $id
-				)
-			), $position);
-			
-		} else {
-			$this->form_elements[] = array(
-				"html" => $content,
-				"id" => $id
-			);
-		}
+		$this->form_elements[] = array(
+			"html" => $content,
+			"id" => $id
+		);
 	}
 	
 	/**
