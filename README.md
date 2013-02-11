@@ -12,8 +12,6 @@ The HTML Form Class was designed to make creating, validating, and maintaining f
 $form = new HtmlForm();
 $form->set_config( array( 'id' => 'sample' ) );
 
-$form->add_content('<fieldset><legend>Sample Form</legend>');
-
 $form->add_element( array (
 	'type'		=> 'text',
 	'name'		=> 'text_element',
@@ -77,8 +75,6 @@ $form->add_element( array (
 	'name'		=> 'button_element',
 	'value'		=> 'Button Element'
 ));
-
-$form->add_content('</fieldset>');
 
 $form->add_element( array (
 	'type'		=> 'hidden',
