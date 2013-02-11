@@ -19,8 +19,6 @@ class Form {
 	 * Stores validation errors
 	 */
 	protected $val_errors = array();
-
-	public $requiredSymbol = "*";
 		
 
 	public function __construct($config)
@@ -37,6 +35,8 @@ class Form {
 		);
 
 		$this->config = array_merge($this->config, $config);
+
+		$this->tempField = new \HtmlForm\Fields\Input();
 	}
 	
 	
@@ -57,147 +57,11 @@ class Form {
 		return "</div>";
 	}
 	
-    /**
-     * Gets the HTML for the label of a form element
-     * @param  array $field An array of variables that define the form element
-     * @return string 		The form element"s HTML label
-     */
-	protected function compileLabel($field)
-	{	
-		if (empty($field["label"])) return false;
-		
-		$required = !empty($field["required"]) ? $this->requiredSymbol : "";
-		$name = $field["name"];
-		$label = $field["label"];
-
-		return "<label for=\"{$name}\">{$required}{$label}</label>";
-	}
+    
 	
-    /**
-     * Fetches the HTML attributes of a form element
-     * @param  array $field 	An array of variables that define the form element
-     * @return string 			The form element"s attributes
-     */
-	protected function compileAttributes($field)
-	{
-		$attr = array();
-		
-		$attr["class"] = "";
-		$attr["class"] .= $field["required"] ? "required " : "";
-		$attr["class"] .= $field["attr"]["class"] ? $field["attr"]["class"] : "";
-		
-		$attributes = "";
-		foreach ($attr as $k => $v) {
-		    $attributes .= "{$k}=\"{$v}\" ";
-		}
-		
-		return $attributes;
-	}
+    
 	
-    /**
-     * Gets the current value attribute of a form element
-     * @param  array $field 	An array of variables that define the form element
-     * @return string 			The form element"s current value
-     */
-	protected function getValue($field)
-	{	
-		if (isset($_SESSION[$this->config["id"]][ $field["name"]])) {
-			return stripslashes($_SESSION[$this->config["id"]][ $field["name"] ] );
-			
-		} else if (isset($_POST[$field["name"]])) {
-			return stripslashes($_POST[$field["name"]]);
-		
-		} else {	
-			return stripslashes($field["value"]);
-		}
-	}
-	
-    /**
-     * Creates an input form element
-     * @param  array $field 	An array of variables that define the form element
-     * @return string 			The form element"s HTML
-     */
-	protected function compileInput($field)
-	{
-		$html = "";
-		$value = $this->getValue($field);
-		
-		
-		switch ($field["type"]) {
-			case "checkbox":
-			case "radio":
-				
-				$html .= "<div class=\"{$field["type"]}_group\">";
-				
-				/* check to see if the options are an associative array
-				   this will determine how we handle the input value */
-				$isAssoc = $this->isAssoc($field["options"]);
-				
-				foreach ($field["options"] as $k => $v) {
-					
-					$html .= "<span class=\"" . $field["type"] . "\">";
-					
-					$html .= "<input type=\"" . $field["type"] . "\" ";
-					$html .= $this->compileAttributes( $field );
-					
-					// if a checkbox, make the $_POST key of $field["name"] an array
-					if ($field["type"] == "checkbox") {
-						$html .= "name=\"" . $field["name"] . "[]\" ";
-					} else {
-						$html .= "name=\"" . $field["name"] . "\" ";
-					}
-					
-					// handle options in an associative array differently than ones in a numeric array
-					if ($isAssoc) {
-						$html .= "value=\"{$k}\" ";
-						if ($k == $value || (is_array($value) && in_array($k, $value)))
-							$html .= " checked=\"checked\"";
-					
-					} else {
-						$html .= "value=\"{$v}\" ";
-						if ($v == $value || (is_array($value) && in_array($v, $value)))
-							$html .= " checked=\"checked\"";
-					}
-					
-					$html .= " /> {$v}</span>";
-				}
-				
-				$html .= "</div>";
-				break;
-				
-			default:
-				$html .= "<input type=\"" . $field["type"] . "\" ";
-				$html .= "name=\"" . $field["name"] . "\" ";
-				$html .= $this->compileAttributes($field);
-				$html .= "value=\"{$value}\" />";
-				break;
-				
-			/*	
-			case "button":
-			case "checkbox":
-			case "file":
-			case "hidden":
-			case "image":
-			case "password":
-			case "radio":
-			case "reset":
-			case "submit":
-			case "text":	
-			*/
-			
-		}
-		return $html;
-	}
-	
-    /**
-     * Checks an array to see if it is associative
-     * @param  array  $a Array to check
-     * @return boolean
-     */
-	protected function isAssoc($a)
-	{
-		return (bool) count(array_filter(array_keys($a), "is_string"));
-	}
+    
 	
 	
 	/**
@@ -218,70 +82,10 @@ class Form {
 
 	
 	
-	/**
-	 * Creates a textarea form element
-	 *
-     * @param array $field an array that defines the form element
-     * @return string the textarea
-     */
-	protected function compileTextarea($field)
-	{
-		$html = "";
-		$value = $this->getValue($field);
-		
-		$html .= "<textarea name=\"{$field["name"]}\" ";
-		$html .= "{$this->compileAttributes($field)}>";
-		$html .= "{$value}</textarea>";
-		return $html;
-	}
 	
 	
-	/**
-	 * Creates a select box form element
-	 *
-     * @param array $field an array that defines the form element
-     * @return string the select box
-     */
-	protected function compileSelect($field)
-	{
-		
-		/* check to see if the options are an associative array
-		   this will determine how we handle the input value */
-		$isAssoc = $this->isAssoc($field["options"]);
-		
-		$html = "";
-		$value = $this->getValue($field);
-		
-		$html .= "<select ";
-		$html .= "name=\"{$field["name"]}\" ";
-		$html .= "{$this->compileAttributes( $field )}>";
-		
-		
-		// handle options in an associative array differently than ones in a numeric array
-		if ($isAssoc) {
-			
-			foreach ($field["options"] as $k => $v) {
-				$html .= "<option value=\"{$k}\"";
-				if ($value == $k) {
-					$html .= " selected=\"selected\"";
-				}
-				$html .= ">{$v}</option>";
-			}
-		
-		} else {
-		
-			foreach ($field["options"] as $k => $v) {
-				$html .= "<option value=\"{$v}\"";
-				if ( $value == $v) {
-					$html .= " selected=\"selected\"";
-				}
-				$html .= ">{$v}</option>";
-			}
-		}
-		
-		$html .= "</select>";
-		return $html;
-	}
+	
+	
 	
 	
 	/**
@@ -479,7 +283,7 @@ class Form {
 					$html .= $this->beforeElement($classes);
 				}
 				
-				$html .= $this->compileLabel($v["field"]);
+				$html .= $this->tempField->compileLabel($v["field"]);
 				
 				if ($v["field"]["prepend"] != "") {
 					$html .= "<span class=\"add-on\">" . $v["field"]["prepend"] . "</span>";
@@ -487,10 +291,12 @@ class Form {
 				
 				switch( $v["field"]["type"] ) {
 					case "textarea":
-						$html .= $this->compileTextarea($v["field"]);
+						$textarea = new \HtmlForm\Fields\Textarea();
+						$html .= $textarea->compile($v["field"]);
 						break;
 					case "select":
-						$html .= $this->compileSelect($v["field"]);		
+						$select = new \HtmlForm\Fields\Select();
+						$html .= $select->compile($v["field"]);		
 						break;
 					case "button":
 					case "checkbox":
@@ -502,7 +308,8 @@ class Form {
 					case "reset":
 					case "submit":
 					case "text":
-						$html .= $this->compileInput($v["field"]);
+						$input = new \HtmlForm\Fields\Input();
+						$html .= $input->compile($v["field"]);
 						break;
 				}
 				

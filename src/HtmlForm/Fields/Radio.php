@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Fields;
 
-class Radio implements \HtmlForm\Interfaces\Field
+class Radio extends Field
 {
 	public function compile()
 	{
