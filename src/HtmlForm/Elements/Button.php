@@ -4,6 +4,8 @@ namespace HtmlForm\Elements;
 
 class Button extends Field
 {
+	protected $type = "submit";
+
 	/**
      * Creates a button form element
      * @param  array $value 	The current value of the form element
@@ -11,6 +13,6 @@ class Button extends Field
      */
 	public function compile($value = "")
 	{
-		return "<input type=\"button\" name=\"{$this->name}\" {$this->attr} value=\"{$value}\" />";
+		return "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->attr} value=\"{$this->defaultValue}\" />";
 	}
 }
