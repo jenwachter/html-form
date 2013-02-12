@@ -89,35 +89,6 @@ class Form {
 		);
 	}
 	
-	/**
-	 * Adds content other than form elements to the form
-     * @param string $content a string of html
-     * @return null
-     */
-	public function addContent($content, $id = "")
-	{
-		$id = $id ? $id : count($this->form_elements);
-		
-		$this->form_elements[] = array(
-			"html" => $content,
-			"id" => $id
-		);
-	}
-	
-	/**
-	 * Removes a form element based on the form element"s name
-     * @param string form element id
-     * @return null
-     */
-	public function removeElement($id)
-	{
-		foreach ($this->form_elements as $k => $v) {		
-			if ($v["id"] === $id) {
-				unset($this->form_elements[$k]);
-			}
-		}
-	}
-	
 	
 	/* checks basic validity of the form and enables repopulating
      * @return array of fields with errors
