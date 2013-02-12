@@ -64,4 +64,19 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 		}
 		return $attributes;
 	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getDefaultValue()
+	{
+		return $this->defaultValue;
+	}
+
+	public function isRequired()
+	{
+		return $this->required;
+	}
 }

@@ -49,29 +49,16 @@ class Form {
 		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
-
-
-	/**
-     * Gets the current value attribute of a form element
-     * @param  array $name 	Name of the form field
-     * @return string 		The form element"s current value
-     */
-	public function getValue($name)
-	{	
-		if (isset($_SESSION[$this->config["id"]][$name])) {
-			return stripslashes($_SESSION[$this->config["id"]][$name] );
-			
-		} else if (isset($_POST[$name])) {
-			return stripslashes($_POST[$name]);
-		
-		} else {	
-			return stripslashes($field["value"]);
-		}
-	}
-
 	public function addTextbox($name, $args = array())
 	{
 		$element = new \HtmlForm\Elements\Text($name, $args);
+		$this->formElements[] = $element;
+	}
+
+	public function addFilebox($name, $args = array())
+	{
+		$element = new \HtmlForm\Elements\File($name, $args);
+		$this->config["attr"]["enctype"] = "multipart/form-data";
 		$this->formElements[] = $element;
 	}
 
@@ -127,16 +114,14 @@ class Form {
 		// empty array
 		$this->validationErrors = array();
 		
-		foreach ($this->formElements as $k => $v) {
+		foreach ($this->formElements as $element) {
 			
-			if (isset($v["field"])) {
+			if ($element->isRequired()) {
+
+				$name = $element->getName();
 				
-				// validate required fields
-				if ( $v["field"]["required"] ) {
-					
-					if (!isset($_POST[$v["field"]["name"]]) || $_POST[$v["field"]["name"]] == "") {
-						$this->validationErrors[] = $v["field"]["label"] . " is a required field.";
-					}
+				if (empty($_POST[$name])) {
+					$this->validationErrors[] = "{$name} is a required field.";
 				}
 			}
 		}
@@ -144,7 +129,28 @@ class Form {
 		return $this->validationErrors;
 	}
 	
-	
+
+
+
+	/**
+     * Gets the current value attribute of a form element
+     * @param  object $name 	Form element object
+     * @return string 			The form element's current value
+     */
+	public function getValue($element)
+	{	
+		$name = $element->getName();
+
+		if (isset($_SESSION[$this->config["id"]][$name])) {
+			return stripslashes($_SESSION[$this->config["id"]][$name] );
+			
+		} else if (isset($_POST[$name])) {
+			return stripslashes($_POST[$name]);
+		
+		} else {	
+			return stripslashes($element->getDefaultValue());
+		}
+	}
 	
 	/**
 	 * Renders the entire HTML form
@@ -152,47 +158,39 @@ class Form {
      */
 	public function render()
 	{
-		// // see if there is a file field. if so, change the entype
-		// foreach ($this->formElements as $k => $v) {
-			
-		// 	if (isset($v["field"]["type"]) && $v["field"]["type"] == "file") {
-		// 		$this->config["attr"]["enctype"] = "multipart/form-data";
-		// 		break;
-		// 	}
-		// }
-		
 		// get the form attributes
 		$attributes = "";
-		// foreach ( $this->config["attr"] as $k => $v ) {
-		//     $attributes .= "{$k}=\"{$v}\" ";
-		// }
+		foreach ( $this->config["attr"] as $k => $v ) {
+		    $attributes .= "{$k}=\"{$v}\" ";
+		}
 		
 		
-		// if (isset($this->validationErrors) && !empty($this->validationErrors)) {
+		if (isset($this->validationErrors) && !empty($this->validationErrors)) {
 			
-		// 	$count = count($this->validationErrors);
-		// 	$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
+			$count = count($this->validationErrors);
+			$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
 			
-		// 	echo "<div class=\"alert alert-error {$this->config["id"]}\">";
-		// 	echo "<p class=\"alert-heading\">{$message}</p>";
-		// 	echo "<ul>";
+			echo "<div class=\"alert alert-error {$this->config["id"]}\">";
+			echo "<p class=\"alert-heading\">{$message}</p>";
+			echo "<ul>";
 			
-		// 	foreach ($this->validationErrors as $k => $v) {
-		// 		echo "<li>{$v}</li>";
-		// 	}
+			foreach ($this->validationErrors as $k => $v) {
+				echo "<li>{$v}</li>";
+			}
 			
-		// 	echo "</ul>";
-		// 	echo "</div>";
+			echo "</ul>";
+			echo "</div>";
 			
-		// }
+		}
 		
 		$html = "";
 		$html .= "<form method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$attributes}>";
 
 		// render each form element
 		foreach ($this->formElements as $element) {
+			$value = $this->getValue($element);
 			$html .= $this->beforeElement($element);
-			$html .= $element->compile();
+			$html .= $element->compile($value);
 			$html .= $this->afterElement($element);
 		}
 		
