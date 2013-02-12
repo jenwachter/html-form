@@ -104,35 +104,6 @@ class Form {
 		$element = new \HtmlForm\Elements\Button($name, $args);
 		$this->formElements[] = $element;
 	}
-
-	/**
-	 * Defines the form element to be created and adds it to the $formElements array
-     * @param array $field an array that defines the form element
-     * @return null
-     */
-	public function addElement($field = array())
-	{
-		
-		// create defaults for all possibilities
-		$defaults = array (
-			"name"			=> "",
-			"label"			=> "",
-			"value"			=> "",
-			"required"		=> false,
-			"attr"			=> array ("class" => ""),
-			"options"		=> array ()
-		);
-		
-		// merge with the actual values sent to the function
-		$field = array_merge($defaults, $field);
-		$field["attr"] = array_merge($defaults["attr"], $field["attr"]);
-		$field["options"] = array_merge($defaults["options"], $field["options"]);
-		
-		$this->formElements[] = array(
-			"field"	=> $field,
-				"id" => $field["name"]
-		);
-	}
 	
 	
 	/* checks basic validity of the form and enables repopulating
