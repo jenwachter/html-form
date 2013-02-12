@@ -76,37 +76,38 @@ class Form {
 
 	public function addTextbox($name, $args = array())
 	{
-		$element = new \HtmlForm\Fields\Text($name, $args);
+		$element = new \HtmlForm\Elements\Text($name, $args);
 		$this->formElements[] = $element;
 	}
 
 	public function addTextarea($name, $args = array())
 	{
-		$element = new \HtmlForm\Fields\Textarea($name, $args);
+		$element = new \HtmlForm\Elements\Textarea($name, $args);
 		$this->formElements[] = $element;
 	}
 
 	public function addSelect($name, $args = array())
 	{
-		$element = new \HtmlForm\Fields\Select($name, $args);
+		$element = new \HtmlForm\Elements\Select($name, $args);
 		$this->formElements[] = $element;
 	}
 
 	public function addRadio($name, $args = array())
 	{
-		$element = new \HtmlForm\Fields\Radio($name, $args);
+		$element = new \HtmlForm\Elements\Radio($name, $args);
 		$this->formElements[] = $element;
 	}
 
 	public function addCheckbox($name, $args = array())
 	{
-		$element = new \HtmlForm\Fields\Checkbox($name, $args);
+		$element = new \HtmlForm\Elements\Checkbox($name, $args);
 		$this->formElements[] = $element;
 	}
 
 	public function addButton($name, $args = array())
 	{
-
+		$element = new \HtmlForm\Elements\Button($name, $args);
+		$this->formElements[] = $element;
 	}
 
 	/**

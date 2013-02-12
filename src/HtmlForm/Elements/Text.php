@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\Fields;
+namespace HtmlForm\Elements;
 
 class Text extends Field
 {

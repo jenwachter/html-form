@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\Fields;
+namespace HtmlForm\Elements;
 
-class Checkbox extends Field
+class Radio extends Field
 {
 	public function compile($value = "")
 	{
@@ -14,8 +14,9 @@ class Checkbox extends Field
 		
 		foreach ($this->options as $k => $v) {
 			
-			$html .= "<input type=\"checkbox\" {$this->attr}";
-			$html .= "name=\"" . $this->name . "[]\" ";
+			$html .= "<input type=\"radio\" ";
+			$html .= $this->attr;
+			$html .= "name=\"" . $this->name . "\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
 			if ($isAssoc) {
@@ -28,8 +29,8 @@ class Checkbox extends Field
 				if ($v == $value || (is_array($value) && in_array($v, $value)))
 					$html .= " checked=\"checked\"";
 			}
-
-			$html .= " /> {$v}";
+			
+			$html .= " /> {$v}</span>";
 		}
 		
 		return $html;
