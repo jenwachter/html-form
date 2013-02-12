@@ -6,7 +6,7 @@ class Checkbox extends Field
 {
 	public function compile($value = "")
 	{
-		$html = "";
+		$html = "{$this->label}";
 		
 		/* check to see if the options are an associative array
 		   this will determine how we handle the input value */
@@ -14,7 +14,7 @@ class Checkbox extends Field
 		
 		foreach ($this->options as $k => $v) {
 			
-			$html .= "<input type=\"checkbox\" {$this->attr}";
+			$html .= "<span><input type=\"checkbox\" {$this->attr}";
 			$html .= "name=\"" . $this->name . "[]\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
@@ -29,7 +29,7 @@ class Checkbox extends Field
 					$html .= " checked=\"checked\"";
 			}
 
-			$html .= " /> {$v}";
+			$html .= " /> {$v}</span>";
 		}
 		
 		return $html;

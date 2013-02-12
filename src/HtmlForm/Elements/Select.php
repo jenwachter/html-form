@@ -16,7 +16,7 @@ class Select extends Field
 		   this will determine how we handle the input value */
 		$isAssoc = \HtmlForm\Utility::isAssoc($this->options);
 		
-		$html = "";
+		$html = "{$this->label}";
 		$html .= "<select name=\"{$this->name}\" {$this->attr}>";
 		
 		
