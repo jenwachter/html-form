@@ -6,6 +6,10 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 {
 	public $requiredSymbol = "*";
 
+	public $beforeElement = null;
+
+	public $afterElement = null;
+
 	protected $name;
 	
 	protected $label = null;

@@ -31,27 +31,22 @@ class Form {
 			"action" => $action,
 			"id" => "hfc",
 			"repopulate" => true,
-			"attr" => array()
+			"attr" => array(),
+			"beforeElement" => "",
+			"afterElement" => ""
 		);
 
 		$this->config = array_merge($this->config, $config);
 	}
-	
-	/**
-	 * Get HTML to display before a form element
-	 */
-	public function beforeElement($classes = array())
+
+	protected function beforeElement($element)
 	{
-		$classes = !empty($classes) ? implode(" ", $classes) : "";
-		return "<div class=\"form_field clearfix {$classes}\">";
+		return $element->beforeElement ? $element->beforeElement : $this->config["beforeElement"];
 	}
-	
-	/**
-	 * Get HTML to display after a form element
-	 */
-	public function afterElement()
+
+	protected function afterElement($element)
 	{
-		return "</div>";
+		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
 
@@ -225,7 +220,9 @@ class Form {
 
 		// render each form element
 		foreach ($this->formElements as $element) {
+			$html .= $this->beforeElement($element);
 			$html .= $element->compile();
+			$html .= $this->afterElement($element);
 		}
 		
 		$html .= "</form>";
