@@ -6,6 +6,32 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 {
 	public $requiredSymbol = "*";
 
+	protected $name;
+	
+	protected $label = null;
+	
+	protected $defaultValue = "";
+	
+	protected $required = false;
+	
+	protected $attr = array();
+	
+	protected $options = array();
+
+	public function __construct($name, $args = array())
+	{
+		$this->name = $name;
+
+		foreach ($args as $k => $v) {
+			if (property_exists($this, $k)) {
+				$this->$k = $v;
+			}
+		}
+
+		$this->label = $this->compileLabel();
+		$this->attr = $this->compileAttributes();
+	}
+
 	public abstract function compile($field);
 
 	/**
@@ -13,53 +39,25 @@ abstract class Field implements \HtmlForm\Interfaces\Field
      * @param  array $field An array of variables that define the form element
      * @return string 		The form element"s HTML label
      */
-	public function compileLabel($field)
+	public function compileLabel()
 	{	
-		if (empty($field["label"])) return false;
-		
-		$required = !empty($field["required"]) ? $this->requiredSymbol : "";
-		$name = $field["name"];
-		$label = $field["label"];
-
-		return "<label for=\"{$name}\">{$required}{$label}</label>";
+		if (is_null($this->label)) {
+			return;
+		}
+		$required = !empty($this->required) ? $this->requiredSymbol : "";
+		return "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
 	}
 	
     /**
      * Fetches the HTML attributes of a form element
-     * @param  array $field 	An array of variables that define the form element
      * @return string 			The form element"s attributes
      */
-	public function compileAttributes($field)
+	public function compileAttributes()
 	{
-		$attr = array();
-		
-		$attr["class"] = "";
-		$attr["class"] .= $field["required"] ? "required " : "";
-		$attr["class"] .= $field["attr"]["class"] ? $field["attr"]["class"] : "";
-		
 		$attributes = "";
-		foreach ($attr as $k => $v) {
+		foreach ($this->attr as $k => $v) {
 		    $attributes .= "{$k}=\"{$v}\" ";
 		}
-		
 		return $attributes;
-	}
-
-	/**
-     * Gets the current value attribute of a form element
-     * @param  array $field 	An array of variables that define the form element
-     * @return string 			The form element"s current value
-     */
-	public function getValue($field)
-	{	
-		// if (isset($_SESSION[$this->config["id"]][$field["name"]])) {
-		// 	return stripslashes($_SESSION[$this->config["id"]][ $field["name"] ] );
-			
-		// } else if (isset($_POST[$field["name"]])) {
-		// 	return stripslashes($_POST[$field["name"]]);
-		
-		// } else {	
-			return stripslashes($field["value"]);
-		// }
 	}
 }

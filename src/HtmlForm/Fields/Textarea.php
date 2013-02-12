@@ -6,18 +6,11 @@ class Textarea extends Field
 {
 	/**
 	 * Creates a textarea form element
-	 *
-     * @param array $field an array that defines the form element
-     * @return string the textarea
+	 * @param  array $value 	The current value of the form element
+     * @return string 			The HTML for the input
      */
-	public function compile($field)
+	public function compile($value = "")
 	{
-		$html = "";
-		$value = $this->getValue($field);
-		
-		$html .= "<textarea name=\"{$field["name"]}\" ";
-		$html .= "{$this->compileAttributes($field)}>";
-		$html .= "{$value}</textarea>";
-		return $html;
+		return "{$this->label}<textarea name=\"{$this->name}\" {$this->attr}>{$value}</textarea>";
 	}
 }

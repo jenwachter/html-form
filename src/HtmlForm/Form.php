@@ -13,16 +13,17 @@ class Form {
 	/**
 	 * Stores form elements added to the form in sequencial order
 	 */
-	protected $form_elements = array();
+	protected $formElements = array();
 	
 	/**
 	 * Stores validation errors
 	 */
-	protected $val_errors = array();
+	protected $validationErrors = array();
 		
 
-	public function __construct($config)
+	public function __construct($config = array())
 	{
+		// default to self + query string
 		$action = $_SERVER["QUERY_STRING"] ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
 		
 		$this->config = array(
@@ -30,13 +31,10 @@ class Form {
 			"action" => $action,
 			"id" => "hfc",
 			"repopulate" => true,
-			"show_form_tag" => true,
 			"attr" => array()
 		);
 
 		$this->config = array_merge($this->config, $config);
-
-		$this->tempField = new \HtmlForm\Fields\Input();
 	}
 	
 	/**
@@ -56,8 +54,63 @@ class Form {
 		return "</div>";
 	}
 
+
+
 	/**
-	 * Defines the form element to be created and adds it to the $form_elements array
+     * Gets the current value attribute of a form element
+     * @param  array $name 	Name of the form field
+     * @return string 		The form element"s current value
+     */
+	public function getValue($name)
+	{	
+		if (isset($_SESSION[$this->config["id"]][$name])) {
+			return stripslashes($_SESSION[$this->config["id"]][$name] );
+			
+		} else if (isset($_POST[$name])) {
+			return stripslashes($_POST[$name]);
+		
+		} else {	
+			return stripslashes($field["value"]);
+		}
+	}
+
+	public function addTextbox($name, $args = array())
+	{
+		$element = new \HtmlForm\Fields\Text($name, $args);
+		$this->formElements[] = $element;
+	}
+
+	public function addTextarea($name, $args = array())
+	{
+		$element = new \HtmlForm\Fields\Textarea($name, $args);
+		$this->formElements[] = $element;
+	}
+
+	public function addSelect($name, $args = array())
+	{
+		$element = new \HtmlForm\Fields\Select($name, $args);
+		$this->formElements[] = $element;
+	}
+
+	public function addRadio($name, $args = array())
+	{
+		$element = new \HtmlForm\Fields\Radio($name, $args);
+		$this->formElements[] = $element;
+	}
+
+	public function addCheckbox($name, $args = array())
+	{
+		$element = new \HtmlForm\Fields\Checkbox($name, $args);
+		$this->formElements[] = $element;
+	}
+
+	public function addButton($name, $args = array())
+	{
+
+	}
+
+	/**
+	 * Defines the form element to be created and adds it to the $formElements array
      * @param array $field an array that defines the form element
      * @return null
      */
@@ -66,16 +119,12 @@ class Form {
 		
 		// create defaults for all possibilities
 		$defaults = array (
-			"type"			=> "text", // text, hidden, textarea, select, radio, file, password, checkbox, button
 			"name"			=> "",
 			"label"			=> "",
 			"value"			=> "",
 			"required"		=> false,
-			"attr"			=> array ( "class" => "" ),
-			"options"		=> array (),
-			"prepend"		=> "",
-			"append"		=> "",
-			"inline_help"	=> ""
+			"attr"			=> array ("class" => ""),
+			"options"		=> array ()
 		);
 		
 		// merge with the actual values sent to the function
@@ -83,7 +132,7 @@ class Form {
 		$field["attr"] = array_merge($defaults["attr"], $field["attr"]);
 		$field["options"] = array_merge($defaults["options"], $field["options"]);
 		
-		$this->form_elements[] = array(
+		$this->formElements[] = array(
 			"field"	=> $field,
 				"id" => $field["name"]
 		);
@@ -109,9 +158,9 @@ class Form {
 		
 		
 		// empty array
-		$this->val_errors = array();
+		$this->validationErrors = array();
 		
-		foreach ($this->form_elements as $k => $v) {
+		foreach ($this->formElements as $k => $v) {
 			
 			if (isset($v["field"])) {
 				
@@ -119,13 +168,13 @@ class Form {
 				if ( $v["field"]["required"] ) {
 					
 					if (!isset($_POST[$v["field"]["name"]]) || $_POST[$v["field"]["name"]] == "") {
-						$this->val_errors[] = $v["field"]["label"] . " is a required field.";
+						$this->validationErrors[] = $v["field"]["label"] . " is a required field.";
 					}
 				}
 			}
 		}
 		
-		return $this->val_errors;
+		return $this->validationErrors;
 	}
 	
 	
@@ -135,121 +184,52 @@ class Form {
      * @return null
      */
 	public function render()
-	{		
-		// see if there is a file field. if so, change the entype
-		foreach ($this->form_elements as $k => $v) {
+	{
+		// // see if there is a file field. if so, change the entype
+		// foreach ($this->formElements as $k => $v) {
 			
-			if (isset( $v["field"]["type"]) && $v["field"]["type"] == "file") {
-				$this->config["attr"]["enctype"] = "multipart/form-data";
-				break;
-			}
-		}
+		// 	if (isset($v["field"]["type"]) && $v["field"]["type"] == "file") {
+		// 		$this->config["attr"]["enctype"] = "multipart/form-data";
+		// 		break;
+		// 	}
+		// }
 		
 		// get the form attributes
 		$attributes = "";
-		foreach ( $this->config["attr"] as $k => $v ) {
-		    $attributes .= "{$k}=\"{$v}\" ";
-		}
+		// foreach ( $this->config["attr"] as $k => $v ) {
+		//     $attributes .= "{$k}=\"{$v}\" ";
+		// }
 		
 		
-		if (isset($this->val_errors) && !empty($this->val_errors)) {
+		// if (isset($this->validationErrors) && !empty($this->validationErrors)) {
 			
-			$count = count($this->val_errors);
-			$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
+		// 	$count = count($this->validationErrors);
+		// 	$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
 			
-			echo "<div class=\"alert alert-error {$this->config["id"]}\">";
-			echo "<p class=\"alert-heading\">{$message}</p>";
-			echo "<ul>";
+		// 	echo "<div class=\"alert alert-error {$this->config["id"]}\">";
+		// 	echo "<p class=\"alert-heading\">{$message}</p>";
+		// 	echo "<ul>";
 			
-			foreach ($this->val_errors as $k => $v) {
-				echo "<li>{$v}</li>";
-			}
+		// 	foreach ($this->validationErrors as $k => $v) {
+		// 		echo "<li>{$v}</li>";
+		// 	}
 			
-			echo "</ul>";
-			echo "</div>";
+		// 	echo "</ul>";
+		// 	echo "</div>";
 			
-		}
+		// }
 		
-		if ($this->config["show_form_tag"]) {
-			echo "<form method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$attributes}>";
-		}
+		$html = "";
+		$html .= "<form method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$attributes}>";
 
 		// render each form element
-		foreach ($this->form_elements as $k => $v) {
-			
-			// for addContent elements
-			if (isset( $v["html"])) {
-				echo $v["html"];
-			}
-			
-			// for addElement elements
-			if (isset( $v["field"])) {
-				
-				$html = "";
-				
-				if ($v["field"]["type"] != "hidden") {
-					
-					$classes = "";
-					
-					if ($v["field"]["prepend"] != "" )
-						$classes .= " input-prepend";
-						
-					if ($v["field"]["append"] != "")
-						$classes .= " input-append";
-					
-					$html .= $this->beforeElement($classes);
-				}
-				
-				$html .= $this->tempField->compileLabel($v["field"]);
-				
-				if ($v["field"]["prepend"] != "") {
-					$html .= "<span class=\"add-on\">" . $v["field"]["prepend"] . "</span>";
-				}
-				
-				switch( $v["field"]["type"] ) {
-					case "textarea":
-						$textarea = new \HtmlForm\Fields\Textarea();
-						$html .= $textarea->compile($v["field"]);
-						break;
-					case "select":
-						$select = new \HtmlForm\Fields\Select();
-						$html .= $select->compile($v["field"]);		
-						break;
-					case "button":
-					case "checkbox":
-					case "file":
-					case "hidden":
-					case "image":
-					case "password":
-					case "radio":
-					case "reset":
-					case "submit":
-					case "text":
-						$input = new \HtmlForm\Fields\Input();
-						$html .= $input->compile($v["field"]);
-						break;
-				}
-				
-				if ($v["field"]["append"] != "") {
-					$html .= "<span class=\"add-on\">" . $v["field"]["append"] . "</span>";
-				}
-				
-				if($v["field"]["inline_help"] != "") {
-					$html .= "<span class=\"help-inline\">" . $v["field"]["inline_help"] . "</span>";
-				}
-				
-				if ($v["field"]["type"] != "hidden") {
-					$html .= $this->afterElement();
-				}
-
-				echo $html;
-			}
-			
+		foreach ($this->formElements as $element) {
+			$html .= $element->compile();
 		}
 		
-		if ($this->config["show_form_tag"]) {
-			echo "</form>";
-		}
+		$html .= "</form>";
+
+		echo $html;
 	}
 	
 }
