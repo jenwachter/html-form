@@ -4,6 +4,8 @@ namespace HtmlForm\Elements;
 
 class Text extends Field
 {
+	protected $password = false;
+
 	/**
      * Creates an input form element
      * @param  array $value 	The current value of the form element
@@ -11,6 +13,7 @@ class Text extends Field
      */
 	public function compile($value = "")
 	{
-		return "{$this->label}<input type=\"text\" name=\"{$this->name}\" {$this->attr} value=\"{$value}\" />";
+		$type = $this->password ? "password" : "text";
+		return "{$this->label}<input type=\"{$type}\" name=\"{$this->name}\" {$this->attr} value=\"{$value}\" />";
 	}
 }
