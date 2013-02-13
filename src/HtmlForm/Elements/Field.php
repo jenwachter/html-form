@@ -12,19 +12,24 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 
 	protected $name;
 	
-	protected $label = null;
+	protected $label;
+
+	protected $compiledLabel;
 	
 	protected $defaultValue = "";
 	
 	protected $required = false;
 	
 	protected $attr = array();
+
+	protected $compiledAttr;
 	
 	protected $options = array();
 
-	public function __construct($name, $args = array())
+	public function __construct($name, $label = null, $args = array())
 	{
 		$this->name = $name;
+		$this->label = $label;
 
 		foreach ($args as $k => $v) {
 			if (property_exists($this, $k)) {
@@ -32,8 +37,8 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 			}
 		}
 
-		$this->label = $this->compileLabel();
-		$this->attr = $this->compileAttributes();
+		$this->compiledLabel = $this->compileLabel();
+		$this->compiledAttr = $this->compileAttributes();
 	}
 
 	public abstract function compile($field);

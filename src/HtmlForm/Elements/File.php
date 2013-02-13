@@ -11,6 +11,6 @@ class File extends Field
      */
 	public function compile($value = "")
 	{
-		return "{$this->label}<input type=\"file\" name=\"{$this->name}\" {$this->attr} value=\"{$value}\" />";
+		return "{$this->compiledLabel}<input type=\"file\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
 	}
 }

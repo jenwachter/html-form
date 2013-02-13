@@ -16,8 +16,8 @@ class Select extends Field
 		   this will determine how we handle the input value */
 		$isAssoc = \HtmlForm\Utility::isAssoc($this->options);
 		
-		$html = "{$this->label}";
-		$html .= "<select name=\"{$this->name}\" {$this->attr}>";
+		$html = "{$this->compiledLabel}";
+		$html .= "<select name=\"{$this->name}\" {$this->compiledAttr}>";
 		
 		
 		// handle options in an associative array differently than ones in a numeric array

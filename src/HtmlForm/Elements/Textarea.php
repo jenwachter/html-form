@@ -11,6 +11,6 @@ class Textarea extends Field
      */
 	public function compile($value = "")
 	{
-		return "{$this->label}<textarea name=\"{$this->name}\" {$this->attr}>{$value}</textarea>";
+		return "{$this->compiledLabel}<textarea name=\"{$this->name}\" {$this->compiledAttr}>{$value}</textarea>";
 	}
 }

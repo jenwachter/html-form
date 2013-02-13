@@ -14,6 +14,6 @@ class Text extends Field
 	public function compile($value = "")
 	{
 		$type = $this->password ? "password" : "text";
-		return "{$this->label}<input type=\"{$type}\" name=\"{$this->name}\" {$this->attr} value=\"{$value}\" />";
+		return "{$this->compiledLabel}<input type=\"{$type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
 	}
 }

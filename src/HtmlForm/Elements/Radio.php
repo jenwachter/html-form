@@ -6,7 +6,7 @@ class Radio extends Field
 {
 	public function compile($value = "")
 	{
-		$html = "{$this->label}";
+		$html = "{$this->compiledLabel}";
 		
 		/* check to see if the options are an associative array
 		   this will determine how we handle the input value */
@@ -15,7 +15,7 @@ class Radio extends Field
 		foreach ($this->options as $k => $v) {
 			
 			$html .= "<span><input type=\"radio\" ";
-			$html .= $this->attr;
+			$html .= $this->compiledAttr;
 			$html .= "name=\"" . $this->name . "\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
