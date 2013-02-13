@@ -22,7 +22,7 @@ class Radio extends Field
 		
 		foreach ($this->options as $k => $v) {
 			
-			$html .= "<span><input type=\"radio\" ";
+			$html .= "<input type=\"radio\" ";
 			$html .= $this->compiledAttr;
 			$html .= "name=\"" . $this->name . "\" ";
 			
@@ -38,7 +38,7 @@ class Radio extends Field
 					$html .= " checked=\"checked\"";
 			}
 			
-			$html .= " /> {$v}</span>";
+			$html .= " /> {$v}";
 		}
 		
 		return $html;
