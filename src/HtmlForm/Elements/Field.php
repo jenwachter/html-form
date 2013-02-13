@@ -84,4 +84,9 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	{
 		return $this->required;
 	}
+
+	public function getLabel()
+	{
+		return $this->label;
+	}
 }
