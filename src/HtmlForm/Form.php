@@ -49,44 +49,44 @@ class Form {
 		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
-	public function addTextbox($name, $label = null, $args = array())
+	public function addTextbox($name, $label, $args = array())
 	{
 		$element = new \HtmlForm\Elements\Text($name, $label, $args);
 		$this->formElements[] = $element;
 	}
 
-	public function addFile($name, $label = null, $args = array())
+	public function addFile($name, $label, $args = array())
 	{
 		$element = new \HtmlForm\Elements\File($name, $label, $args);
 		$this->config["attr"]["enctype"] = "multipart/form-data";
 		$this->formElements[] = $element;
 	}
 
-	public function addTextarea($name, $label = null, $args = array())
+	public function addTextarea($name, $label, $args = array())
 	{
 		$element = new \HtmlForm\Elements\Textarea($name, $label, $args);
 		$this->formElements[] = $element;
 	}
 
-	public function addSelect($name, $label = null, $args = array())
+	public function addSelect($name, $label, $options, $args = array())
 	{
-		$element = new \HtmlForm\Elements\Select($name, $label, $args);
+		$element = new \HtmlForm\Elements\Select($name, $label, $options, $args);
 		$this->formElements[] = $element;
 	}
 
-	public function addRadio($name, $label = null, $args = array())
+	public function addRadio($name, $label, $options, $args = array())
 	{
-		$element = new \HtmlForm\Elements\Radio($name, $label, $args);
+		$element = new \HtmlForm\Elements\Radio($name, $label, $options, $args);
 		$this->formElements[] = $element;
 	}
 
-	public function addCheckbox($name, $label = null, $args = array())
+	public function addCheckbox($name, $label, $options, $args = array())
 	{
-		$element = new \HtmlForm\Elements\Checkbox($name, $label, $args);
+		$element = new \HtmlForm\Elements\Checkbox($name, $label, $options, $args);
 		$this->formElements[] = $element;
 	}
 
-	public function addButton($name, $label = null, $args = array())
+	public function addButton($name, $label, $args = array())
 	{
 		$element = new \HtmlForm\Elements\Button($name, $label, $args);
 		$this->formElements[] = $element;

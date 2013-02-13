@@ -4,6 +4,14 @@ namespace HtmlForm\Elements;
 
 class Select extends Field
 {
+	protected $options = array();
+
+	public function __construct($name, $label, $options, $args = array())
+	{
+		parent::__construct($name, $label, $args);
+		$this->options = $options;
+	}
+	
 	/**
 	 * Creates a select box form element
 	 *

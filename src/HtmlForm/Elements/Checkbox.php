@@ -4,6 +4,14 @@ namespace HtmlForm\Elements;
 
 class Checkbox extends Field
 {
+	protected $options = array();
+
+	public function __construct($name, $label, $options, $args = array())
+	{
+		parent::__construct($name, $label, $args);
+		$this->options = $options;
+	}
+
 	public function compile($value = "")
 	{
 		$html = "{$this->compiledLabel}";
