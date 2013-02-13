@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm;
+namespace HtmlForm\Utility;
 
 class Utility
 {

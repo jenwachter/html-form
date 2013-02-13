@@ -10,7 +10,7 @@ class Checkbox extends Field
 		
 		/* check to see if the options are an associative array
 		   this will determine how we handle the input value */
-		$isAssoc = \HtmlForm\Utility::isAssoc($this->options);
+		$isAssoc = \HtmlForm\Utility\Utility::isAssoc($this->options);
 		
 		foreach ($this->options as $k => $v) {
 			
