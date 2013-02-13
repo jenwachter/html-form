@@ -14,14 +14,14 @@ class Select extends Field
 	{
 		/* check to see if the options are an associative array
 		   this will determine how we handle the input value */
-		$isAssoc = \HtmlForm\Utility\Utility::isAssoc($this->options);
+		$hasOptionValue = \HtmlForm\Utility\Form::hasOptionValue($this->options);
 		
 		$html = "{$this->compiledLabel}";
 		$html .= "<select name=\"{$this->name}\" {$this->compiledAttr}>";
 		
 		
 		// handle options in an associative array differently than ones in a numeric array
-		if ($isAssoc) {
+		if ($hasOptionValue) {
 			
 			foreach ($this->options as $k => $v) {
 				$html .= "<option value=\"{$k}\"";

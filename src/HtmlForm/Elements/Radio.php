@@ -10,7 +10,7 @@ class Radio extends Field
 		
 		/* check to see if the options are an associative array
 		   this will determine how we handle the input value */
-		$isAssoc = \HtmlForm\Utility\Utility::isAssoc($this->options);
+		$hasOptionValue = \HtmlForm\Utility\Form::hasOptionValue($this->options);
 		
 		foreach ($this->options as $k => $v) {
 			
@@ -19,7 +19,7 @@ class Radio extends Field
 			$html .= "name=\"" . $this->name . "\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
-			if ($isAssoc) {
+			if ($hasOptionValue) {
 				$html .= "value=\"{$k}\" ";
 				if ($k == $value || (is_array($value) && in_array($k, $value)))
 					$html .= " checked=\"checked\"";
