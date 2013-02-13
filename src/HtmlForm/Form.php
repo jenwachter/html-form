@@ -96,37 +96,19 @@ class Form {
 	/* checks basic validity of the form and enables repopulating
      * @return array of fields with errors
      */
-	public function isValid()
+	public function validate()
 	{
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			$data = $_POST;
-		} else {
-			$data = $_GET;
-		}
+		$data = $_SERVER["REQUEST_METHOD"] == "POST" ? $_POST : $_GET;
 		
+		// Save the data in the session
 		if ($this->config["repopulate"]) {
 			foreach ($data as $k => $v) {
 				$_SESSION[$this->config["id"]][$k] = $v;
 			}
 		}
-		
-		
-		// empty array
-		$this->validationErrors = array();
-		
-		foreach ($this->formElements as $element) {
-			
-			if ($element->isRequired()) {
 
-				$name = $element->getName();
-				
-				if (empty($_POST[$name])) {
-					$this->validationErrors[] = "{$name} is a required field.";
-				}
-			}
-		}
-		
-		return $this->validationErrors;
+		$validator = new \HtmlForm\Utility\Validator($this->formElements);
+		$this->validationErrors = $validator->validate();
 	}
 	
 
