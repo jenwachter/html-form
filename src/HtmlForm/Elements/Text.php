@@ -4,7 +4,7 @@ namespace HtmlForm\Elements;
 
 class Text extends Field
 {
-	protected $password = false;
+	protected $type = "text";
 
 	/**
      * Creates an input form element
@@ -13,7 +13,6 @@ class Text extends Field
      */
 	public function compile($value = "")
 	{
-		$type = $this->password ? "password" : "text";
-		return "{$this->compiledLabel}<input type=\"{$type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
+		return "{$this->compiledLabel}<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
 	}
 }
