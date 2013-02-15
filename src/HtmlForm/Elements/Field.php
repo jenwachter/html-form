@@ -86,13 +86,40 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 		return $this->defaultValue;
 	}
 
+	public function getLabel()
+	{
+		return $this->label;
+	}
+
 	public function isRequired()
 	{
 		return $this->required;
 	}
 
-	public function getLabel()
+	public function isNumber()
 	{
-		return $this->label;
+		return !empty($this->type) && $this->type == "number";
+	}
+
+	public function isRange()
+	{
+		$attr = array_keys($this->attr);
+		return !empty($this->type) && $this->type == "number" && in_array("min", $attr) && in_array("max", $attr);
+	}
+
+	public function isUrl()
+	{
+		return !empty($this->type) && $this->type == "url";
+	}
+
+	public function isEmail()
+	{
+		return !empty($this->type) && $this->type == "email";
+	}
+
+	public function isPattern()
+	{
+		$attr = array_keys($this->attr);
+		return in_array("pattern", $attr);
 	}
 }
