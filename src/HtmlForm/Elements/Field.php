@@ -13,32 +13,29 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	public $name;
 	
 	public $label;
-
-	protected $args = array();
-
-	protected $compiledLabel;
 	
 	public $defaultValue = "";
 	
-	protected $required = false;
-	
-	protected $attr = array();
+	public $attr = array();
+
+	protected $compiledLabel;
 
 	protected $compiledAttr;
+	
+	protected $required = false;
 
 	public function __construct($name, $label, $args = array())
 	{
 		$this->name = $name;
 		$this->label = $label;
-		$this->args = $args;
 
-		$this->extractArts($args);
+		$this->extractArgs($args);
 
 		$this->compiledLabel = $this->compileLabel();
 		$this->compiledAttr = $this->compileAttributes();
 	}
 
-	public function extractArts($args)
+	public function extractArgs($args)
 	{
 		foreach ($args as $k => $v) {
 			if (property_exists($this, $k)) {
@@ -56,9 +53,6 @@ abstract class Field implements \HtmlForm\Interfaces\Field
      */
 	public function compileLabel()
 	{	
-		if (is_null($this->label)) {
-			return;
-		}
 		$required = !empty($this->required) ? $this->requiredSymbol : "";
 		return "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
 	}
@@ -80,11 +74,6 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	{
 		$name = $this->name;
 		return !empty($_POST[$name]) ? $_POST[$name] : null;
-	}
-
-	public function getDefaultValue()
-	{
-		return $this->defaultValue;
 	}
 
 	public function isRequired()
