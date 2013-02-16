@@ -121,7 +121,7 @@ class Form {
      */
 	public function getValue($element)
 	{	
-		$name = $element->getName();
+		$name = $element->name;
 
 		if (isset($_SESSION[$this->config["id"]][$name])) {
 			return stripslashes($_SESSION[$this->config["id"]][$name] );
@@ -130,7 +130,7 @@ class Form {
 			return stripslashes($_POST[$name]);
 		
 		} else {	
-			return stripslashes($element->getDefaultValue());
+			return stripslashes($element->defaultValue);
 		}
 	}
 	

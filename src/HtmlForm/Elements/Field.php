@@ -10,15 +10,15 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 
 	public $afterElement = null;
 
-	protected $name;
+	public $name;
 	
-	protected $label;
+	public $label;
 
 	protected $args = array();
 
 	protected $compiledLabel;
 	
-	protected $defaultValue = "";
+	public $defaultValue = "";
 	
 	protected $required = false;
 	
@@ -76,19 +76,15 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 		return $attributes;
 	}
 
-	public function getName()
+	public function getPostValue()
 	{
-		return $this->name;
+		$name = $this->name;
+		return !empty($_POST[$name]) ? $_POST[$name] : null;
 	}
 
 	public function getDefaultValue()
 	{
 		return $this->defaultValue;
-	}
-
-	public function getLabel()
-	{
-		return $this->label;
 	}
 
 	public function isRequired()
