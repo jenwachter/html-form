@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements;
 
-class Textarea extends Field
+class Textarea extends Parents\Field
 {
 	/**
 	 * Creates a textarea form element

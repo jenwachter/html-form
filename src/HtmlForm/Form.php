@@ -51,7 +51,7 @@ class Form {
 
 	public function addTextbox($name, $label, $args = array())
 	{
-		$element = new \HtmlForm\Elements\Text($name, $label, $args);
+		$element = new \HtmlForm\Elements\Textbox($name, $label, $args);
 		$this->formElements[] = $element;
 	}
 

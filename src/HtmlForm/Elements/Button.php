@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements;
 
-class Button extends Field
+class Button extends Parents\Field
 {
 	protected $type = "submit";
 

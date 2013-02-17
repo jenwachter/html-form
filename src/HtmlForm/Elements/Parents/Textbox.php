@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\Elements;
+namespace HtmlForm\Elements\Parents;
 
-class Text extends Field
+class Textbox extends Field
 {
 	protected $type = "text";
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\Elements;
+namespace HtmlForm\Elements\Parents;
 
 abstract class Field implements \HtmlForm\Interfaces\Field
 {
