@@ -2,27 +2,18 @@
 
 namespace HtmlForm\Elements;
 
-class Select extends Field
+class Select extends Parents\Option
 {
-	protected $options = array();
-
-	public function __construct($name, $label, $options, $args = array())
-	{
-		parent::__construct($name, $label, $args);
-		$this->options = $options;
-	}
-	
 	/**
-	 * Creates a select box form element
+	 * Creates a select box form element. Override parent
+	 * compile() method.
 	 *
      * @param array $field an array that defines the form element
      * @return string the select box
      */
 	public function compile($value = "")
 	{
-		/* check to see if the options are an associative array
-		   this will determine how we handle the input value */
-		$hasOptionValue = \HtmlForm\Utility\Form::hasOptionValue($this->options);
+		$hasOptionValue = $this->hasOptionValue($this->options);
 		
 		$html = "{$this->compiledLabel}";
 		$html .= "<select name=\"{$this->name}\" {$this->compiledAttr}>";
