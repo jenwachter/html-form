@@ -25,60 +25,100 @@ class Validator
 	{
 		foreach ($this->elements as $element) {
 
-			$name = $element->name;
+			$label = $element->label;
 			$value = $element->getPostValue();
 
 			if ($element->isRequired()) {
-				$this->required($name, $value);
+				$this->required($label, $value);
 			}
 			if ($element->isRange()) {
-				$this->range($name, $value);
+				$this->range($label, $value, $element);
 			}
 
 			// run only if not a range
-			if ($element->isNumber() && !$element->isRange()) {
-				$this->number($name, $value);
+			if (!$element->isRange() && $element->isNumber()) {
+				$this->number($label, $value);
 			}
 			
 			if ($element->isUrl()) {
-				echo $element->name . " is a url<br>";
+				$this->url($label, $value);
 			}
 			if ($element->isEmail()) {
-				echo $element->name . " is a email<br>";
+				$this->email($label, $value);
 			}
 			if ($element->isPattern()) {
-				echo $element->name . " is a pattern<br>";
+				$this->pattern($label, $value, $element);
 			}
 		}
 		return $this->errors;
 	}
 
-	protected function required($name, $value)
+	protected function required($label, $value)
 	{
 		if (empty($value)) {
-			$this->errors[] = "{$name} is a required field.";
+			$this->errors[] = "{$label} is a required field.";
 			return false;
 		}
+
 		return true;
 	}
 
-	protected function number($name, $value)
+	protected function number($label, $value)
 	{
 		if (!is_numeric($value)) {
-			$this->errors[] = "{$name} must be a number.";
+			$this->errors[] = "{$label} must be a number.";
 			return false;
-		} else {
-			return true;
 		}
+
+		return true;
 	}
 
-	// needs work -- the specified range needs to be passed
-	protected function range($name, $value) {
+	protected function range($label, $value, $element)
+	{
+		$min = $element->attr["min"];
+		$max = $element->attr["max"];
+
 		if (!is_numeric($value)) {
-			$this->errors[] = "{$name} must be a number.";
+			$this->errors[] = "{$label} must be a number.";
 			return false;
-		} else {
-			return true;
 		}
+
+		if ($value < $min || $value > $max) {
+			$this->errors[] = "{$label} must be a number between {$min} and {$max}.";
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function url($label, $value)
+	{
+		if (!filter_var($value, FILTER_VALIDATE_URL)) {
+			$this->errors[] = "{$label} must be a valid URL.";
+		}
+
+		return true;
+	}
+
+	protected function email($label, $value)
+	{
+		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+			$this->errors[] = "{$label} must be a valid email address.";
+		}
+
+		return true;
+	}
+
+	// needs a better error message
+	protected function pattern($label, $value, $element)
+	{
+		$pattern = $element->attr["pattern"];
+
+		if (!preg_match("/{$pattern}/", $value)) {
+			$this->errors[] = "{$label} must be match the specificed pattern.";
+			return false;
+		}
+
+		return true;
 	}
 }
