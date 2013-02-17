@@ -49,49 +49,21 @@ class Form {
 		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
-	public function addTextbox($name, $label, $args = array())
-	{
-		$element = new \HtmlForm\Elements\Textbox($name, $label, $args);
-		$this->formElements[] = $element;
-	}
 
-	public function addFile($name, $label, $args = array())
+	public function __call($method, $args)
 	{
-		$element = new \HtmlForm\Elements\File($name, $label, $args);
-		$this->config["attr"]["enctype"] = "multipart/form-data";
-		$this->formElements[] = $element;
-	}
+		if (!preg_match("/^add([a-zA-Z]+)/", $method, $matches)) {
+			return false;
+		}
 
-	public function addTextarea($name, $label, $args = array())
-	{
-		$element = new \HtmlForm\Elements\Textarea($name, $label, $args);
-		$this->formElements[] = $element;
+		$className = "\\HtmlForm\\Elements\\{$matches[1]}";
+		
+		if (class_exists($className)) {
+			$reflect  = new \ReflectionClass($className);
+			$element = $reflect->newInstanceArgs($args);
+			$this->formElements[] = $element;
+		}
 	}
-
-	public function addSelect($name, $label, $options, $args = array())
-	{
-		$element = new \HtmlForm\Elements\Select($name, $label, $options, $args);
-		$this->formElements[] = $element;
-	}
-
-	public function addRadio($name, $label, $options, $args = array())
-	{
-		$element = new \HtmlForm\Elements\Radio($name, $label, $options, $args);
-		$this->formElements[] = $element;
-	}
-
-	public function addCheckbox($name, $label, $options, $args = array())
-	{
-		$element = new \HtmlForm\Elements\Checkbox($name, $label, $options, $args);
-		$this->formElements[] = $element;
-	}
-
-	public function addButton($name, $label, $args = array())
-	{
-		$element = new \HtmlForm\Elements\Button($name, $label, $args);
-		$this->formElements[] = $element;
-	}
-	
 	
 	/* checks basic validity of the form and enables repopulating
      * @return array of fields with errors
@@ -166,7 +138,7 @@ class Form {
 		}
 		
 		$html = "";
-		$html .= "<form method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$attributes}>";
+		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$attributes}>";
 
 		// render each form element
 		foreach ($this->formElements as $element) {
