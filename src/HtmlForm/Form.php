@@ -68,7 +68,7 @@ class Form {
 	/* checks basic validity of the form and enables repopulating
      * @return array of fields with errors
      */
-	public function validate()
+	public function isValid()
 	{
 		$data = $_SERVER["REQUEST_METHOD"] == "POST" ? $_POST : $_GET;
 		
@@ -81,6 +81,12 @@ class Form {
 
 		$validator = new \HtmlForm\Utility\Validator($this->formElements);
 		$this->validationErrors = $validator->validate();
+
+		if (!empty($this->validationErrors)) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 
