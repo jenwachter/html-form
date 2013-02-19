@@ -27,30 +27,29 @@ class Validator
 
 			$label = $element->label;
 			$value = $element->getPostValue();
+			$class = $this->findclass($element);
 
-			if ($element->isRequired()) {
+			// Run validation against class
+			if (method_exists($this, $class)) {
+				$this->$class($label, $value, $element);
+			}
+
+			if ($element->required) {
 				$this->required($label, $value);
 			}
-			if ($element->isRange()) {
-				$this->range($label, $value, $element);
-			}
 
-			// run only if not a range
-			if (!$element->isRange() && $element->isNumber()) {
-				$this->number($label, $value);
-			}
-			
-			if ($element->isUrl()) {
-				$this->url($label, $value);
-			}
-			if ($element->isEmail()) {
-				$this->email($label, $value);
-			}
 			if ($element->isPattern()) {
 				$this->pattern($label, $value, $element);
 			}
 		}
 		return $this->errors;
+	}
+
+	protected function findclass($element)
+	{
+		$class = get_class($element);
+		$lastSlash = strrpos($class, "\\");
+		return strtolower(substr($class, 17 + 1));
 	}
 
 	protected function required($label, $value)
@@ -63,7 +62,7 @@ class Validator
 		return true;
 	}
 
-	protected function number($label, $value)
+	protected function number($label, $value, $element)
 	{
 		if (!is_numeric($value)) {
 			$this->errors[] = "{$label} must be a number.";
@@ -75,8 +74,8 @@ class Validator
 
 	protected function range($label, $value, $element)
 	{
-		$min = $element->attr["min"];
-		$max = $element->attr["max"];
+		$min = $element->min;
+		$max = $element->max;
 
 		if (!is_numeric($value)) {
 			$this->errors[] = "{$label} must be a number.";
@@ -91,7 +90,7 @@ class Validator
 		return true;
 	}
 
-	protected function url($label, $value)
+	protected function url($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_URL)) {
 			$this->errors[] = "{$label} must be a valid URL.";
@@ -100,7 +99,7 @@ class Validator
 		return true;
 	}
 
-	protected function email($label, $value)
+	protected function email($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 			$this->errors[] = "{$label} must be a valid email address.";

@@ -9,6 +9,8 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	public $beforeElement = null;
 
 	public $afterElement = null;
+	
+	public $required = false;
 
 	public $name;
 	
@@ -21,8 +23,6 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	protected $compiledLabel;
 
 	protected $compiledAttr;
-	
-	protected $required = false;
 
 	public function __construct($name, $label, $args = array())
 	{
@@ -74,32 +74,6 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	{
 		$name = $this->name;
 		return !empty($_POST[$name]) ? $_POST[$name] : null;
-	}
-
-	public function isRequired()
-	{
-		return $this->required;
-	}
-
-	public function isNumber()
-	{
-		return !empty($this->type) && $this->type == "number";
-	}
-
-	public function isRange()
-	{
-		$attr = array_keys($this->attr);
-		return !empty($this->type) && $this->type == "number" && in_array("min", $attr) && in_array("max", $attr);
-	}
-
-	public function isUrl()
-	{
-		return !empty($this->type) && $this->type == "url";
-	}
-
-	public function isEmail()
-	{
-		return !empty($this->type) && $this->type == "email";
 	}
 
 	public function isPattern()
