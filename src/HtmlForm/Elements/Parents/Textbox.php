@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements\Parents;
 
-class Textbox extends Field
+abstract class Textbox extends Field
 {
 	protected $type = "text";
 

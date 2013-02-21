@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements\Parents;
 
-class Option extends Field
+abstract class Option extends Field
 {
 	protected $options = array();
 
