@@ -74,6 +74,7 @@ $form->addPassword($name, $label, $args);
 
 ```php
 $args = array(
+	"defaultValue" => "",		// Default value of the field
 	"requiredSymbol" => "*",	// "required" symbol for this element
 	"beforeElement" => "",		// HTML to be displayed before this form element.
 	"afterElement" => "",		// HTML to be displayed after this form element.
@@ -128,6 +129,7 @@ $form->addButton($name, $buttonText, $args);
 
 ```php
 $args = array(
+	"defaultValue" => "",		// Default value of the field
 	"requiredSymbol" => "*",	// "required" symbol for this element
 	"beforeElement" => "",		// HTML to be displayed before this form element.
 	"afterElement" => "",		// HTML to be displayed after this form element.

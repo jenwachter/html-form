@@ -4,24 +4,72 @@ namespace HtmlForm\Elements\Parents;
 
 abstract class Field implements \HtmlForm\Interfaces\Field
 {
-	public $requiredSymbol = "*";
+	/**
+	 * HTML to appear before an element
+	 * @var string
+	 */
+	protected $beforeElement = null;
 
-	public $beforeElement = null;
+	/**
+	 * HTML to appear after an element
+	 * @var string
+	 */
+	protected $afterElement = null;
 
-	public $afterElement = null;
-	
-	public $required = false;
 
-	public $name;
+	/**
+	 * Symbol that denotes this field
+	 * is required.
+	 * @var string
+	 */
+	protected $requiredSymbol = "*";
 	
-	public $label;
-	
-	public $defaultValue = "";
-	
-	public $attr = array();
+	/**
+	 * Is the field required?
+	 * @var boolean
+	 */
+	protected $required = false;
 
+	/**
+	 * Value of the "name" attribute
+	 * of the form element
+	 * @var string
+	 */
+	protected $name;
+	
+	/**
+	 * Readable label attached
+	 * to the form element.
+	 * @var string
+	 */
+	protected $label;
+	
+	/**
+	 * Associative array of additional
+	 * options to pass to the element.
+	 * "attribute" => "value"
+	 * @var array
+	 */
+	protected $attr = array();
+	
+	/**
+	 * Default value of the form field
+	 * @var string
+	 */
+	protected $defaultValue = "";
+
+	/**
+	 * Stores the compiled HTML
+	 * label element
+	 * @var string
+	 */
 	protected $compiledLabel;
 
+	/**
+	 * Stores the compiled additional
+	 * attributes string.
+	 * @var [string
+	 */
 	protected $compiledAttr;
 
 	public function __construct($name, $label, $args = array())
@@ -80,5 +128,10 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	{
 		$attr = array_keys($this->attr);
 		return in_array("pattern", $attr);
+	}
+
+	public function __get($var)
+	{
+		return $this->$var;
 	}
 }
