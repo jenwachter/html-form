@@ -72,17 +72,33 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	 */
 	protected $compiledAttr;
 
+	/**
+	 * Assigns variables to object, compiles
+	 * label and attributes.
+	 * 
+	 * @param string $name  Value of the "name" attribute of the form element
+	 * @param string $label Readable label attached to the form element.
+	 * @param array  $args  Associative array of additional options to pass
+	 *                      to the element. "attribute" => "value"
+	 */
 	public function __construct($name, $label, $args = array())
 	{
 		$this->name = $name;
 		$this->label = $label;
 
-		$this->extractArgs($args);
-
-		$this->compiledLabel = $this->compileLabel();
-		$this->compiledAttr = $this->compileAttributes();
+		$this->extractArgs($args)
+			->compileLabel()
+			->compileAttributes();
 	}
 
+	/**
+	 * Loops through a given array and it the key
+	 * exists as a property on this object, it is
+	 * assigned.
+	 * 
+	 * @param  array $args Associative array
+	 * @return self
+	 */
 	public function extractArgs($args)
 	{
 		foreach ($args as $k => $v) {
@@ -90,24 +106,33 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 				$this->$k = $v;
 			}
 		}
+		return $this;
 	}
 
-	public abstract function compile($field);
+	/**
+	 * Builds the HTML of the form field.
+	 * 
+	 * @param  string $value Value of the form field
+	 * @return null
+	 */
+	public abstract function compile($value = "");
 
 	/**
-     * Gets the HTML for the label of a form element
-     * @param  array $field An array of variables that define the form element
-     * @return string 		The form element"s HTML label
+     * Builds the HTML for the label of a form element
+     * @return self
      */
 	public function compileLabel()
 	{	
 		$required = !empty($this->required) ? $this->requiredSymbol : "";
-		return "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
+		$this->compiledLabel = "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
+
+		return $this;
 	}
 	
     /**
-     * Fetches the HTML attributes of a form element
-     * @return string 			The form element"s attributes
+     * Builds the HTML for the extra attributes
+     * assigned to a form element
+     * @return self
      */
 	public function compileAttributes()
 	{
@@ -115,21 +140,38 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 		foreach ($this->attr as $k => $v) {
 		    $attributes .= "{$k}=\"{$v}\" ";
 		}
-		return $attributes;
+		$this->compiledAttr = $attributes;
+
+		return $this;
 	}
 
+	/**
+	 * Get the value of a specific field
+	 * in the post data
+	 * @return string Post value
+	 */
 	public function getPostValue()
 	{
 		$name = $this->name;
 		return !empty($_POST[$name]) ? $_POST[$name] : null;
 	}
 
+	/**
+	 * Determines whether this form field has a
+	 * "pattern" attribute.
+	 * @return boolean
+	 */
 	public function isPattern()
 	{
 		$attr = array_keys($this->attr);
 		return in_array("pattern", $attr);
 	}
 
+	/**
+	 * Enables retrieval of protected variables.
+	 * @param  string $var Variable to get
+	 * @return mixed The requested variable
+	 */
 	public function __get($var)
 	{
 		return $this->$var;
