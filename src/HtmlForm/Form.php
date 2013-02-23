@@ -5,22 +5,33 @@ namespace HtmlForm;
 class Form {
 	
 	/**
-	 * Stores form configuration
+	 * Form configuration
 	 * @var array
 	 */
 	protected $config = array();
+
+	/**
+	 * Stores the compiled additional
+	 * attributes string.
+	 * @var [string
+	 */
+	protected $compiledAttr;
 	
 	/**
-	 * Stores form elements added to the form in sequencial order
+	 * Form elements that have been added
+	 * to the form in sequencial order
 	 */
 	protected $formElements = array();
 	
 	/**
-	 * Stores validation errors
+	 * Validation errors
 	 */
 	protected $validationErrors = array();
 		
-
+	/**
+	 * Sets up the form
+	 * @param array $config Associaitve array of configuration overrides
+	 */
 	public function __construct($config = array())
 	{
 		// default to self + query string
@@ -37,19 +48,41 @@ class Form {
 		);
 
 		$this->config = array_merge($this->config, $config);
+		$this->compileAttributes();
 	}
 
+	/**
+	 * Fetches the HTML designated to go before
+	 * a specific form element.
+	 * 
+	 * @param  object $element Form element object
+	 * @return string The HTML
+	 */
 	protected function beforeElement($element)
 	{
 		return $element->beforeElement ? $element->beforeElement : $this->config["beforeElement"];
 	}
 
+	/**
+	 * Fetches the HTML designated to go after
+	 * a specific form element.
+	 * 
+	 * @param  object $element Form element object
+	 * @return string The HTML
+	 */
 	protected function afterElement($element)
 	{
 		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
-
+	/**
+	 * Takes care of methods like addTextbox(),
+	 * addSelect(), etc...
+	 * 
+	 * @param  string $method Called method
+	 * @param  array  $args   Arguments passed to the method
+	 * @return null
+	 */
 	public function __call($method, $args)
 	{
 		if (!preg_match("/^add([a-zA-Z]+)/", $method, $matches)) {
@@ -64,20 +97,32 @@ class Form {
 			$this->formElements[] = $element;
 		}
 	}
+
+	/**
+     * Builds the HTML for the extra attributes
+     * assigned to the form
+     * @return self
+     */
+	protected function compileAttributes()
+	{
+		$attributes = "";
+		foreach ($this->config["attr"] as $k => $v) {
+		    $attributes .= "{$k}=\"{$v}\" ";
+		}
+		$this->compiledAttr = $attributes;
+
+		return $this;
+	}
 	
-	/* checks basic validity of the form and enables repopulating
-     * @return array of fields with errors
+    /**
+     * Checks the validity of the form and enables
+     * form field repopulating
+     * 
+     * @return boolean TRUE if form is valid; FALSE if there are errors
      */
 	public function isValid()
 	{
-		$data = $_SERVER["REQUEST_METHOD"] == "POST" ? $_POST : $_GET;
-		
-		// Save the data in the session
-		if ($this->config["repopulate"]) {
-			foreach ($data as $k => $v) {
-				$_SESSION[$this->config["id"]][$k] = $v;
-			}
-		}
+		$this->saveToSession();
 
 		$validator = new \HtmlForm\Utility\Validator($this->formElements);
 		$this->validationErrors = $validator->validate();
@@ -88,9 +133,22 @@ class Form {
 			return true;
 		}
 	}
-	
 
-
+	/**
+	 * Saves form data to the session.
+	 * 
+	 * @return null
+	 */
+	protected function saveToSession()
+	{	
+		if ($this->config["repopulate"]) {
+			$data = strtolower($_SERVER["REQUEST_METHOD"]) == "post" ? $_POST : $_GET;
+			
+			foreach ($data as $k => $v) {
+				$_SESSION[$this->config["id"]][$k] = $v;
+			}
+		}
+	}
 
 	/**
      * Gets the current value attribute of a form element
@@ -113,52 +171,61 @@ class Form {
 	}
 	
 	/**
-	 * Renders the entire HTML form
+	 * Renders the HTML form
+	 * 
      * @return null
      */
 	public function render()
+	{	
+		$html = "";
+		$html .= $this->compileErrors();
+		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
+		$html .= $this->renderElements();		
+		$html .= "</form>";
+		echo $html;
+	}
+
+	/**
+	 * Compile error message HTML
+	 * 
+	 * @return string HTML error div
+	 */
+	protected function compileErrors()
 	{
-		// get the form attributes
-		$attributes = "";
-		foreach ( $this->config["attr"] as $k => $v ) {
-		    $attributes .= "{$k}=\"{$v}\" ";
-		}
-		
-		
-		if (isset($this->validationErrors) && !empty($this->validationErrors)) {
+		if (!empty($this->validationErrors)) {
+				
+			$html = "";
 			
 			$count = count($this->validationErrors);
 			$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
 			
-			echo "<div class=\"alert alert-error {$this->config["id"]}\">";
-			echo "<p class=\"alert-heading\">{$message}</p>";
-			echo "<ul>";
+			$html .= "<div class=\"alert alert-error {$this->config["id"]}\">";
+			$html .= "<p class=\"alert-heading\">{$message}</p>";
+			$html .= "<ul>";
 			
 			foreach ($this->validationErrors as $k => $v) {
-				echo "<li>{$v}</li>";
+				$html .= "<li>{$v}</li>";
 			}
 			
-			echo "</ul>";
-			echo "</div>";
-			
+			$html .= "</ul></div>";
+			return $html;
 		}
-		
-		$html = "";
-		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$attributes}>";
+	}
 
-		// render each form element
+	/**
+	 * Compiles HTML for each form element
+	 * 
+	 * @return string HTML of form elements
+	 */
+	protected function renderElements()
+	{
+		$html = "";
 		foreach ($this->formElements as $element) {
 			$value = $this->getValue($element);
 			$html .= $this->beforeElement($element);
 			$html .= $element->compile($value);
 			$html .= $this->afterElement($element);
 		}
-		
-		$html .= "</form>";
-
-		echo $html;
-	}
-	
+		return $html;
+	}	
 }
-
-?>
