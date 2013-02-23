@@ -155,7 +155,7 @@ class Form {
      * @param  object $name 	Form element object
      * @return string 			The form element's current value
      */
-	public function getValue($element)
+	protected function getValue($element)
 	{	
 		$name = $element->name;
 

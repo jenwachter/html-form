@@ -21,6 +21,12 @@ class Validator
 		$this->elements = $elements;
 	}
 
+	/**
+	 * Runs through the validation required by
+	 * each form element.
+	 * 
+	 * @return array Found errors
+	 */
 	public function validate()
 	{
 		foreach ($this->elements as $element) {
@@ -29,13 +35,13 @@ class Validator
 			$value = $element->getPostValue();
 			$class = $this->findclass($element);
 
-			// Run validation against class
+			// Runs validation assigned to this class
 			if (method_exists($this, $class)) {
 				$this->$class($label, $value, $element);
 			}
 			
 			if ($element->required) {
-				$this->required($label, $value);
+				$this->required($label, $value, $element);
 			}
 
 			if ($element->isPattern()) {
@@ -45,6 +51,12 @@ class Validator
 		return $this->errors;
 	}
 
+	/**
+	 * Finds the class of the given form element
+	 * 
+	 * @param  object $element Form element object
+	 * @return string Class name
+	 */
 	protected function findclass($element)
 	{
 		$class = get_class($element);
@@ -52,7 +64,15 @@ class Validator
 		return strtolower(substr($class, 17 + 1));
 	}
 
-	protected function required($label, $value)
+	/**
+	 * Validates a required form element.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
+	protected function required($label, $value, $element)
 	{
 		if (empty($value)) {
 			$this->errors[] = "{$label} is a required field.";
@@ -62,6 +82,14 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * Validates a number form element.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
 	protected function number($label, $value, $element)
 	{
 		if (!is_numeric($value)) {
@@ -72,6 +100,14 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * Validates a range form element.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
 	protected function range($label, $value, $element)
 	{
 		$min = $element->min;
@@ -90,6 +126,14 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * Validates a URL form element.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
 	protected function url($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_URL)) {
@@ -99,6 +143,14 @@ class Validator
 		return true;
 	}
 
+	/**
+	 * Validates an email form element.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
 	protected function email($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -108,7 +160,14 @@ class Validator
 		return true;
 	}
 
-	// needs a better error message
+	/**
+	 * Validates a form element with a pattern attribute.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
 	protected function pattern($label, $value, $element)
 	{
 		$pattern = $element->attr["pattern"];
