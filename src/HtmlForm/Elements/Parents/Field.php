@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements\Parents;
 
-abstract class Field implements \HtmlForm\Interfaces\Field
+abstract class Field
 {
 	/**
 	 * HTML to appear before an element
