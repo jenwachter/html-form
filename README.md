@@ -161,6 +161,7 @@ Any field can be made to be required by passing <code>"required" => true</code> 
 $form->addTextbox("firstName", "First Name", array(
 	"required" => true
 ));
+```
 
 
 #### Usage
