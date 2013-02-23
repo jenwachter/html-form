@@ -92,6 +92,14 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 	}
 
 	/**
+	 * Builds the HTML of the form field.
+	 * 
+	 * @param  string $value Value of the form field
+	 * @return null
+	 */
+	public abstract function compile($value = "");
+
+	/**
 	 * Loops through a given array and it the key
 	 * exists as a property on this object, it is
 	 * assigned.
@@ -108,14 +116,6 @@ abstract class Field implements \HtmlForm\Interfaces\Field
 		}
 		return $this;
 	}
-
-	/**
-	 * Builds the HTML of the form field.
-	 * 
-	 * @param  string $value Value of the form field
-	 * @return null
-	 */
-	public abstract function compile($value = "");
 
 	/**
      * Builds the HTML for the label of a form element

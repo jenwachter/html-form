@@ -4,8 +4,23 @@ namespace HtmlForm\Elements\Parents;
 
 abstract class Option extends Field
 {
+	/**
+	 * Array of options available to the use
+	 * in the form element.
+	 * @var array
+	 */
 	protected $options = array();
 
+	/**
+	 * Runs the parent constructor and also saves the
+	 * options to the obejct.
+	 * 
+	 * @param string $name  	Value of the "name" attribute of the form element
+	 * @param string $label 	Readable label attached to the form element.
+	 * @param array  $options   Array of options available to the use in the form element.
+	 * @param array  $args  	Associative array of additional options to pass
+	 *                       	to the element. "attribute" => "value"
+	 */
 	public function __construct($name, $label, $options, $args = array())
 	{
 		parent::__construct($name, $label, $args);
@@ -13,7 +28,9 @@ abstract class Option extends Field
 	}
 
 	/**
-     * Checks an array to see if it is associative
+     * Checks an array to see given array is associative. This solution
+     * was found on Stack Overflow: http://stackoverflow.com/a/4254008
+     * 
      * @param  array  $a Array to check
      * @return boolean
      */
@@ -22,6 +39,12 @@ abstract class Option extends Field
 		return (bool) count(array_filter(array_keys($a), "is_string"));
 	}
 
+	/**
+	 * Builds the HTML of the form field.
+	 * 
+	 * @param  string $value Value of the form field
+	 * @return null
+	 */
 	public function compile($value = "")
 	{
 		$html = "{$this->compiledLabel}";

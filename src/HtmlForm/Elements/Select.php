@@ -5,12 +5,11 @@ namespace HtmlForm\Elements;
 class Select extends Parents\Option
 {
 	/**
-	 * Creates a select box form element. Override parent
-	 * compile() method.
-	 *
-     * @param array $field an array that defines the form element
-     * @return string the select box
-     */
+	 * Builds the HTML of the form field.
+	 * 
+	 * @param  string $value Value of the form field
+	 * @return null
+	 */
 	public function compile($value = "")
 	{
 		$hasOptionValue = $this->hasOptionValue($this->options);
