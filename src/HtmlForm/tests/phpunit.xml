@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit bootstrap="./bootstrap.php" colors="true">
 	<php>
-		<server name="PHP_SELF" value=""/>
-		<server name="QUERY_STRING" value=""/>
+		<server name="PHP_SELF" value="index.php"/>
+		<server name="QUERY_STRING" value="test=aha"/>
 	</php>
 </phpunit>

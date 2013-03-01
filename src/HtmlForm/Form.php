@@ -2,8 +2,8 @@
 
 namespace HtmlForm;
 
-class Form {
-	
+class Form
+{	
 	/**
 	 * Form configuration
 	 * @var array
@@ -34,12 +34,26 @@ class Form {
 	 */
 	public function __construct($config = array())
 	{
-		// default to self + query string
-		$action = $_SERVER["QUERY_STRING"] ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
-		
-		$this->config = array(
+		$this->setConfig($config);
+		$this->compileAttributes();
+	}
+
+	/**
+	 * Builds the "action" attribute, which defaults to
+	 * the current page plus any query sting
+	 *
+	 * @return string Form action
+	 */
+	protected function buildAction()
+	{
+		return $_SERVER["QUERY_STRING"] ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
+	}
+
+	protected function setConfig($config)
+	{
+		$defaults = array(
 			"method" => "post",
-			"action" => $action,
+			"action" => $this->buildAction(),
 			"id" => "hfc",
 			"repopulate" => true,
 			"attr" => array(),
@@ -47,8 +61,27 @@ class Form {
 			"afterElement" => ""
 		);
 
-		$this->config = array_merge($this->config, $config);
-		$this->compileAttributes();
+		$this->config = array_merge($defaults, $config);
+	}
+
+	/**
+     * Builds the HTML for the extra attributes
+     * assigned to the form
+     * @return self
+     */
+	protected function compileAttributes()
+	{
+		if (empty($this->config["attr"])) {
+			return;
+		}
+
+		$attributes = array();
+		foreach ($this->config["attr"] as $k => $v) {
+		    $attributes[] = "{$k}=\"{$v}\"";
+		}
+		$this->compiledAttr = implode(" ", $attributes);
+
+		return $this;
 	}
 
 	/**
@@ -96,22 +129,6 @@ class Form {
 			$element = $reflect->newInstanceArgs($args);
 			$this->formElements[] = $element;
 		}
-	}
-
-	/**
-     * Builds the HTML for the extra attributes
-     * assigned to the form
-     * @return self
-     */
-	protected function compileAttributes()
-	{
-		$attributes = "";
-		foreach ($this->config["attr"] as $k => $v) {
-		    $attributes .= "{$k}=\"{$v}\" ";
-		}
-		$this->compiledAttr = $attributes;
-
-		return $this;
 	}
 	
     /**
