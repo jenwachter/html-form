@@ -112,6 +112,8 @@ abstract class Field
 		foreach ($args as $k => $v) {
 			if (property_exists($this, $k)) {
 				$this->$k = $v;
+			} else {
+				throw new \InvalidArgumentException("{$k} is not a valid option.");
 			}
 		}
 		return $this;
@@ -123,7 +125,7 @@ abstract class Field
      */
 	public function compileLabel()
 	{	
-		$required = !empty($this->required) ? $this->requiredSymbol : "";
+		$required = !empty($this->required) ? $this->requiredSymbol . " " : "";
 		$this->compiledLabel = "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
 
 		return $this;
@@ -136,11 +138,15 @@ abstract class Field
      */
 	public function compileAttributes()
 	{
-		$attributes = "";
-		foreach ($this->attr as $k => $v) {
-		    $attributes .= "{$k}=\"{$v}\" ";
+		if (empty($this->attr)) {
+			return;
 		}
-		$this->compiledAttr = $attributes;
+
+		$attributes = array();
+		foreach ($this->attr as $k => $v) {
+		    $attributes[] = "{$k}=\"{$v}\"";
+		}
+		$this->compiledAttr = implode(" ", $attributes);
 
 		return $this;
 	}
