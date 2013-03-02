@@ -2,61 +2,15 @@
 
 namespace HtmlForm\tests;
 
-class FormTest extends \PHPUnit_Framework_TestCase
+class FormTest extends Test
 {
-	protected $form;
+	protected $testClass;
 	protected $reflection;
 
 	public function setUp()
 	{
-		$this->form = new \HtmlForm\Form();
+		$this->testClass = new \HtmlForm\Form();
 		$this->reflection = new \ReflectionClass("\\HtmlForm\\Form");
-	}
-
-	/**
-	 * Takes care of getting the method out of the reflection class, and
-	 * making it accessible to us (required for protected and private methods)
-	 * 
-	 * @param string $method The method you are looking to test
-	 * @return ReflectionMethod
-	 */
-	public function getMethod($method)
-	{
-		$method = $this->reflection->getMethod($method);
-		$method->setAccessible(true);
-
-		return $method;
-	}
-
-	/**
-	 * Takes care of getting the property out of the reflection class, and
-	 * making it accessible to us (required for protected and private properties)
-	 * 
-	 * @param string $property The property to get
-	 * @return ReflectionProperty
-	 */
-	public function getProperty($property)
-	{
-		$property = $this->reflection->getProperty($property);
-		$property->setAccessible(true);
-
-		return $property->getValue($this->form);
-	}
-
-	/**
-	 * Takes care of setting the property out of the reflection class, and
-	 * making it accessible to us (required for protected and private properties)
-	 * 
-	 * @param string $property The property to set
-	 * @param string $value    The value to set
-	 * @return ReflectionProperty
-	 */
-	public function setProperty($property, $value)
-	{
-		$property = $this->reflection->getProperty($property);
-		$property->setAccessible(true);
-
-		return $property->setValue($this->form, $value);
 	}
 
 	public function testSetConfigWithNoUserConfig()
@@ -74,7 +28,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$method = $this->getMethod("setConfig");
-		$method->invoke($this->form, $given);
+		$method->invoke($this->testClass, $given);
 
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
@@ -96,7 +50,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$method = $this->getMethod("setConfig");
-		$method->invoke($this->form, $given);
+		$method->invoke($this->testClass, $given);
 
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
@@ -114,7 +68,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$method = $this->getMethod("setConfig");
-		$method->invoke($this->form, $given);
+		$method->invoke($this->testClass, $given);
 
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
@@ -124,7 +78,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$expected = null;
 
 		$method = $this->getMethod("compileAttributes");
-		$method->invoke($this->form);
+		$method->invoke($this->testClass);
 
 		$this->assertEquals($expected, $this->getProperty("compiledAttr"));
 	}
@@ -143,7 +97,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$this->setProperty("config", $given);
 
 		$method = $this->getMethod("compileAttributes");
-		$method->invoke($this->form, $given);
+		$method->invoke($this->testClass, $given);
 
 		$this->assertEquals($expected, $this->getProperty("compiledAttr"));
 	}
@@ -152,7 +106,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 	{
 		$method = $this->getMethod("buildAction");
 
-		$action = $method->invoke($this->form);
+		$action = $method->invoke($this->testClass);
 		$this->assertEquals("index.php?test=aha", $action);
 	}
 
@@ -163,7 +117,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$element = new \stdClass();
 		$element->beforeElement = "test";
 
-		$beforeElement = $method->invoke($this->form, $element);
+		$beforeElement = $method->invoke($this->testClass, $element);
 		$this->assertEquals("test", $beforeElement);
 	}
 
@@ -174,7 +128,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$element = new \stdClass();
 		$element->afterElement = "test";
 
-		$afterElement = $method->invoke($this->form, $element);
+		$afterElement = $method->invoke($this->testClass, $element);
 		$this->assertEquals("test", $afterElement);
 	}
 
@@ -213,7 +167,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 		$method = $this->getMethod("compileErrors");
 
-		$errors = $method->invoke($this->form);
+		$errors = $method->invoke($this->testClass);
 		$this->assertEquals($expected, $errors);
 	}
 
@@ -227,7 +181,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 		$method = $this->getMethod("compileErrors");
 
-		$errors = $method->invoke($this->form);
+		$errors = $method->invoke($this->testClass);
 		$this->assertEquals($expected, $errors);
 	}
 
@@ -241,7 +195,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 		$method = $this->getMethod("compileErrors");
 
-		$errors = $method->invoke($this->form);
+		$errors = $method->invoke($this->testClass);
 		$this->assertEquals($expected, $errors);
 	}
 
