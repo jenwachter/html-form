@@ -37,7 +37,10 @@ class Range extends Parents\Textbox
 	 */
 	public function __construct($name, $label, $min, $max, $args = array())
 	{
+		$args["attr"]["min"] = $min;
+		$args["attr"]["max"] = $max;
 		parent::__construct($name, $label, $args);
+
 		$this->min = $min;
 		$this->max = $max;
 	}
