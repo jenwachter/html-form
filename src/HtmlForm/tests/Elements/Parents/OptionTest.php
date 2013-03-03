@@ -41,13 +41,4 @@ class OptionTest extends \HtmlForm\tests\Test
 		$value = $method->invoke($this->testClass, $given);
 		$this->assertTrue($value);
 	}
-
-	// public function testCompileAsRadioWithNoOptionValue()
-	// {
-	// 	$this->setProperty("type", "radio");
-
-	// 	$expected = "<input type=\"radio\" name=\"testField[]\" value=\"test\" checked=\"checked\" /> test<input type=\"radio\" name=\"testField[]\" value=\"blue\" /> blue";
-	// 	$value = $this->testClass->compile();
-	// 	$this->assertEquals($expected, $value);
-	// }
 }
