@@ -34,7 +34,7 @@ abstract class Option extends Field
      * @param  array  $a Array to check
      * @return boolean
      */
-	protected static function hasOptionValue($a)
+	protected function hasOptionValue($a)
 	{
 		return (bool) count(array_filter(array_keys($a), "is_string"));
 	}
