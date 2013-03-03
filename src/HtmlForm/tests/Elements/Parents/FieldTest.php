@@ -21,6 +21,12 @@ class FieldTest extends \HtmlForm\tests\Test
 		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Parents\\Field");
 	}
 
+	public function testConstructorSetProperties()
+	{
+		$this->assertEquals("testField", $this->testClass->name);
+		$this->assertEquals("Test Field", $this->testClass->label);
+	}
+
 	public function testExtractArgsWithValidData()
 	{
 		$given = array(
