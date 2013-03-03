@@ -45,8 +45,8 @@ class CheckboxTest extends \HtmlForm\tests\Test
 		$this->setProperty("attr", array("something" => "cool"));
 		$this->testClass->compileAttributes();
 
-		$expected = "<label for=\"testField\">Test Field</label><input type=\"checkbox\" something=\"cool\" name=\"testField[]\" value=\"test\" checked=\"checked\" /> test<input type=\"checkbox\" something=\"cool\" name=\"testField[]\" value=\"blue\"  /> blue";
-		$value = $this->testClass->compile("test");
+		$expected = "<label for=\"testField\">Test Field</label><input type=\"checkbox\" something=\"cool\" name=\"testField[]\" value=\"test\"  /> test<input type=\"checkbox\" something=\"cool\" name=\"testField[]\" value=\"blue\"  /> blue";
+		$value = $this->testClass->compile();
 		$this->assertEquals($expected, $value);
 	}
 }
