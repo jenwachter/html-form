@@ -154,7 +154,7 @@ class FormTest extends Test
 
 	public function testRender()
 	{
-
+		
 	}
 
 	public function testCompileErrorsWithNoErrors()
@@ -201,6 +201,19 @@ class FormTest extends Test
 
 	public function testRenderElements()
 	{
+		$field = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
+			"required" => true,
+			"beforeElement" => "<div class=\"form_field clearfix\">",
+			"afterElement" => "</div>"
+		));
 
+		$this->setProperty("formElements", array($field));
+		$expected = "<div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div>";
+		
+		$method = $this->getMethod("renderElements");
+
+		$result = $method->invoke($this->testClass);
+
+		$this->assertEquals($expected, $result);
 	}
 }
