@@ -194,12 +194,19 @@ class Form
      */
 	public function render()
 	{	
+		
+		echo $this->compileForm();
+	}
+
+	protected function compileForm()
+	{
 		$html = "";
 		$html .= $this->compileErrors();
 		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
 		$html .= $this->renderElements();		
 		$html .= "</form>";
-		echo $html;
+
+		return $html;
 	}
 
 	/**

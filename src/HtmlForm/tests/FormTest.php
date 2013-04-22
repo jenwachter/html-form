@@ -152,9 +152,34 @@ class FormTest extends Test
 		
 	}
 
-	public function testRender()
+	public function testCompileForm()
 	{
+		$config = array(
+			"id" => "test",
+			"method" => "get",
+			"action" => "some_page.php"
+		);
+		$this->setProperty("config", $config);
+		$this->setProperty("compiledAttr", "blah=\"blah\"");
+
+		$this->setProperty("validationErrors", array("first name is a required field."));
+
+		$field = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
+			"required" => true,
+			"beforeElement" => "<div class=\"form_field clearfix\">",
+			"afterElement" => "</div>"
+		));
+
+		$this->setProperty("formElements", array($field));
+
+		$expected = "<div class=\"alert alert-error test\"><p class=\"alert-heading\">The following error was found:</p><ul><li>first name is a required field.</li></ul></div><form novalidate=\"novalidate\" method=\"get\" action=\"some_page.php\" id=\"test\" blah=\"blah\"><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></form>";
 		
+		$method = $this->getMethod("compileForm");
+
+		$result = $method->invoke($this->testClass);
+
+		$this->assertEquals($expected, $result);
+
 	}
 
 	public function testCompileErrorsWithNoErrors()
