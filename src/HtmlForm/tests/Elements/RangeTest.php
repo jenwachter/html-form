@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class RangeTest extends \HtmlForm\tests\Test
 {

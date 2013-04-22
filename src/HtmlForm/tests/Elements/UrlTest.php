@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class UrlTest extends \HtmlForm\tests\Test
 {

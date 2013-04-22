@@ -35,7 +35,9 @@ class Form
 	public function __construct($config = array())
 	{
 		$this->setConfig($config);
-		$this->compileAttributes();
+
+		$textManipulator = new Utility\TextManipulator();
+		$this->compiledAttr = $textManipulator->arrayToTagAttributes($this->config["attr"]);
 	}
 
 	/**
@@ -62,26 +64,6 @@ class Form
 		);
 
 		$this->config = array_merge($defaults, $config);
-	}
-
-	/**
-     * Builds the HTML for the extra attributes
-     * assigned to the form
-     * @return self
-     */
-	protected function compileAttributes()
-	{
-		if (empty($this->config["attr"])) {
-			return;
-		}
-
-		$attributes = array();
-		foreach ($this->config["attr"] as $k => $v) {
-		    $attributes[] = "{$k}=\"{$v}\"";
-		}
-		$this->compiledAttr = implode(" ", $attributes);
-
-		return $this;
 	}
 
 	/**

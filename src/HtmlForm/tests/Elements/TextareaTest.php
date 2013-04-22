@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class TextareaTest extends \HtmlForm\tests\Test
 {
@@ -21,8 +21,7 @@ class TextareaTest extends \HtmlForm\tests\Test
 
 	public function testCompileWithAttributes()
 	{
-		$this->setProperty("attr", array("something" => "cool"));
-		$this->testClass->compileAttributes();
+		$this->setProperty("compiledAttr", "something=\"cool\"");
 
 		$expected = "<label for=\"testField\">Test Field</label><textarea name=\"testField\" something=\"cool\"></textarea>";
 		$this->assertEquals($expected, $this->testClass->compile());

@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class NumberTest extends \HtmlForm\tests\Test
 {

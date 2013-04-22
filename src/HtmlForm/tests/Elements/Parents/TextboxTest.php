@@ -37,15 +37,6 @@ class TextboxTest extends \HtmlForm\tests\Test
 		$this->assertEquals($expected, $this->testClass->compile());
 	}
 
-	public function testCompileWithAttr()
-	{
-		$this->setProperty("attr", array("something" => "cool"));
-		$this->testClass->compileAttributes();
-		
-		$expected = "<label for=\"testField\">Test Field</label><input type=\"text\" name=\"testField\" something=\"cool\" value=\"\" />";
-		$this->assertEquals($expected, $this->testClass->compile());
-	}
-
 	public function testCompuileWithValue()
 	{
 		$expected = "<label for=\"testField\">Test Field</label><input type=\"text\" name=\"testField\"  value=\"test\" />";

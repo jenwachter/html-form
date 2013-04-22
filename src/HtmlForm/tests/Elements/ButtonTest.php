@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class ButtonTest extends \HtmlForm\tests\Test
 {
@@ -26,8 +26,7 @@ class ButtonTest extends \HtmlForm\tests\Test
 
 	public function testCompileWithAttr()
 	{
-		$this->setProperty("attr", array("something" => "cool"));
-		$this->testClass->compileAttributes();
+		$this->setProperty("compiledAttr", "something=\"cool\"");
 		
 		$expected = "<input type=\"submit\" name=\"testField\" something=\"cool\" value=\"Test Field\" />";
 		$this->assertEquals($expected, $this->testClass->compile());

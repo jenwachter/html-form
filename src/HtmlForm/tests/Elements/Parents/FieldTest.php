@@ -68,19 +68,6 @@ class FieldTest extends \HtmlForm\tests\Test
 		$this->assertEquals($expected, $this->testClass->compiledAttr);
 	}
 
-	public function testCompileAttributesWithItems()
-	{
-		$given = array(
-			"class" => "one two three",
-			"somethingElse" => "cool"
-		);
-		$this->setProperty("attr", $given);
-		$this->testClass->compileAttributes();
-
-		$expected = "class=\"one two three\" somethingElse=\"cool\"";
-		$this->assertEquals($expected, $this->getProperty("compiledAttr"));
-	}
-
 	public function testGetPostValue()
 	{
 		// Uses value assigned in constructor

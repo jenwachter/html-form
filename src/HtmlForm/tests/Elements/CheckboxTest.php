@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class CheckboxTest extends \HtmlForm\tests\Test
 {
@@ -50,8 +50,7 @@ class CheckboxTest extends \HtmlForm\tests\Test
 
 	public function testCompileWithAttr()
 	{
-		$this->setProperty("attr", array("something" => "cool"));
-		$this->testClass->compileAttributes();
+		$this->setProperty("compiledAttr", "something=\"cool\"");
 
 		$expected = "<label for=\"testField\">Test Field</label><input type=\"checkbox\" something=\"cool\" name=\"testField[]\" value=\"test\"  /> test<input type=\"checkbox\" something=\"cool\" name=\"testField[]\" value=\"blue\"  /> blue";
 		$value = $this->testClass->compile();

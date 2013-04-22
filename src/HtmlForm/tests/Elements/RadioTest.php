@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class RadioTest extends \HtmlForm\tests\Test
 {
@@ -42,8 +42,7 @@ class RadioTest extends \HtmlForm\tests\Test
 
 	public function testCompileWithAttr()
 	{
-		$this->setProperty("attr", array("something" => "cool"));
-		$this->testClass->compileAttributes();
+		$this->setProperty("compiledAttr", "something=\"cool\"");
 
 		$expected = "<label for=\"testField\">Test Field</label><input type=\"radio\" something=\"cool\" name=\"testField[]\" value=\"test\" checked=\"checked\" /> test<input type=\"radio\" something=\"cool\" name=\"testField[]\" value=\"blue\"  /> blue";
 		$value = $this->testClass->compile("test");

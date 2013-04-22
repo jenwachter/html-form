@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm\tests\Elements;
 
 class SelectTest extends \HtmlForm\tests\Test
 {
@@ -45,8 +45,7 @@ class SelectTest extends \HtmlForm\tests\Test
 
 	public function testCompileWithAttr()
 	{
-		$this->setProperty("attr", array("something" => "cool"));
-		$this->testClass->compileAttributes();
+		$this->setProperty("compiledAttr", "something=\"cool\"");
 
 		$expected = "<label for=\"testField\">Test Field</label><select name=\"testField\" something=\"cool\"><option value=\"test\">test</option><option value=\"blue\">blue</option></select>";
 		$value = $this->testClass->compile();

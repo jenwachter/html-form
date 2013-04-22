@@ -73,34 +73,34 @@ class FormTest extends Test
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
 
-	public function testCompileAttributesWithNoData()
-	{
-		$expected = null;
+	// public function testCompileAttributesWithNoData()
+	// {
+	// 	$expected = null;
 
-		$method = $this->getMethod("compileAttributes");
-		$method->invoke($this->testClass);
+	// 	$method = $this->getMethod("compileAttributes");
+	// 	$method->invoke($this->testClass);
 
-		$this->assertEquals($expected, $this->getProperty("compiledAttr"));
-	}
+	// 	$this->assertEquals($expected, $this->getProperty("compiledAttr"));
+	// }
 
-	public function testCompileAttributesWithItems()
-	{
-		$given = array(
-			"attr" => array(
-				"class" => "one two three",
-				"somethingElse" => "cool"
-			)
-		);
+	// public function testCompileAttributesWithItems()
+	// {
+	// 	$given = array(
+	// 		"attr" => array(
+	// 			"class" => "one two three",
+	// 			"somethingElse" => "cool"
+	// 		)
+	// 	);
 
-		$expected = "class=\"one two three\" somethingElse=\"cool\"";
+	// 	$expected = "class=\"one two three\" somethingElse=\"cool\"";
 
-		$this->setProperty("config", $given);
+	// 	$this->setProperty("config", $given);
 
-		$method = $this->getMethod("compileAttributes");
-		$method->invoke($this->testClass, $given);
+	// 	$method = $this->getMethod("compileAttributes");
+	// 	$method->invoke($this->testClass, $given);
 
-		$this->assertEquals($expected, $this->getProperty("compiledAttr"));
-	}
+	// 	$this->assertEquals($expected, $this->getProperty("compiledAttr"));
+	// }
 
 	public function testBuildAction()
 	{

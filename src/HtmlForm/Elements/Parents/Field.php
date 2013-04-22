@@ -86,9 +86,11 @@ abstract class Field
 		$this->name = $name;
 		$this->label = $label;
 
+		$textManipulator = new \HtmlForm\Utility\TextManipulator();
+		$this->compiledAttr = !empty($args["attr"]) ? $textManipulator->arrayToTagAttributes($args["attr"]) : null;
+
 		$this->extractArgs($args)
-			->compileLabel()
-			->compileAttributes();
+			->compileLabel();
 	}
 
 	/**
@@ -127,26 +129,6 @@ abstract class Field
 	{	
 		$required = !empty($this->required) ? $this->requiredSymbol . " " : "";
 		$this->compiledLabel = "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
-
-		return $this;
-	}
-	
-    /**
-     * Builds the HTML for the extra attributes
-     * assigned to a form element
-     * @return self
-     */
-	public function compileAttributes()
-	{
-		if (empty($this->attr)) {
-			return;
-		}
-
-		$attributes = array();
-		foreach ($this->attr as $k => $v) {
-		    $attributes[] = "{$k}=\"{$v}\"";
-		}
-		$this->compiledAttr = implode(" ", $attributes);
 
 		return $this;
 	}
