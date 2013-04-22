@@ -25,6 +25,13 @@ class CheckboxTest extends \HtmlForm\tests\Test
 		$this->assertEquals($expected, $value);
 	}
 
+	public function testCompileWithValue()
+	{
+		$expected = "<label for=\"testField\">Test Field</label><input type=\"checkbox\"  name=\"testField[]\" value=\"test\" checked=\"checked\" /> test<input type=\"checkbox\"  name=\"testField[]\" value=\"blue\"  /> blue";
+		$value = $this->testClass->compile("test");
+		$this->assertEquals($expected, $value);
+	}
+
 	public function testCompileWithOptionValue()
 	{
 		$this->setProperty("options", array("one" => "test", "two" => "blue"));
@@ -33,10 +40,11 @@ class CheckboxTest extends \HtmlForm\tests\Test
 		$this->assertEquals($expected, $value);
 	}
 
-	public function testCompileWithValue()
+	public function testCompileWithOptionValueWithValue()
 	{
-		$expected = "<label for=\"testField\">Test Field</label><input type=\"checkbox\"  name=\"testField[]\" value=\"test\" checked=\"checked\" /> test<input type=\"checkbox\"  name=\"testField[]\" value=\"blue\"  /> blue";
-		$value = $this->testClass->compile("test");
+		$this->setProperty("options", array("one" => "test", "two" => "blue"));
+		$expected = "<label for=\"testField\">Test Field</label><input type=\"checkbox\"  name=\"testField[]\" value=\"one\" checked=\"checked\" /> test<input type=\"checkbox\"  name=\"testField[]\" value=\"two\"  /> blue";
+		$value = $this->testClass->compile("one");
 		$this->assertEquals($expected, $value);
 	}
 

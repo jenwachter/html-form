@@ -28,6 +28,14 @@ class SelectTest extends \HtmlForm\tests\Test
 		$this->assertEquals($expected, $value);
 	}
 
+	public function testCompileWithValueAndOptionValue()
+	{
+		$this->setProperty("options", array("one" => "test", "two" => "blue"));
+		$expected = "<label for=\"testField\">Test Field</label><select name=\"testField\" ><option value=\"one\" selected=\"selected\">test</option><option value=\"two\">blue</option></select>";
+		$value = $this->testClass->compile("one");
+		$this->assertEquals($expected, $value);
+	}
+
 	public function testCompileWithValue()
 	{
 		$expected = "<label for=\"testField\">Test Field</label><select name=\"testField\" ><option value=\"test\" selected=\"selected\">test</option><option value=\"blue\">blue</option></select>";
