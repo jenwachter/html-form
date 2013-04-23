@@ -170,7 +170,7 @@ class Validator
 	 */
 	protected function pattern($label, $value, $element)
 	{
-		$pattern = $element->attr["pattern"];
+		$pattern = trim($element->attr["pattern"], "/");
 
 		if (!preg_match("/{$pattern}/", $value)) {
 			$this->errors[] = "{$label} must be match the specificed pattern.";
