@@ -2,7 +2,7 @@
 
 namespace HtmlForm\tests\Elements;
 
-class RadioTest extends \HtmlForm\tests\Test
+class RadioTest extends \HtmlForm\tests\Base
 {
 	protected $testClass;
 	protected $reflection;

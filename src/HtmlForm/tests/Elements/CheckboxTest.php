@@ -2,7 +2,7 @@
 
 namespace HtmlForm\tests\Elements;
 
-class CheckboxTest extends \HtmlForm\tests\Test
+class CheckboxTest extends \HtmlForm\tests\Base
 {
 	protected $testClass;
 	protected $reflection;

@@ -2,7 +2,7 @@
 
 namespace HtmlForm\tests\Elements\Parents;
 
-class TextboxTest extends \HtmlForm\tests\Test
+class TextboxTest extends \HtmlForm\tests\Base
 {
 	protected $testClass;
 	protected $reflection;

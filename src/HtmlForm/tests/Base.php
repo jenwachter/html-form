@@ -2,8 +2,28 @@
 
 namespace HtmlForm\tests;
 
-class Test extends \PHPUnit_Framework_TestCase
+abstract class Base extends \PHPUnit_Framework_TestCase
 {
+    /**
+	 * Class you are testing
+	 * @var object
+	 */
+	protected $testClass;
+
+	/**
+	 * Reflection of the object you are testing
+	 * @var reflection object
+	 */
+	protected $reflection;
+
+	/**
+	 * Test setup
+	 */
+	public function setUp()
+	{
+		$this->reflection = new \ReflectionClass($this->testClass);
+	}
+
 	/**
 	 * Takes care of getting the method out of the reflection class, and
 	 * making it accessible to us (required for protected and private methods)
@@ -23,7 +43,7 @@ class Test extends \PHPUnit_Framework_TestCase
 	 * Takes care of getting the property out of the reflection class, and
 	 * making it accessible to us (required for protected and private properties)
 	 * 
-	 * @param string $property The property to get
+	 * @param string $property The property you are looking to test
 	 * @return ReflectionProperty
 	 */
 	public function getProperty($property)

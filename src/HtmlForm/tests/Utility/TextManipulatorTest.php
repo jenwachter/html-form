@@ -2,7 +2,7 @@
 
 namespace HtmlForm\tests\Utility;
 
-class TextManipulatorTest extends \HtmlForm\tests\Test
+class TextManipulatorTest extends \HtmlForm\tests\Base
 {
 	public function setUp()
 	{

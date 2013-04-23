@@ -2,7 +2,7 @@
 
 namespace HtmlForm\tests\Elements;
 
-class UrlTest extends \HtmlForm\tests\Test
+class UrlTest extends \HtmlForm\tests\Base
 {
 	protected $testClass;
 	protected $reflection;
