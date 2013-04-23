@@ -8,7 +8,7 @@ class Button extends Parents\Field
 	 * Value of the "type" attribute of this form element
 	 * @var string
 	 */
-	protected $type = "submit";
+	protected $type = "button";
 
 	/**
 	 * Builds the HTML of the form field.

@@ -15,12 +15,12 @@ class ButtonTest extends \HtmlForm\tests\Base
 
 	public function testType()
 	{
-		$this->assertEquals("submit", $this->testClass->type);
+		$this->assertEquals("button", $this->testClass->type);
 	}
 
 	public function testCompile()
 	{
-		$expected = "<input type=\"submit\" name=\"testField\"  value=\"Test Field\" />";
+		$expected = "<input type=\"button\" name=\"testField\"  value=\"Test Field\" />";
 		$this->assertEquals($expected, $this->testClass->compile());
 	}
 
@@ -28,7 +28,7 @@ class ButtonTest extends \HtmlForm\tests\Base
 	{
 		$this->setProperty("compiledAttr", "something=\"cool\"");
 		
-		$expected = "<input type=\"submit\" name=\"testField\" something=\"cool\" value=\"Test Field\" />";
+		$expected = "<input type=\"button\" name=\"testField\" something=\"cool\" value=\"Test Field\" />";
 		$this->assertEquals($expected, $this->testClass->compile());
 	}
 }
