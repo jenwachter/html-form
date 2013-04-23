@@ -16,12 +16,12 @@ Hate writing and validating HTML forms? Me too. The HTML Form Class was designed
 
 #### Usage (showing default params)
 
-Please note: it is NOT necessary to pass an array of configuration to Form(). It is only necessary if you with to change the default.
+Please note: it is NOT necessary to pass an array of configuration to Form(). It is only necessary if you wish to change the default settings.
 
 ```php
 $config = array(
 	"method" => "post",
-	"action" => {current URL},
+	"action" => /* current URL */,
 	"id" => "hfc",
 	"repopulate" => true,
 	"attr" => array(),
@@ -35,10 +35,10 @@ $form = new \HtmlForm\Form($config);
 #### Parameters
 
 1. __$method__: (string) Optional. Value of HTML form "method" attribute. _Default: "post"_
-1. __$action__: (string) Optional. Value of HTML form "action" attribute. _Default: current URL plus any existing query string._
-1. __$id__: (string) Optional. Identifier assigned to the form. Used to store post values in a user session. For example, if the ID of the form is "myForm", the post values can be found in <code>$_SESSION["myForm"]</code>. _Default: "hfc"_
-1. __$repopulate__: (bool) Optional. Whether the form will repopulate values upon failed submission or page reload. _Default: true_
-1. __$attr__: (array) Optional. Associative array of additional attributes ("attribute" => "value") that should be included in the <form> tag. _Default: array()_
+1. __$action__: (string) Optional. Value of HTML form "action" attribute. _Default: URL of current page plus any existing query string._
+1. __$id__: (string) Optional. Value of "id" attribute assigned to the form and used to store post values in a user session. For example, if the ID of the form is "myForm", the post values can be found in <code>$_SESSION["myForm"]</code>. _Default: "hfc"_
+1. __$repopulate__: (bool) Optional. Whether the form will repopulate values upon failed submission or page reload. Sessions are required to be enabled. _Default: true_
+1. __$attr__: (array) Optional. Associative array of additional attributes (array("attribute" => "value")) that should be included in the `<form>` tag. _Default: array()_
 1. __$beforeElement__: (string) Optional. HTML to be displayed before each form element. _Default: ""_
 1. __$afterElement__: (string) Optional. HTML to be displayed after each form element. _Default: ""_
 
@@ -52,7 +52,7 @@ $form = new \HtmlForm\Form($config);
 // Regular 'ol text box
 $form->addTextbox($name, $label, $args);
 
-// Data-specific text boxes
+// Data-specific text boxes (come with validation attached)
 $form->addEmail($name, $label, $args);
 $form->addFile($name, $label, $args);
 $form->addNumber($name, $label, $args);
@@ -78,7 +78,7 @@ $args = array(
 	"requiredSymbol" => "*",	// "required" symbol for this element
 	"beforeElement" => "",		// HTML to be displayed before this form element.
 	"afterElement" => "",		// HTML to be displayed after this form element.
-	"attr" => array(),			// Associative array of additional attributes ("attribute" => "value")
+	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
 								// that should be included in this element's tag
 	"required" => false			// Is this form field required to be completed?
 );
@@ -107,7 +107,7 @@ $args = array(
 	"requiredSymbol" => "*",	// "required" symbol for this element
 	"beforeElement" => "",		// HTML to be displayed before this form element.
 	"afterElement" => "",		// HTML to be displayed after this form element.
-	"attr" => array(),			// Associative array of additional attributes ("attribute" => "value")
+	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
 								// that should be included in this element's tag
 	"required" => false			// Is this form field required to be completed?
 );
@@ -115,17 +115,21 @@ $args = array(
 
 ### Adding Buttons
 
-Primarily used for submit buttons, this method can be used to add any kind of button.
 
 #### Usage
 ```php
+
+// Submit button
+$form->addSubmit($name, $buttonText, $args);
+
+// Generic button
 $form->addButton($name, $buttonText, $args);
 ```
 
 #### Parameters
 1. __$name__: (string) Required. Value of the "name" attribute of the text box. Not visible to the user.
-1. __$buttonText__: (string) Required. Readable label of the form element. Visible to the user.
-1. __$args__: (array) Optional. Associative array of additional options to pass to the element. Below is default usage:
+1. __$buttonText__: (string) Required. Readable label of the button. Visible to the user.
+1. __$args__: (array) Optional. Associative array of additional options to pass to the element. _Note: defaultValue, requiredSymbol, and required are not accepted on submit buttons. Below is default usage:
 
 ```php
 $args = array(
@@ -133,7 +137,7 @@ $args = array(
 	"requiredSymbol" => "*",	// "required" symbol for this element
 	"beforeElement" => "",		// HTML to be displayed before this form element.
 	"afterElement" => "",		// HTML to be displayed after this form element.
-	"attr" => array(),			// Associative array of additional attributes ("attribute" => "value")
+	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
 								// that should be included in this element's tag
 	"required" => false			// Is this form field required to be completed?
 );
@@ -163,12 +167,20 @@ $form->addTextbox("firstName", "First Name", array(
 ));
 ```
 
+##### Regular expression
+Any field can be validated with a regular expression by passing <code>"pattern" => "/YourRegexPattern/"</code> as an element in the <code>$args</code> array:
+```php
+$form->addTextbox("age", "Age", array(
+	"pattern" => "\d{1,3}"
+));
+```
+
 
 #### Usage
 
 In the logic of your page:
 ````php
-// make sure "submit" is the name of your submit button
+// replace `submit` with the name of your submit button
 if (isset( $_POST["submit"])) {
 	$valid = $form->isValid();
 }
