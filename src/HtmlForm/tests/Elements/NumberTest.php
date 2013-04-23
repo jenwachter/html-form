@@ -10,7 +10,7 @@ class NumberTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Number("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Number");
+		parent::setUp();
 	}
 
 	public function testType()

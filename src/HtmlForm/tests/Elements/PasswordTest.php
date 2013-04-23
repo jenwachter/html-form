@@ -10,7 +10,7 @@ class PasswordTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Password("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Password");
+		parent::setUp();
 	}
 
 	public function testType()

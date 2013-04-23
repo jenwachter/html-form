@@ -10,7 +10,7 @@ class UrlTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Url("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Url");
+		parent::setUp();
 	}
 
 	public function testType()

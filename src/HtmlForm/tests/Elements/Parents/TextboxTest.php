@@ -15,7 +15,7 @@ class TextboxTest extends \HtmlForm\tests\Base
 		);
 
 		$this->testClass = $this->getMockForAbstractClass("\\HtmlForm\\Elements\\Parents\\Textbox", $args);
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Parents\\Textbox");
+		parent::setUp();
 	}
 
 	public function testType()

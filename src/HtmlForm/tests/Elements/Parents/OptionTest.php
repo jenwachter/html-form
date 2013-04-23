@@ -18,7 +18,7 @@ class OptionTest extends \HtmlForm\tests\Base
 		);
 
 		$this->testClass = $this->getMockForAbstractClass("\\HtmlForm\\Elements\\Parents\\Option", $args);
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Parents\\Option");
+		parent::setUp();
 	}
 
 	public function testConstructorSetProperties()

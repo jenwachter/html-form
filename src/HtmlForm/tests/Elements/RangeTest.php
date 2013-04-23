@@ -10,7 +10,7 @@ class RangeTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Range("testField", "Test Field", 5, 10);
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Range");
+		parent::setUp();
 	}
 
 	public function testType()

@@ -10,7 +10,7 @@ class FileTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\File("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\File");
+		parent::setUp();
 	}
 
 	public function testType()

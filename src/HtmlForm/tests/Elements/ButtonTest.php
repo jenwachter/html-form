@@ -10,7 +10,7 @@ class ButtonTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Button("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Button");
+		parent::setUp();
 	}
 
 	public function testType()

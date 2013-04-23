@@ -10,7 +10,7 @@ class CheckboxTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Checkbox("testField", "Test Field", array("test", "blue"));
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Checkbox");
+		parent::setUp();
 	}
 
 	public function testType()

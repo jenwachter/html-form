@@ -10,7 +10,7 @@ class SelectTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Select("testField", "Test Field", array("test", "blue"));
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Select");
+		parent::setUp();
 	}
 
 	public function testCompileWithNoOptionValue()

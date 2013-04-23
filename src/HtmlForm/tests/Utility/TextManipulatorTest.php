@@ -7,6 +7,7 @@ class TextManipulatorTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Utility\TextManipulator();
+		parent::setUp();
 	}
 
 	public function testArrayToTagAttributesEmptyArray()

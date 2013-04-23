@@ -10,7 +10,7 @@ class RadioTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Radio("testField", "Test Field", array("test", "blue"));
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Radio");
+		parent::setUp();
 	}
 
 	public function testType()

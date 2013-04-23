@@ -10,7 +10,7 @@ class EmailTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Email("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Email");
+		parent::setUp();
 	}
 
 	public function testType()

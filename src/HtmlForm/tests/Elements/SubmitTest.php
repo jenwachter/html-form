@@ -10,7 +10,7 @@ class SubmitTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Submit("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Submit");
+		parent::setUp();
 	}
 
 	public function testType()

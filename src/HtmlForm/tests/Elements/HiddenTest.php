@@ -10,7 +10,7 @@ class HiddenTest extends \HtmlForm\tests\Base
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Elements\Hidden("testField", "Test Field");
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Hidden");
+		parent::setUp();
 	}
 
 	public function testType()

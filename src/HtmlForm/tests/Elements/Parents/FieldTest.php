@@ -18,7 +18,7 @@ class FieldTest extends \HtmlForm\tests\Base
 		);
 
 		$this->testClass = $this->getMockForAbstractClass("\\HtmlForm\\Elements\\Parents\\Field", $args);
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Elements\\Parents\\Field");
+		parent::setUp();
 	}
 
 	public function testConstructorSetProperties()
