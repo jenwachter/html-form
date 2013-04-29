@@ -51,7 +51,7 @@ class Form
 		return $_SERVER["QUERY_STRING"] ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
 	}
 
-	protected function setConfig($config)
+	public function setConfig($config)
 	{
 		$defaults = array(
 			"method" => "post",
