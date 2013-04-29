@@ -180,7 +180,7 @@ class Form
 		echo $this->compileForm();
 	}
 
-	protected function compileForm()
+	public function compileForm()
 	{
 		$html = "";
 		$html .= $this->compileErrors();
