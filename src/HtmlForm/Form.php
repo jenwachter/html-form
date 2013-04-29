@@ -159,13 +159,26 @@ class Form
 		$name = $element->name;
 
 		if (isset($_SESSION[$this->config["id"]][$name])) {
-			return stripslashes($_SESSION[$this->config["id"]][$name] );
+			return $this->cleanValue($_SESSION[$this->config["id"]][$name] );
 			
 		} else if (isset($_POST[$name])) {
-			return stripslashes($_POST[$name]);
+			return $this->cleanValue($_POST[$name]);
 		
 		} else {	
-			return stripslashes($element->defaultValue);
+			return $this->cleanValue($element->defaultValue);
+		}
+	}
+
+	protected function cleanValue($value)
+	{
+		if (is_array($value)) {
+			$a = array();
+			foreach ($value as $v) {
+				$a[] = stripslashes($v);
+			}
+			return $a;
+		} else {
+			return stripslashes($value);
 		}
 	}
 	
@@ -176,7 +189,6 @@ class Form
      */
 	public function render()
 	{	
-		
 		echo $this->compileForm();
 	}
 
