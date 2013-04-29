@@ -53,7 +53,7 @@ abstract class Option extends Field
 		
 		foreach ($this->options as $k => $v) {
 			
-			$html .= "<input type=\"{$this->type}\" {$this->compiledAttr} ";
+			$html .= "<div class=\"element\"><input type=\"{$this->type}\" {$this->compiledAttr} ";
 			$html .= "name=\"" . $this->name . "[]\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
@@ -70,7 +70,7 @@ abstract class Option extends Field
 				}
 			}
 
-			$html .= " /> {$v}";
+			$html .= " /> <span>{$v}</span></div>";
 		}
 		
 		return $html;
