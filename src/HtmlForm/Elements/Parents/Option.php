@@ -54,7 +54,13 @@ abstract class Option extends Field
 		foreach ($this->options as $k => $v) {
 			
 			$html .= "<div class=\"element\"><input type=\"{$this->type}\" {$this->compiledAttr} ";
-			$html .= "name=\"" . $this->name . "[]\" ";
+			$html .= "name=\"" . $this->name;
+
+			if ($this->type == "checkbox") {
+				$html .= "[]";
+			}
+
+			$html .= "\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
 			if ($hasOptionValue) {
