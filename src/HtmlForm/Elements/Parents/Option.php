@@ -47,7 +47,7 @@ abstract class Option extends Field
 	 */
 	public function compile($value = "")
 	{
-		$html = "{$this->compiledLabel}";
+		$html = "{$this->compiledLabel}<div class=\"elements\">";
 		
 		$hasOptionValue = $this->hasOptionValue($this->options);
 		
@@ -78,6 +78,8 @@ abstract class Option extends Field
 
 			$html .= " /> <span>{$v}</span></div>";
 		}
+
+		$html .= "</div>";
 		
 		return $html;
 	}
