@@ -182,10 +182,12 @@ In the logic of your page:
 ````php
 // replace `submit` with the name of your submit button
 if (isset( $_POST["submit"])) {
-	$valid = $form->isValid();
+	if ($valid = $form->isValid()) {
+		// proceed with processing
+	}
 }
 ```
-If the form passed validation, $valid will evaluate to true and you can continue with your form processing. If the form fails validation, an error box will display with all errors found in the form. If your form is configured to repopulate the form (it is by default), then the user will not have to fill out everything all over again -- just the parts that failed.
+If the form passed validation, $valid will evaluate to true and you can continue with your form processing (saving to a database, for example). If the form fails validation, an error box will display with all errors found in the form. If your form is configured to repopulate the form (it is by default), then the user will not have to fill out everything all over again -- just the parts that failed.
 
 
 
