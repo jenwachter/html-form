@@ -133,6 +133,11 @@ class Form
 		}
 	}
 
+	public function setErrorMessage($message)
+	{
+		$this->validationErrors[] = $message;
+	}
+
 	/**
 	 * Saves form data to the session.
 	 * 
