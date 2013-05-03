@@ -35,18 +35,18 @@ class Validator
 			$value = $element->getPostValue();
 			$class = $this->findclass($element);
 
-			// Runs validation assigned to this class
-			if (method_exists($this, $class)) {
-				$this->$class($label, $value, $element);
+			if ($element->required) {
+				
+				$this->required($label, $value, $element);
+				
+				if (method_exists($this, $class)) {
+					$this->$class($label, $value, $element);
+				}
+				if ($element->isPattern()) {
+					$this->pattern($label, $value, $element);
+				}
 			}
 			
-			if ($element->required) {
-				$this->required($label, $value, $element);
-			}
-
-			if ($element->isPattern()) {
-				$this->pattern($label, $value, $element);
-			}
 		}
 		return $this->errors;
 	}
