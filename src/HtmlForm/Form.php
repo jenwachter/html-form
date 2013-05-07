@@ -22,6 +22,12 @@ class Form
 	 * to the form in sequencial order
 	 */
 	protected $formElements = array();
+
+	/**
+	 * Validator object
+	 * @var object
+	 */
+	protected $validator;
 	
 	/**
 	 * Validation errors
@@ -108,7 +114,13 @@ class Form
 		
 		if (class_exists($className)) {
 			$reflect  = new \ReflectionClass($className);
-			$element = $reflect->newInstanceArgs($args);
+
+			if ($matches[1] != "Honeypot") {
+				$element = $reflect->newInstanceArgs($args);
+			} else {
+				$element = $reflect->newInstanceArgs(array(sha1($this->config["id"]), "Do not enter content here"));
+			}
+			
 			$this->formElements[] = $element;
 		}
 	}
@@ -122,15 +134,19 @@ class Form
 	public function isValid()
 	{
 		$this->saveToSession();
-
-		$validator = new \HtmlForm\Utility\Validator($this->formElements);
-		$this->validationErrors = $validator->validate();
+		$this->validator = new \HtmlForm\Utility\Validator($this->formElements);
+		$this->validationErrors = $this->validator->validate();
 
 		if (!empty($this->validationErrors)) {
 			return false;
 		} else {
 			return true;
 		}
+	}
+
+	public function passedHoneypot()
+	{
+		return !$this->validator->honeypotError;
 	}
 
 	public function setErrorMessage($message)

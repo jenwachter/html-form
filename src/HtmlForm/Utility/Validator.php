@@ -16,6 +16,12 @@ class Validator
 	 */
 	protected $errors = array();
 
+	/**
+	 * Honeypot error
+	 * @var boolean
+	 */
+	public $honeypotError = false;
+
 	public function __construct($elements)
 	{
 		$this->elements = $elements;
@@ -34,6 +40,10 @@ class Validator
 			$label = $element->label;
 			$value = $element->getPostValue();
 			$class = $this->findclass($element);
+
+			if ($class == "honeypot") {
+				$this->honeypot($label, $value, $element);
+			}
 
 			if ($element->required) {
 				
@@ -174,6 +184,29 @@ class Validator
 
 		if (!preg_match("/{$pattern}/", $value)) {
 			$this->errors[] = "{$label} must be match the specificed pattern.";
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validates a honeypot form attribute. If there is an
+	 * error, it is not added to the regular errors array,
+	 * but is added to the $honeypotError property. If the
+	 * form failed the honeypot test, you can catch this and
+	 * make the bot think you submitted the form, but
+	 * on the backend, just ignore it.
+	 * 
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
+	protected function honeypot($label, $value, $element)
+	{
+		if (!is_null($value)) {
+			$this->honeypotError = true;
 			return false;
 		}
 

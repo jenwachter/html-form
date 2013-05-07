@@ -113,7 +113,14 @@ $args = array(
 );
 ```
 
-### Adding Buttons
+### <a name="honeypot"></a>Adding a honeypot
+
+[Honeypot](http://haacked.com/archive/2007/09/11/honeypot-captcha.aspx) is a technique to prevent spam bots from submitted data to your form. Bsaically, you add a field to the form that is hidden from the user using CSS. Since the user cannot see it, he/she will not fill it out. However, spam bots will see this form field and fill it out with something. Upon validation, if this form field is filled out, we know we have a bot. See section on [validation](#validation) for how to catch the bot.
+
+#### Usage
+```php
+$form->addHoneypot();
+```
 
 
 #### Usage
@@ -152,7 +159,7 @@ $form->render();
 ````
 
 
-### Validation
+### <a name="validation"></a>Validation
 
 #### Types
 
@@ -175,19 +182,32 @@ $form->addTextbox("age", "Age", array(
 ));
 ```
 
+##### Honeypot
+To catch a spot, make sure you have a [honeypot](#honeypot) within your form. Just like the other validation types, honeypots are validated automatically; however the honeypot error is kept in a separate location from the other form errors. If the overall form is passed validation, but the honeypot fails, you can fool the bot into thinking it successfully submitted the form by proceeding with the form submission process, but not store any of the data.
+
 
 #### Usage
 
 In the logic of your page:
 ````php
 // replace `submit` with the name of your submit button
-if (isset( $_POST["submit"])) {
+if (isset($_POST["submit"])) {
+
 	if ($valid = $form->isValid()) {
-		// proceed with processing
+		// form passed validation; continue with form processing
+		// unless you need to check the honeypot...
+
+		if ($honeypot = $form->passedHoneypot()) {
+			// form passes honeypot validation
+		} else {
+			// we have a bot!
+		}
 	}
 }
 ```
-If the form passed validation, $valid will evaluate to true and you can continue with your form processing (saving to a database, for example). If the form fails validation, an error box will display with all errors found in the form. If your form is configured to repopulate the form (it is by default), then the user will not have to fill out everything all over again -- just the parts that failed.
+If the form passed validation, `$valid` will evaluate to true and you can continue with your form processing (saving to a database, for example). If the form fails validation, an error box will display with all errors found in the form. If your form is configured to repopulate the form (it is by default), then the user will not have to fill out everything all over again -- just the parts that failed.
+
+If you have a honeypot, you'll need to check that as well before you continue with form processing. `$honeypot` will evaluate to true if it has been confirmed that the user submitting the form is not a bot. If `$honeypot` evaluates to false, you have a bot on your hands. You can either kill the form right then and there, or you can make the bot think it got its data through by continuing with the submission process, but just not submitting the data.
 
 
 
