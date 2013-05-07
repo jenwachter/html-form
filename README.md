@@ -119,7 +119,19 @@ $args = array(
 
 #### Usage
 ```php
-$form->addHoneypot();
+$form->addHoneypot($args);
+```
+
+#### Parameters
+1. __$args__: (array) Optional. Associative array of additional options to pass to the element. Below is default usage:
+
+```php
+$args = array(
+	"beforeElement" => "",		// HTML to be displayed before this form element.
+	"afterElement" => "",		// HTML to be displayed after this form element.
+	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
+								// that should be included in this element's tag
+);
 ```
 
 
