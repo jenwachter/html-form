@@ -98,11 +98,13 @@ class Form
 
 	/**
 	 * Takes care of methods like addTextbox(),
-	 * addSelect(), etc...
+	 * addSelect(), etc... Special methods, like
+	 * addHoneypot and addFieldset are taken care
+	 * of in their own methods.
 	 * 
 	 * @param  string $method Called method
 	 * @param  array  $args   Arguments passed to the method
-	 * @return null
+	 * @return self
 	 */
 	public function __call($method, $args)
 	{
@@ -114,15 +116,19 @@ class Form
 		
 		if (class_exists($className)) {
 			$reflect  = new \ReflectionClass($className);
-
-			if ($matches[1] != "Honeypot") {
-				$element = $reflect->newInstanceArgs($args);
-			} else {
-				$element = $reflect->newInstanceArgs(array(sha1($this->config["id"]), "Do not enter content here"));
-			}
+			$element = $reflect->newInstanceArgs($args);
 			
 			$this->formElements[] = $element;
 		}
+		return $this;
+	}
+
+	public function addHoneypot($args = array())
+	{
+		$element = new \HtmlForm\Elements\Honeypot(sha1($this->config["id"]), "Do not enter content here", $args);
+		$this->formElements[] = $element;
+
+		return $this;
 	}
 	
     /**

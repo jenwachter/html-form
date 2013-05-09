@@ -53,15 +53,15 @@ $form = new \HtmlForm\Form($config);
 $form->addTextbox($name, $label, $args);
 
 // Data-specific text boxes (come with validation attached)
-$form->addEmail($name, $label, $args);
-$form->addFile($name, $label, $args);
-$form->addNumber($name, $label, $args);
-$form->addRange($name, $label, $min, $max, $args);
-$form->addUrl($name, $label, $args);
+$form->addEmail($name, $label, $args)
+	 ->addFile($name, $label, $args)
+	 ->addNumber($name, $label, $args)
+	 ->addRange($name, $label, $min, $max, $args)
+	 ->addUrl($name, $label, $args);
 
 // Additional types
-$form->addHidden($name, $label, $args);
-$form->addPassword($name, $label, $args);
+$form->addHidden($name, $label, $args)
+	 ->addPassword($name, $label, $args);
 ```
 
 
@@ -91,9 +91,9 @@ $args = array(
 
 #### Usage
 ```php
-$form->addSelect($name, $label, $options, $args);
-$form->addRadio($name, $label, $options, $args);
-$form->addCheckbox($name, $label, $options, $args);
+$form->addSelect($name, $label, $options, $args)
+	 ->addRadio($name, $label, $options, $args)
+	 ->addCheckbox($name, $label, $options, $args);
 ```
 
 #### Parameters
