@@ -2,7 +2,7 @@
 
 namespace HtmlForm;
 
-class Form
+class Form extends Abstracts\Addable
 {	
 	/**
 	 * Form configuration
@@ -16,12 +16,6 @@ class Form
 	 * @var [string
 	 */
 	protected $compiledAttr;
-	
-	/**
-	 * Form elements that have been added
-	 * to the form in sequencial order
-	 */
-	protected $formElements = array();
 
 	/**
 	 * Validator object
@@ -96,37 +90,10 @@ class Form
 		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
-	/**
-	 * Takes care of methods like addTextbox(),
-	 * addSelect(), etc... Special methods, like
-	 * addHoneypot and addFieldset are taken care
-	 * of in their own methods.
-	 * 
-	 * @param  string $method Called method
-	 * @param  array  $args   Arguments passed to the method
-	 * @return self
-	 */
-	public function __call($method, $args)
-	{
-		if (!preg_match("/^add([a-zA-Z]+)/", $method, $matches)) {
-			return false;
-		}
-
-		$className = "\\HtmlForm\\Elements\\{$matches[1]}";
-		
-		if (class_exists($className)) {
-			$reflect  = new \ReflectionClass($className);
-			$element = $reflect->newInstanceArgs($args);
-			
-			$this->formElements[] = $element;
-		}
-		return $this;
-	}
-
 	public function addHoneypot($args = array())
 	{
 		$element = new \HtmlForm\Elements\Honeypot(sha1($this->config["id"]), "Do not enter content here", $args);
-		$this->formElements[] = $element;
+		$this->elements[] = $element;
 
 		return $this;
 	}
@@ -140,7 +107,7 @@ class Form
 	public function isValid()
 	{
 		$this->saveToSession();
-		$this->validator = new \HtmlForm\Utility\Validator($this->formElements);
+		$this->validator = new \HtmlForm\Utility\Validator($this->elements);
 		$this->validationErrors = $this->validator->validate();
 
 		if (!empty($this->validationErrors)) {
@@ -265,7 +232,7 @@ class Form
 	protected function renderElements()
 	{
 		$html = "";
-		foreach ($this->formElements as $element) {
+		foreach ($this->elements as $element) {
 			$value = $this->getValue($element);
 			$html .= $this->beforeElement($element);
 			$html .= $element->compile($value);
