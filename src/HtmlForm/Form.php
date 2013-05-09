@@ -102,7 +102,7 @@ class Form
 	 * 
 	 * @param  string $method Called method
 	 * @param  array  $args   Arguments passed to the method
-	 * @return null
+	 * @return self
 	 */
 	public function __call($method, $args)
 	{
@@ -122,6 +122,8 @@ class Form
 			}
 			
 			$this->formElements[] = $element;
+
+			return $this;
 		}
 	}
 	
