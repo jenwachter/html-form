@@ -37,6 +37,10 @@ class Validator
 	{
 		foreach ($this->elements as $element) {
 
+			if (!in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
+				continue;
+			}
+
 			$label = $element->label;
 			$value = $element->getPostValue();
 			$class = $this->findclass($element);

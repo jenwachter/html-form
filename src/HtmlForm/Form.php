@@ -97,6 +97,14 @@ class Form extends Abstracts\Addable
 
 		return $this;
 	}
+
+	public function addFieldset($label = null, $args = array())
+	{
+		$fieldset = new \HtmlForm\Fieldset($label, $args);
+		$this->elements[] = $fieldset;
+
+		return $fieldset;
+	}
 	
     /**
      * Checks the validity of the form and enables
@@ -191,7 +199,7 @@ class Form extends Abstracts\Addable
 		$html = "";
 		$html .= $this->compileErrors();
 		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
-		$html .= $this->renderElements();		
+		$html .= $this->renderElements($this);		
 		$html .= "</form>";
 
 		return $html;
@@ -226,18 +234,31 @@ class Form extends Abstracts\Addable
 
 	/**
 	 * Compiles HTML for each form element
-	 * 
+	 * @param  object $addable Object that extends from \HtmlForm\Abstracts\Addable
 	 * @return string HTML of form elements
 	 */
-	protected function renderElements()
+	protected function renderElements($addable)
 	{
-		$html = "";
-		foreach ($this->elements as $element) {
-			$value = $this->getValue($element);
-			$html .= $this->beforeElement($element);
-			$html .= $element->compile($value);
-			$html .= $this->afterElement($element);
+		if (!in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
+			return;
 		}
+
+		$html = "";
+
+		foreach ($addable->elements as $element) {
+
+			$classes = class_parents($element);
+
+			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
+				$html .= $this->renderElements($element);
+			} else {
+				$value = $this->getValue($element);
+				$html .= $this->beforeElement($element);
+				$html .= $element->compile($value);
+				$html .= $this->afterElement($element);
+			}
+		}
+
 		return $html;
 	}	
 }
