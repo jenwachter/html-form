@@ -28,7 +28,7 @@ class Fieldset extends Abstracts\Addable
 
 	public function getOpeningTag()
 	{
-		return "<fieldset><ledgend>{$this->ledgend}</ledgend>";
+		return "<fieldset><legend>{$this->ledgend}</legend>";
 	}
 
 	public function getClosingTag()
