@@ -189,7 +189,12 @@ $form->addTextBox("Favorite Color", "fav_color")
 
 Within your HTML document, run the following command:
 ```php
-$form->render();
+$form->display();
+
+// or
+
+$code = $form->render();
+echo $code;
 ````
 
 
@@ -244,4 +249,10 @@ If the form passed validation, `$valid` will evaluate to true and you can contin
 If you have a honeypot, you'll need to check that as well before you continue with form processing. `$honeypot` will evaluate to true if it has been confirmed that the user submitting the form is not a bot. If `$honeypot` evaluates to false, you have a bot on your hands. You can either kill the form right then and there, or you can make the bot think it got its data through by continuing with the submission process, but just not submitting the data.
 
 
+## Changelog
 
+#### v0.2 Noteable Changes/Additions
+
+* HtmlForm\Form
+    * render() is now display()
+    * compileForm() is now render()

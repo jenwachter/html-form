@@ -123,7 +123,7 @@ class FormTest extends Base
 		
 	}
 
-	public function testCompileForm()
+	public function testRender()
 	{
 		$config = array(
 			"id" => "test",
@@ -145,7 +145,7 @@ class FormTest extends Base
 
 		$expected = "<div class=\"alert alert-error test\"><p class=\"alert-heading\">The following error was found:</p><ul><li>first name is a required field.</li></ul></div><form novalidate=\"novalidate\" method=\"get\" action=\"some_page.php\" id=\"test\" blah=\"blah\"><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></form>";
 		
-		$method = $this->getMethod("compileForm");
+		$method = $this->getMethod("render");
 
 		$result = $method->invoke($this->testClass);
 
