@@ -27,6 +27,12 @@ class Form extends Abstracts\Addable
 	 * Validation errors
 	 */
 	protected $validationErrors = array();
+
+	/**
+	 * Form elements contained within this object
+	 * @var array
+	 */
+	public $elements = array();
 		
 	/**
 	 * Sets up the form

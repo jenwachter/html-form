@@ -18,6 +18,12 @@ class Fieldset extends Abstracts\Addable
 	 */
 	protected $compiledAttr;
 
+	/**
+	 * Form elements contained within this object
+	 * @var array
+	 */
+	public $elements = array();
+
 
 	public function __construct($ledgend = null, $attr = array())
 	{
