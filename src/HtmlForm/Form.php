@@ -209,11 +209,19 @@ class Form extends Abstracts\Addable
 		return $html;
 	}
 
+	/**
+	 * Creates the opening <form> tag
+	 * @return string
+	 */
 	protected function getOpeningTag()
 	{
 		return "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
 	}
 
+	/**
+	 * Creates the closing </form> tag
+	 * @return string
+	 */
 	protected function getClosingTag()
 	{
 		return "</form>";

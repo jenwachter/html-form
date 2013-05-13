@@ -32,11 +32,20 @@ class Fieldset extends Abstracts\Addable
 		$this->compiledAttr = $textManipulator->arrayToTagAttributes($attr);
 	}
 
+	/**
+	 * Creates the opening <fieldset> tag
+	 * along with the <legend> tag
+	 * @return string
+	 */
 	public function getOpeningTag()
 	{
 		return "<fieldset><legend>{$this->ledgend}</legend>";
 	}
 
+	/**
+	 * Creates the closing <fieldset> tag
+	 * @return string
+	 */
 	public function getClosingTag()
 	{
 		return "</fieldset>";
