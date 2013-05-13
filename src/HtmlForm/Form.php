@@ -196,8 +196,7 @@ class Form extends Abstracts\Addable
 
 	public function compileForm()
 	{
-		$html = "";
-		$html .= $this->compileErrors();
+		$html = $this->compileErrors();
 		$html .= $this->renderElements($this);		
 
 		return $html;
