@@ -14,7 +14,7 @@ class Validator
 	 * Found errors
 	 * @var array
 	 */
-	protected $errors = array();
+	public $errors = array();
 
 	/**
 	 * Honeypot error
@@ -30,39 +30,44 @@ class Validator
 	/**
 	 * Runs through the validation required by
 	 * each form element.
-	 * 
+	 * @param  object $addable Object that extends from \HtmlForm\Abstracts\Addable
 	 * @return array Found errors
 	 */
-	public function validate()
+	public function validate($addable)
 	{
-		foreach ($this->elements as $element) {
+		if (!in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
+			return;
+		}
 
-			if (!in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
-				continue;
-			}
+		foreach ($addable->elements as $element) {
 
-			$label = $element->label;
-			$value = $element->getPostValue();
-			$class = $this->findclass($element);
+			$classes = class_parents($element);
 
-			if ($class == "honeypot") {
-				$this->honeypot($label, $value, $element);
-			}
+			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
+				$this->validate($element);
+			} else {
+				$label = $element->label;
+				$value = $element->getPostValue();
+				$class = $this->findclass($element);
 
-			if ($element->required) {
-				
-				$this->required($label, $value, $element);
-				
-				if (method_exists($this, $class)) {
-					$this->$class($label, $value, $element);
+				if ($class == "honeypot") {
+					$this->honeypot($label, $value, $element);
 				}
-				if ($element->isPattern()) {
-					$this->pattern($label, $value, $element);
+
+				if ($element->required) {
+					
+					$this->required($label, $value, $element);
+					
+					if (method_exists($this, $class)) {
+						$this->$class($label, $value, $element);
+					}
+					if ($element->isPattern()) {
+						$this->pattern($label, $value, $element);
+					}
 				}
 			}
 			
 		}
-		return $this->errors;
 	}
 
 	/**

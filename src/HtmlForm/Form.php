@@ -122,7 +122,8 @@ class Form extends Abstracts\Addable
 	{
 		$this->saveToSession();
 		$this->validator = new \HtmlForm\Utility\Validator($this->elements);
-		$this->validationErrors = $this->validator->validate();
+		$this->validator->validate($this);
+		$this->validationErrors = $this->validator->errors;
 
 		if (!empty($this->validationErrors)) {
 			return false;
