@@ -198,11 +198,19 @@ class Form extends Abstracts\Addable
 	{
 		$html = "";
 		$html .= $this->compileErrors();
-		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
 		$html .= $this->renderElements($this);		
-		$html .= "</form>";
 
 		return $html;
+	}
+
+	protected function getOpeningTag()
+	{
+		return "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
+	}
+
+	protected function getClosingTag()
+	{
+		return "</form>";
 	}
 
 	/**
@@ -243,7 +251,7 @@ class Form extends Abstracts\Addable
 			return;
 		}
 
-		$html = "";
+		$html = $addable->getOpeningTag();
 
 		foreach ($addable->elements as $element) {
 
@@ -258,6 +266,8 @@ class Form extends Abstracts\Addable
 				$html .= $this->afterElement($element);
 			}
 		}
+
+		$html .= $addable->getClosingTag();
 
 		return $html;
 	}	
