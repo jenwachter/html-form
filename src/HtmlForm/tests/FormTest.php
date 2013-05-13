@@ -73,35 +73,6 @@ class FormTest extends Base
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
 
-	// public function testCompileAttributesWithNoData()
-	// {
-	// 	$expected = null;
-
-	// 	$method = $this->getMethod("compileAttributes");
-	// 	$method->invoke($this->testClass);
-
-	// 	$this->assertEquals($expected, $this->getProperty("compiledAttr"));
-	// }
-
-	// public function testCompileAttributesWithItems()
-	// {
-	// 	$given = array(
-	// 		"attr" => array(
-	// 			"class" => "one two three",
-	// 			"somethingElse" => "cool"
-	// 		)
-	// 	);
-
-	// 	$expected = "class=\"one two three\" somethingElse=\"cool\"";
-
-	// 	$this->setProperty("config", $given);
-
-	// 	$method = $this->getMethod("compileAttributes");
-	// 	$method->invoke($this->testClass, $given);
-
-	// 	$this->assertEquals($expected, $this->getProperty("compiledAttr"));
-	// }
-
 	public function testBuildAction()
 	{
 		$method = $this->getMethod("buildAction");
