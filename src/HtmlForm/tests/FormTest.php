@@ -170,7 +170,7 @@ class FormTest extends Base
 			"afterElement" => "</div>"
 		));
 
-		$this->setProperty("formElements", array($field));
+		$this->setProperty("elements", array($field));
 
 		$expected = "<div class=\"alert alert-error test\"><p class=\"alert-heading\">The following error was found:</p><ul><li>first name is a required field.</li></ul></div><form novalidate=\"novalidate\" method=\"get\" action=\"some_page.php\" id=\"test\" blah=\"blah\"><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></form>";
 		
@@ -232,12 +232,12 @@ class FormTest extends Base
 			"afterElement" => "</div>"
 		));
 
-		$this->setProperty("formElements", array($field));
-		$expected = "<div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div>";
+		$this->setProperty("elements", array($field));
+		$expected = "<form novalidate=\"novalidate\" method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></form>";
 		
 		$method = $this->getMethod("renderElements");
 
-		$result = $method->invoke($this->testClass);
+		$result = $method->invoke($this->testClass, $this->testClass);
 
 		$this->assertEquals($expected, $result);
 	}
