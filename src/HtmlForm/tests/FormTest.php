@@ -13,6 +13,11 @@ class FormTest extends Base
 		$this->reflection = new \ReflectionClass("\\HtmlForm\\Form");
 	}
 
+	public function testBuildAction()
+	{
+		
+	}
+
 	public function testSetConfigWithNoUserConfig()
 	{
 		$given = array();
@@ -73,14 +78,6 @@ class FormTest extends Base
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
 
-	public function testBuildAction()
-	{
-		$method = $this->getMethod("buildAction");
-
-		$action = $method->invoke($this->testClass);
-		$this->assertEquals("index.php?test=aha", $action);
-	}
-
 	public function testBeforeElement()
 	{
 		$method = $this->getMethod("beforeElement");
@@ -103,12 +100,22 @@ class FormTest extends Base
 		$this->assertEquals("test", $afterElement);
 	}
 
-	public function testCall()
+	public function testAddHoneypot()
+	{
+
+	}
+
+	public function testAddFieldset()
 	{
 
 	}
 
 	public function testIsValid()
+	{
+
+	}
+
+	public function testPassedHoneypot()
 	{
 
 	}
@@ -121,6 +128,16 @@ class FormTest extends Base
 	public function testGetValue()
 	{
 		
+	}
+
+	public function testCleanValue()
+	{
+
+	}
+
+	public function testDisplay()
+	{
+
 	}
 
 	public function testRender()
@@ -150,6 +167,16 @@ class FormTest extends Base
 		$result = $method->invoke($this->testClass);
 
 		$this->assertEquals($expected, $result);
+
+	}
+
+	public function testGetOpeningTag()
+	{
+
+	}
+
+	public function testGetClosingTag()
+	{
 
 	}
 
@@ -197,6 +224,7 @@ class FormTest extends Base
 
 	public function testRenderElements()
 	{
+		// add fieldset
 		$field = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
 			"required" => true,
 			"beforeElement" => "<div class=\"form_field clearfix\">",
