@@ -30,6 +30,13 @@ abstract class Addable
 		return $this;
 	}
 
+	/**
+	 * Based on a passed method name, figure out
+	 * if there is a cooresponding HtmlForm element.
+	 * 
+	 * @param  string $method Called method
+	 * @return string Class name (if there is one)
+	 */
 	protected function findClass($method)
 	{
 		if (!preg_match("/^add([a-zA-Z]+)/", $method, $matches)) {
