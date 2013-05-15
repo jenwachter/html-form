@@ -225,19 +225,29 @@ class FormTest extends Base
 	public function testRenderElements()
 	{
 		// add fieldset
-		$field = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
+		$fieldset = new \HtmlForm\Fieldset("The Legend");
+		$fieldset->elements[] = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
 			"required" => true,
 			"beforeElement" => "<div class=\"form_field clearfix\">",
 			"afterElement" => "</div>"
 		));
 
-		$this->setProperty("elements", array($field));
-		$expected = "<form novalidate=\"novalidate\" method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></form>";
+		$this->setProperty("elements", array($fieldset));
+		$expected = "<form novalidate=\"novalidate\" method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><fieldset><legend>The Legend</legend><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></fieldset></form>";
 		
 		$method = $this->getMethod("renderElements");
 
 		$result = $method->invoke($this->testClass, $this->testClass);
 
 		$this->assertEquals($expected, $result);
+	}
+
+	public function testRenderElementsWithoutAddable()
+	{
+		$method = $this->getMethod("renderElements");
+
+		$result = $method->invoke($this->testClass, array());
+
+		$this->assertEquals(null, $result);
 	}
 }
