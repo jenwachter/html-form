@@ -5,12 +5,6 @@ namespace HtmlForm\Utility;
 class Validator
 {
 	/**
-	 * Form element objects
-	 * @var array
-	 */
-	protected $elements = array();
-
-	/**
 	 * Found errors
 	 * @var array
 	 */
@@ -22,9 +16,9 @@ class Validator
 	 */
 	public $honeypotError = false;
 
-	public function __construct($elements)
+	public function __construct()
 	{
-		$this->elements = $elements;
+		
 	}
 
 	/**

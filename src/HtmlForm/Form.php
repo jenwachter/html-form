@@ -121,7 +121,7 @@ class Form extends Abstracts\Addable
 	public function isValid()
 	{
 		$this->saveToSession();
-		$this->validator = new \HtmlForm\Utility\Validator($this->elements);
+		$this->validator = new \HtmlForm\Utility\Validator();
 		$this->validator->validate($this);
 		$this->validationErrors = $this->validator->errors;
 
