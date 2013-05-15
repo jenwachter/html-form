@@ -74,7 +74,7 @@ class Validator
 	{
 		$class = get_class($element);
 		$lastSlash = strrpos($class, "\\");
-		return strtolower(substr($class, 17 + 1));
+		return strtolower(substr($class, $lastSlash + 1));
 	}
 
 	/**
