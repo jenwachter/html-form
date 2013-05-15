@@ -10,6 +10,11 @@ class AddableTest extends \HtmlForm\tests\Base
 		parent::setUp();
 	}
 
+	public function testCall()
+	{
+		
+	}
+
 	public function testFindClassThatExists()
 	{	
 		$given = "addTextbox";
