@@ -127,7 +127,23 @@ class FormTest extends Base
 
 	public function testGetValue()
 	{
-		
+		$method = $this->getMethod("getValue");
+
+		$element = new \StdClass();
+		$element->name = "test";
+		$element->defaultValue = "default";
+
+		$result = $method->invoke($this->testClass, $element);
+		$this->assertEquals("default", $result);
+
+		$_POST["test"] = "hi";
+		$result = $method->invoke($this->testClass, $element);
+		$this->assertEquals("hi", $result);
+
+		$this->setProperty("config", array("id" => "testing"));
+		$_SESSION["testing"]["test"] = "hello";
+		$result = $method->invoke($this->testClass, $element);
+		$this->assertEquals("hello", $result);
 	}
 
 	public function testCleanValue()
