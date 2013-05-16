@@ -132,7 +132,17 @@ class FormTest extends Base
 
 	public function testCleanValue()
 	{
+		$method = $this->getMethod("cleanValue");
 
+		$given = "Something\'s gotta give";
+		$expected = "Something's gotta give";
+		$result = $method->invoke($this->testClass, $given);
+		$this->assertEquals($expected, $result);
+
+		$given = array("Something\'s gotta give", "You can\'t tell Erol anything");
+		$expected = array("Something's gotta give", "You can't tell Erol anything");
+		$result = $method->invoke($this->testClass, $given);
+		$this->assertEquals($expected, $result);
 	}
 
 	public function testDisplay()
