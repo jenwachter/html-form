@@ -126,8 +126,7 @@ class Validator
 		$min = $element->min;
 		$max = $element->max;
 
-		if (!is_numeric($value)) {
-			$this->errors[] = "{$label} must be a number.";
+		if (!$this->number($label, $value, $element)) {
 			return false;
 		}
 

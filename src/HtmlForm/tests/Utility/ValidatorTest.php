@@ -64,4 +64,33 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$result = $method->invoke($this->testClass, "Field", "3", "");
 		$this->assertEquals(true, $result);
 	}
+
+	public function testRange()
+	{
+		$method = $this->getMethod("range");
+
+		$element = new \StdClass();
+		$element->min = 5;
+		$element->max = 10;
+
+		// not a number
+		$result = $method->invoke($this->testClass, "Field", "three", $element);
+		$this->assertEquals(false, $result);
+
+		$this->setProperty("errors", array());
+
+		// number, but not in range
+		$result = $method->invoke($this->testClass, "Field", 15, $element);
+		$this->assertEquals(false, $result);
+		$errorArray = array("Field must be a number between 5 and 10.");
+		$this->assertEquals($errorArray, $this->getProperty("errors"));
+
+		$this->setProperty("errors", array());
+		
+
+		// number, in range
+		$result = $method->invoke($this->testClass, "Field", 7, $element);
+		$this->assertEquals(true, $result);
+	}
+	
 }
