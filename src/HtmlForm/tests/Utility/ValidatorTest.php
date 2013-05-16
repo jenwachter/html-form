@@ -31,4 +31,20 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		$this->assertEquals($expected, $result);
 	}
+
+	public function testRequired()
+	{
+		// no value
+		$method = $this->getMethod("required");
+		$result = $method->invoke($this->testClass, "Field", "", "");
+		$this->assertEquals(false, $result);
+
+		$errorArray = array("Field is a required field.");
+		$this->assertEquals($errorArray, $this->getProperty("errors"));
+
+		// value
+		$method = $this->getMethod("required");
+		$result = $method->invoke($this->testClass, "Field", "Value", "");
+		$this->assertEquals(true, $result);
+	}
 }
