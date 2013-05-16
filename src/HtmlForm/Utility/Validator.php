@@ -150,6 +150,7 @@ class Validator
 	{
 		if (!filter_var($value, FILTER_VALIDATE_URL)) {
 			$this->errors[] = "{$label} must be a valid URL.";
+			return false;
 		}
 
 		return true;
@@ -167,6 +168,7 @@ class Validator
 	{
 		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 			$this->errors[] = "{$label} must be a valid email address.";
+			return false;
 		}
 
 		return true;
