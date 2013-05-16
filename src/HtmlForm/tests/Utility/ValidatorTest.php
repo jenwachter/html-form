@@ -115,4 +115,20 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 	}
 
+	public function testEmail()
+	{
+		$method = $this->getMethod("email");
+
+		// not an email
+		$result = $method->invoke($this->testClass, "Field", "Not an email", "");
+		$this->assertEquals(false, $result);
+		$errorArray = array("Field must be a valid email address.");
+		$this->assertEquals($errorArray, $this->getProperty("errors"));
+
+
+		// valid email
+		$result = $method->invoke($this->testClass, "Field", "test@test.test", "");
+		$this->assertEquals(true, $result);
+	}
+
 }
