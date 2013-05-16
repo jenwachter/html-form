@@ -103,6 +103,16 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$errorArray = array("Field must be a valid URL.");
 		$this->assertEquals($errorArray, $this->getProperty("errors"));
 
+		$result = $method->invoke($this->testClass, "Field", "www.google.com", "");
+		$this->assertEquals(false, $result);
+
+		$result = $method->invoke($this->testClass, "Field", "google.com", "");
+		$this->assertEquals(false, $result);
+
+		// valid url
+		$result = $method->invoke($this->testClass, "Field", "http://google.com", "");
+		$this->assertEquals(true, $result);
+
 	}
 
 }
