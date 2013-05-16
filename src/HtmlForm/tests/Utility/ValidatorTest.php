@@ -154,4 +154,15 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$this->assertEquals(true, $result);
 	}
 
+	public function testHoneypot()
+	{
+		$method = $this->getMethod("honeypot");
+
+		$result = $method->invoke($this->testClass, "Field", "Value", "");
+		$this->assertEquals(false, $result);
+
+		$result = $method->invoke($this->testClass, "Field", null, "");
+		$this->assertEquals(true, $result);
+	}
+
 }
