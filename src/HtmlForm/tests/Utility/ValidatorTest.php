@@ -131,4 +131,27 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$this->assertEquals(true, $result);
 	}
 
+	public function testPattern()
+	{
+		$method = $this->getMethod("pattern");
+
+		$element = new \StdClass();
+		$element->attr = array(
+			"pattern" => "/\d{1,3}/"
+		);
+
+		// does not match
+		$result = $method->invoke($this->testClass, "Field", "Not a match", $element);
+		$this->assertEquals(false, $result);
+		$errorArray = array("Field must be match the specificed pattern.");
+		$this->assertEquals($errorArray, $this->getProperty("errors"));
+
+		// matches
+		$result = $method->invoke($this->testClass, "Field", 5, $element);
+		$this->assertEquals(true, $result);
+
+		$result = $method->invoke($this->testClass, "Field", "5", $element);
+		$this->assertEquals(true, $result);
+	}
+
 }
