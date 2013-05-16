@@ -10,6 +10,17 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		parent::setUp();
 	}
 
+	public function testValidate()
+	{
+		$method = $this->getMethod("validate");
+
+		$result = $method->invoke($this->testClass, "");
+		$this->assertEquals(false, $result);
+
+		$result = $method->invoke($this->testClass, new \StdClass());
+		$this->assertEquals(false, $result);
+	}
+
 	public function testFindClassWithElement()
 	{
 		$given = new \HtmlForm\Elements\Textbox("name", "Label");

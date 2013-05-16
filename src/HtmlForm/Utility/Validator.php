@@ -29,7 +29,7 @@ class Validator
 	 */
 	public function validate($addable)
 	{
-		if (!in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
+		if (!is_object($addable) || is_object($addable) && !in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
 			return;
 		}
 
