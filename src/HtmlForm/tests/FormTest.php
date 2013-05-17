@@ -175,7 +175,9 @@ class FormTest extends Base
 
 	public function testGetClosingTag()
 	{
-
+		$method = $this->getMethod("getClosingTag");
+		$result = $method->invoke($this->testClass);
+		$this->assertEquals("</form>", $result);
 	}
 
 	public function testRenderElements()
