@@ -11,6 +11,15 @@ class FormTest extends Base
 	{
 		$this->testClass = new \HtmlForm\Form();
 		$this->reflection = new \ReflectionClass("\\HtmlForm\\Form");
+
+		$this->mocks = array(
+			"textbox" => $this->getMock("\\HtmlForm\\Elements\\Textbox", array("compileLabel"), array("name", "label", array(
+				"beforeElement" => "<div class=\"before\">",
+				"afterElement" => "</div>",
+				"defaultValue" => "default",
+				"required" => true
+			)))
+		);
 	}
 
 	public function testBuildAction()
@@ -82,22 +91,16 @@ class FormTest extends Base
 	{
 		$method = $this->getMethod("beforeElement");
 
-		$element = new \stdClass();
-		$element->beforeElement = "test";
-
-		$beforeElement = $method->invoke($this->testClass, $element);
-		$this->assertEquals("test", $beforeElement);
+		$beforeElement = $method->invoke($this->testClass, $this->mocks["textbox"]);
+		$this->assertEquals("<div class=\"before\">", $beforeElement);
 	}
 
 	public function testAfterElement()
 	{
 		$method = $this->getMethod("afterElement");
 
-		$element = new \stdClass();
-		$element->afterElement = "test";
-
-		$afterElement = $method->invoke($this->testClass, $element);
-		$this->assertEquals("test", $afterElement);
+		$afterElement = $method->invoke($this->testClass, $this->mocks["textbox"]);
+		$this->assertEquals("</div>", $afterElement);
 	}
 
 	public function testAddHoneypot()
@@ -129,20 +132,16 @@ class FormTest extends Base
 	{
 		$method = $this->getMethod("getValue");
 
-		$element = new \StdClass();
-		$element->name = "test";
-		$element->defaultValue = "default";
-
-		$result = $method->invoke($this->testClass, $element);
+		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
 		$this->assertEquals("default", $result);
 
-		$_POST["test"] = "hi";
-		$result = $method->invoke($this->testClass, $element);
+		$_POST["name"] = "hi";
+		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
 		$this->assertEquals("hi", $result);
 
 		$this->setProperty("config", array("id" => "testing"));
-		$_SESSION["testing"]["test"] = "hello";
-		$result = $method->invoke($this->testClass, $element);
+		$_SESSION["testing"]["name"] = "hello";
+		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
 		$this->assertEquals("hello", $result);
 	}
 
