@@ -5,12 +5,11 @@ namespace HtmlForm\tests;
 class FormTest extends Base
 {
 	protected $testClass;
-	protected $reflection;
 
 	public function setUp()
 	{
 		$this->testClass = new \HtmlForm\Form();
-		$this->reflection = new \ReflectionClass("\\HtmlForm\\Form");
+		parent::setUp();
 
 		$this->mocks = array(
 			"textbox" => $this->getMock("\\HtmlForm\\Elements\\Textbox", array("compileLabel"), array("name", "label", array(
