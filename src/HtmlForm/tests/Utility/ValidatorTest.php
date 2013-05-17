@@ -8,6 +8,11 @@ class ValidatorTest extends \HtmlForm\tests\Base
 	{
 		$this->testClass = new \HtmlForm\Utility\Validator();
 		parent::setUp();
+
+		$this->mocks = array(
+			"textbox" => $this->getMock("\\HtmlForm\\Elements\\Textbox", array("compileLabel"), array("name", "label", array("attr" => array("pattern" => "/\d{1,3}/")))),
+			"range" => $this->getMock("\\HtmlForm\\Elements\\Range", array("compileLabel"), array("name", "label", 5, 10))
+		);
 	}
 
 	public function testValidate()
@@ -23,6 +28,7 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 	public function testFindClassWithElement()
 	{
+		// cannot use a mock object here because the class name comes back as a mock
 		$given = new \HtmlForm\Elements\Textbox("name", "Label");
 		$expected = "textbox";
 
@@ -34,6 +40,7 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 	public function testFindClassWithFieldset()
 	{
+		// cannot use a mock object here because the class name comes back as a mock
 		$given = new \HtmlForm\Fieldset("legend");
 		$expected = "fieldset";
 
@@ -80,18 +87,14 @@ class ValidatorTest extends \HtmlForm\tests\Base
 	{
 		$method = $this->getMethod("range");
 
-		$element = new \StdClass();
-		$element->min = 5;
-		$element->max = 10;
-
 		// not a number
-		$result = $method->invoke($this->testClass, "Field", "three", $element);
+		$result = $method->invoke($this->testClass, "Field", "three", $this->mocks["range"]);
 		$this->assertEquals(false, $result);
 
 		$this->setProperty("errors", array());
 
 		// number, but not in range
-		$result = $method->invoke($this->testClass, "Field", 15, $element);
+		$result = $method->invoke($this->testClass, "Field", 15, $this->mocks["range"]);
 		$this->assertEquals(false, $result);
 		$errorArray = array("Field must be a number between 5 and 10.");
 		$this->assertEquals($errorArray, $this->getProperty("errors"));
@@ -100,7 +103,7 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		
 
 		// number, in range
-		$result = $method->invoke($this->testClass, "Field", 7, $element);
+		$result = $method->invoke($this->testClass, "Field", 7, $this->mocks["range"]);
 		$this->assertEquals(true, $result);
 	}
 
@@ -146,22 +149,17 @@ class ValidatorTest extends \HtmlForm\tests\Base
 	{
 		$method = $this->getMethod("pattern");
 
-		$element = new \StdClass();
-		$element->attr = array(
-			"pattern" => "/\d{1,3}/"
-		);
-
 		// does not match
-		$result = $method->invoke($this->testClass, "Field", "Not a match", $element);
+		$result = $method->invoke($this->testClass, "Field", "Not a match", $this->mocks["textbox"]);
 		$this->assertEquals(false, $result);
 		$errorArray = array("Field must be match the specificed pattern.");
 		$this->assertEquals($errorArray, $this->getProperty("errors"));
 
 		// matches
-		$result = $method->invoke($this->testClass, "Field", 5, $element);
+		$result = $method->invoke($this->testClass, "Field", 5, $this->mocks["textbox"]);
 		$this->assertEquals(true, $result);
 
-		$result = $method->invoke($this->testClass, "Field", "5", $element);
+		$result = $method->invoke($this->testClass, "Field", "5", $this->mocks["textbox"]);
 		$this->assertEquals(true, $result);
 	}
 
