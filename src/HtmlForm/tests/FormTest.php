@@ -121,6 +121,15 @@ class FormTest extends Base
 
 	}
 
+	public function testSetErrorMessage()
+	{
+		$given = "My custom error.";
+		$this->testClass->setErrorMessage($given);
+
+		$validator = $this->getProperty("validator");
+		$this->assertContains($given, $validator->errors);
+	}
+
 	public function testSaveToSession()
 	{
 
