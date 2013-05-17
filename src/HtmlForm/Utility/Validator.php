@@ -62,6 +62,30 @@ class Validator
 			}
 			
 		}
+		return $this->errors;
+	}
+
+	public function renderErrors()
+	{
+		if (empty($this->errors)) {
+			return;
+		}
+				
+		$html = "";
+		
+		$count = count($this->errors);
+		$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
+		
+		$html .= "<div class=\"alert alert-error\">";
+		$html .= "<p class=\"alert-heading\">{$message}</p>";
+		$html .= "<ul>";
+		
+		foreach ($this->errors as $k => $v) {
+			$html .= "<li>{$v}</li>";
+		}
+		
+		$html .= "</ul></div>";
+		return $html;
 	}
 
 	/**

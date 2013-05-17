@@ -11,7 +11,7 @@ class TextManipulator
 	 * @param  array $array Array of key => value pairs
 	 * @return string
 	 */
-	public function arrayToTagAttributes($array)
+	public static function arrayToTagAttributes($array)
 	{
 		if (empty($array)) {
 			return;

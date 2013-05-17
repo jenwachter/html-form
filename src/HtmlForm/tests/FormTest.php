@@ -165,32 +165,7 @@ class FormTest extends Base
 
 	public function testRender()
 	{
-		$config = array(
-			"id" => "test",
-			"method" => "get",
-			"action" => "some_page.php"
-		);
-		$this->setProperty("config", $config);
-		$this->setProperty("compiledAttr", "blah=\"blah\"");
-
-		$this->setProperty("validationErrors", array("first name is a required field."));
-
-		$field = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
-			"required" => true,
-			"beforeElement" => "<div class=\"form_field clearfix\">",
-			"afterElement" => "</div>"
-		));
-
-		$this->setProperty("elements", array($field));
-
-		$expected = "<div class=\"alert alert-error test\"><p class=\"alert-heading\">The following error was found:</p><ul><li>first name is a required field.</li></ul></div><form novalidate=\"novalidate\" method=\"get\" action=\"some_page.php\" id=\"test\" blah=\"blah\"><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></form>";
 		
-		$method = $this->getMethod("render");
-
-		$result = $method->invoke($this->testClass);
-
-		$this->assertEquals($expected, $result);
-
 	}
 
 	public function testGetOpeningTag()
@@ -201,48 +176,6 @@ class FormTest extends Base
 	public function testGetClosingTag()
 	{
 
-	}
-
-	public function testCompileErrorsWithNoErrors()
-	{
-		$given = array();
-
-		$expected = null;
-
-		$this->setProperty("validationErrors", $given);
-
-		$method = $this->getMethod("compileErrors");
-
-		$errors = $method->invoke($this->testClass);
-		$this->assertEquals($expected, $errors);
-	}
-
-	public function testCompileErrorswithOneError()
-	{
-		$given = array("Error");
-
-		$expected = "<div class=\"alert alert-error hfc\"><p class=\"alert-heading\">The following error was found:</p><ul><li>Error</li></ul></div>";
-
-		$this->setProperty("validationErrors", $given);
-
-		$method = $this->getMethod("compileErrors");
-
-		$errors = $method->invoke($this->testClass);
-		$this->assertEquals($expected, $errors);
-	}
-
-	public function testCompileErrorswithManyErrors()
-	{
-		$given = array("Error", "Error");
-
-		$expected = "<div class=\"alert alert-error hfc\"><p class=\"alert-heading\">The following 2 errors were found:</p><ul><li>Error</li><li>Error</li></ul></div>";
-
-		$this->setProperty("validationErrors", $given);
-
-		$method = $this->getMethod("compileErrors");
-
-		$errors = $method->invoke($this->testClass);
-		$this->assertEquals($expected, $errors);
 	}
 
 	public function testRenderElements()

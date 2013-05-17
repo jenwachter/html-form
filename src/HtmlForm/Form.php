@@ -22,11 +22,6 @@ class Form extends Abstracts\Addable
 	 * @var object
 	 */
 	protected $validator;
-	
-	/**
-	 * Validation errors
-	 */
-	protected $validationErrors = array();
 
 	/**
 	 * Form elements contained within this object
@@ -41,9 +36,9 @@ class Form extends Abstracts\Addable
 	public function __construct($config = array())
 	{
 		$this->setConfig($config);
+		$this->validator = new \HtmlForm\Utility\Validator();
 
-		$textManipulator = new Utility\TextManipulator();
-		$this->compiledAttr = $textManipulator->arrayToTagAttributes($this->config["attr"]);
+		$this->compiledAttr = Utility\TextManipulator::arrayToTagAttributes($this->config["attr"]);
 	}
 
 	/**
@@ -121,11 +116,9 @@ class Form extends Abstracts\Addable
 	public function isValid()
 	{
 		$this->saveToSession();
-		$this->validator = new \HtmlForm\Utility\Validator();
 		$this->validator->validate($this);
-		$this->validationErrors = $this->validator->errors;
 
-		if (!empty($this->validationErrors)) {
+		if ($this->validator->validate($this)) {
 			return false;
 		} else {
 			return true;
@@ -139,7 +132,7 @@ class Form extends Abstracts\Addable
 
 	public function setErrorMessage($message)
 	{
-		$this->validationErrors[] = $message;
+		$this->validator->errors[] = $message;
 	}
 
 	/**
@@ -207,7 +200,7 @@ class Form extends Abstracts\Addable
 	 */
 	public function render()
 	{
-		$html = $this->compileErrors();
+		$html = $this->validator->renderErrors();
 		$html .= $this->renderElements($this);		
 
 		return $html;
@@ -229,33 +222,6 @@ class Form extends Abstracts\Addable
 	protected function getClosingTag()
 	{
 		return "</form>";
-	}
-
-	/**
-	 * Compile error message HTML
-	 * 
-	 * @return string HTML error div
-	 */
-	protected function compileErrors()
-	{
-		if (!empty($this->validationErrors)) {
-				
-			$html = "";
-			
-			$count = count($this->validationErrors);
-			$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
-			
-			$html .= "<div class=\"alert alert-error {$this->config["id"]}\">";
-			$html .= "<p class=\"alert-heading\">{$message}</p>";
-			$html .= "<ul>";
-			
-			foreach ($this->validationErrors as $k => $v) {
-				$html .= "<li>{$v}</li>";
-			}
-			
-			$html .= "</ul></div>";
-			return $html;
-		}
 	}
 
 	/**

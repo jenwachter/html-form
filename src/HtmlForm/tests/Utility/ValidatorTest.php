@@ -26,6 +26,36 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$this->assertEquals(false, $result);
 	}
 
+	public function testCompileErrorsWithNoErrors()
+	{
+		$given = array();
+		$expected = null;
+		$this->setProperty("errors", $given);
+
+		$errors = $this->testClass->renderErrors();
+		$this->assertEquals($expected, $errors);
+	}
+
+	public function testCompileErrorswithOneError()
+	{
+		$given = array("Error");
+		$expected = "<div class=\"alert alert-error\"><p class=\"alert-heading\">The following error was found:</p><ul><li>Error</li></ul></div>";
+		$this->setProperty("errors", $given);
+
+		$errors = $this->testClass->renderErrors();
+		$this->assertEquals($expected, $errors);
+	}
+
+	public function testCompileErrorswithManyErrors()
+	{
+		$given = array("Error", "Error");
+		$expected = "<div class=\"alert alert-error\"><p class=\"alert-heading\">The following 2 errors were found:</p><ul><li>Error</li><li>Error</li></ul></div>";
+		$this->setProperty("errors", $given);
+
+		$errors = $this->testClass->renderErrors();
+		$this->assertEquals($expected, $errors);
+	}
+
 	public function testFindClassWithElement()
 	{
 		// cannot use a mock object here because the class name comes back as a mock
