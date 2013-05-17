@@ -20,7 +20,7 @@ abstract class Addable
 	 */
 	public function __call($method, $args)
 	{
-		if ($className = $this->fincClass($method)) {
+		if ($className = $this->findClass($method)) {
 			$reflect  = new \ReflectionClass($className);
 			$element = $reflect->newInstanceArgs($args);
 			$this->elements[] = $element;
