@@ -16,8 +16,7 @@ class FormTest extends Base
 			"textbox" => $this->getMock("\\HtmlForm\\Elements\\Textbox", array("compileLabel"), array("name", "label", array(
 				"beforeElement" => "<div class=\"before\">",
 				"afterElement" => "</div>",
-				"defaultValue" => "default",
-				"required" => true
+				"defaultValue" => "default"
 			)))
 		);
 	}
