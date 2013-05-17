@@ -6,10 +6,10 @@ class Fieldset extends Abstracts\Addable
 {
 	/**
 	 * Stores the value of
-	 * the <ledgend> element
+	 * the <legend> element
 	 * @var string
 	 */
-	protected $ledgend;
+	protected $legend;
 
 	/**
 	 * Stores the compiled additional
@@ -25,9 +25,9 @@ class Fieldset extends Abstracts\Addable
 	public $elements = array();
 
 
-	public function __construct($ledgend = null, $attr = array())
+	public function __construct($legend = null, $attr = array())
 	{
-		$this->ledgend = $ledgend;
+		$this->legend = $legend;
 		$textManipulator = new Utility\TextManipulator();
 		$this->compiledAttr = $textManipulator->arrayToTagAttributes($attr);
 	}
@@ -39,7 +39,7 @@ class Fieldset extends Abstracts\Addable
 	 */
 	public function getOpeningTag()
 	{
-		return "<fieldset><legend>{$this->ledgend}</legend>";
+		return "<fieldset><legend>{$this->legend}</legend>";
 	}
 
 	/**
