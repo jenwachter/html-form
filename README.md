@@ -113,27 +113,7 @@ $args = array(
 );
 ```
 
-### <a name="honeypot"></a>Adding a honeypot
-
-[Honeypot](http://haacked.com/archive/2007/09/11/honeypot-captcha.aspx) is a technique to prevent spam bots from submitted data to your form. Bsaically, you add a field to the form that is hidden from the user using CSS. Since the user cannot see it, he/she will not fill it out. However, spam bots will see this form field and fill it out with something. Upon validation, if this form field is filled out, we know we have a bot. See section on [validation](#validation) for how to catch the bot.
-
-#### Usage
-```php
-$form->addHoneypot($args);
-```
-
-#### Parameters
-1. __$args__: (array) Optional. Associative array of additional options to pass to the element. Below is default usage:
-
-```php
-$args = array(
-	"beforeElement" => "",		// HTML to be displayed before this form element.
-	"afterElement" => "",		// HTML to be displayed after this form element.
-	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
-								// that should be included in this element's tag
-);
-```
-
+### Adding buttons
 
 #### Usage
 ```php
@@ -161,6 +141,8 @@ $args = array(
 
 
 ### Adding fieldsets
+
+#### Usage
 ```php
 $fieldset = $form->addFieldset($legend, $args);
 
@@ -183,9 +165,29 @@ $form->addTextBox("Favorite Color", "fav_color")
 1. __$ledgend__: (string) Required. Caption for the fieldset.
 1. __$attr__: (array) Optional. Associative array of additional attributes (array("attribute" => "value")) that should be included in this element's tag
 
+### <a name="honeypot"></a>Adding a honeypot
+
+[Honeypot](http://haacked.com/archive/2007/09/11/honeypot-captcha.aspx) is a technique to prevent spam bots from submitted data to your form. Bsaically, you add a field to the form that is hidden from the user using CSS. Since the user cannot see it, he/she will not fill it out. However, spam bots will see this form field and fill it out with something. Upon validation, if this form field is filled out, we know we have a bot. See section on [validation](#validation) for how to catch the bot.
+
+#### Usage
+```php
+$form->addHoneypot($args);
+```
+
+#### Parameters
+1. __$args__: (array) Optional. Associative array of additional options to pass to the element. Below is default usage:
+
+```php
+$args = array(
+	"beforeElement" => "",		// HTML to be displayed before this form element.
+	"afterElement" => "",		// HTML to be displayed after this form element.
+	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
+								// that should be included in this element's tag
+);
+```
 
 
-#### Render the form
+### Rendering the form
 
 Within your HTML document, run the following command:
 ```php
