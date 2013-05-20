@@ -2,7 +2,7 @@
 
 namespace HtmlForm;
 
-class Form
+class Form extends Abstracts\Addable
 {	
 	/**
 	 * Form configuration
@@ -16,23 +16,18 @@ class Form
 	 * @var [string
 	 */
 	protected $compiledAttr;
-	
-	/**
-	 * Form elements that have been added
-	 * to the form in sequencial order
-	 */
-	protected $formElements = array();
 
 	/**
 	 * Validator object
 	 * @var object
 	 */
 	protected $validator;
-	
+
 	/**
-	 * Validation errors
+	 * Form elements contained within this object
+	 * @var array
 	 */
-	protected $validationErrors = array();
+	public $elements = array();
 		
 	/**
 	 * Sets up the form
@@ -41,9 +36,9 @@ class Form
 	public function __construct($config = array())
 	{
 		$this->setConfig($config);
+		$this->validator = new \HtmlForm\Utility\Validator();
 
-		$textManipulator = new Utility\TextManipulator();
-		$this->compiledAttr = $textManipulator->arrayToTagAttributes($this->config["attr"]);
+		$this->compiledAttr = Utility\TextManipulator::arrayToTagAttributes($this->config["attr"]);
 	}
 
 	/**
@@ -96,35 +91,20 @@ class Form
 		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
 	}
 
-	/**
-	 * Takes care of methods like addTextbox(),
-	 * addSelect(), etc...
-	 * 
-	 * @param  string $method Called method
-	 * @param  array  $args   Arguments passed to the method
-	 * @return self
-	 */
-	public function __call($method, $args)
+	public function addHoneypot($args = array())
 	{
-		if (!preg_match("/^add([a-zA-Z]+)/", $method, $matches)) {
-			return false;
-		}
+		$element = new \HtmlForm\Elements\Honeypot(sha1($this->config["id"]), "Do not enter content here", $args);
+		$this->elements[] = $element;
 
-		$className = "\\HtmlForm\\Elements\\{$matches[1]}";
-		
-		if (class_exists($className)) {
-			$reflect  = new \ReflectionClass($className);
+		return $this;
+	}
 
-			if ($matches[1] != "Honeypot") {
-				$element = $reflect->newInstanceArgs($args);
-			} else {
-				$element = $reflect->newInstanceArgs(array(sha1($this->config["id"]), "Do not enter content here"));
-			}
-			
-			$this->formElements[] = $element;
+	public function addFieldset($label = null, $args = array())
+	{
+		$fieldset = new \HtmlForm\Fieldset($label, $args);
+		$this->elements[] = $fieldset;
 
-			return $this;
-		}
+		return $fieldset;
 	}
 	
     /**
@@ -136,10 +116,9 @@ class Form
 	public function isValid()
 	{
 		$this->saveToSession();
-		$this->validator = new \HtmlForm\Utility\Validator($this->formElements);
-		$this->validationErrors = $this->validator->validate();
+		$this->validator->validate($this);
 
-		if (!empty($this->validationErrors)) {
+		if ($this->validator->validate($this)) {
 			return false;
 		} else {
 			return true;
@@ -153,7 +132,7 @@ class Form
 
 	public function setErrorMessage($message)
 	{
-		$this->validationErrors[] = $message;
+		$this->validator->errors[] = $message;
 	}
 
 	/**
@@ -206,67 +185,74 @@ class Form
 	}
 	
 	/**
-	 * Renders the HTML form
+	 * Outputs the HTML form
 	 * 
      * @return null
      */
-	public function render()
+	public function display()
 	{	
-		echo $this->compileForm();
+		echo $this->render();
 	}
 
-	public function compileForm()
+	/**
+	 * Creates the form HTML
+	 * @return string The form HTML
+	 */
+	public function render()
 	{
-		$html = "";
-		$html .= $this->compileErrors();
-		$html .= "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
-		$html .= $this->renderElements();		
-		$html .= "</form>";
+		$html = $this->validator->renderErrors();
+		$html .= $this->renderElements($this);		
 
 		return $html;
 	}
 
 	/**
-	 * Compile error message HTML
-	 * 
-	 * @return string HTML error div
+	 * Creates the opening <form> tag
+	 * @return string
 	 */
-	protected function compileErrors()
+	protected function getOpeningTag()
 	{
-		if (!empty($this->validationErrors)) {
-				
-			$html = "";
-			
-			$count = count($this->validationErrors);
-			$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
-			
-			$html .= "<div class=\"alert alert-error {$this->config["id"]}\">";
-			$html .= "<p class=\"alert-heading\">{$message}</p>";
-			$html .= "<ul>";
-			
-			foreach ($this->validationErrors as $k => $v) {
-				$html .= "<li>{$v}</li>";
-			}
-			
-			$html .= "</ul></div>";
-			return $html;
-		}
+		return "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
+	}
+
+	/**
+	 * Creates the closing </form> tag
+	 * @return string
+	 */
+	protected function getClosingTag()
+	{
+		return "</form>";
 	}
 
 	/**
 	 * Compiles HTML for each form element
-	 * 
+	 * @param  object $addable Object that extends from \HtmlForm\Abstracts\Addable
 	 * @return string HTML of form elements
 	 */
-	protected function renderElements()
+	protected function renderElements($addable)
 	{
-		$html = "";
-		foreach ($this->formElements as $element) {
-			$value = $this->getValue($element);
-			$html .= $this->beforeElement($element);
-			$html .= $element->compile($value);
-			$html .= $this->afterElement($element);
+		if (!is_object($addable) || is_object($addable) && !in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
+			return;
 		}
+
+		$html = $addable->getOpeningTag();
+
+		foreach ($addable->elements as $element) {
+
+			$classes = class_parents($element);
+
+			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
+				$html .= $this->renderElements($element);
+			} else {
+				$value = $this->getValue($element);
+				$html .= $this->beforeElement($element);
+				$html .= $element->compile($value);
+				$html .= $this->afterElement($element);
+			}
+		}
+
+		$html .= $addable->getClosingTag();
+
 		return $html;
 	}	
 }

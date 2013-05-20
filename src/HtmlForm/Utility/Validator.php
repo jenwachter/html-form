@@ -5,16 +5,10 @@ namespace HtmlForm\Utility;
 class Validator
 {
 	/**
-	 * Form element objects
-	 * @var array
-	 */
-	protected $elements = array();
-
-	/**
 	 * Found errors
 	 * @var array
 	 */
-	protected $errors = array();
+	public $errors = array();
 
 	/**
 	 * Honeypot error
@@ -22,43 +16,76 @@ class Validator
 	 */
 	public $honeypotError = false;
 
-	public function __construct($elements)
+	public function __construct()
 	{
-		$this->elements = $elements;
+		
 	}
 
 	/**
 	 * Runs through the validation required by
 	 * each form element.
-	 * 
+	 * @param  object $addable Object that extends from \HtmlForm\Abstracts\Addable
 	 * @return array Found errors
 	 */
-	public function validate()
+	public function validate($addable)
 	{
-		foreach ($this->elements as $element) {
+		if (!is_object($addable) || is_object($addable) && !in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
+			return;
+		}
 
-			$label = $element->label;
-			$value = $element->getPostValue();
-			$class = $this->findclass($element);
+		foreach ($addable->elements as $element) {
 
-			if ($class == "honeypot") {
-				$this->honeypot($label, $value, $element);
-			}
+			$classes = class_parents($element);
 
-			if ($element->required) {
-				
-				$this->required($label, $value, $element);
-				
-				if (method_exists($this, $class)) {
-					$this->$class($label, $value, $element);
+			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
+				$this->validate($element);
+			} else {
+				$label = $element->label;
+				$value = $element->getPostValue();
+				$class = $this->findclass($element);
+
+				if ($class == "honeypot") {
+					$this->honeypot($label, $value, $element);
 				}
-				if ($element->isPattern()) {
-					$this->pattern($label, $value, $element);
+
+				if ($element->required) {
+					
+					$this->required($label, $value, $element);
+					
+					if (method_exists($this, $class)) {
+						$this->$class($label, $value, $element);
+					}
+					if ($element->isPattern()) {
+						$this->pattern($label, $value, $element);
+					}
 				}
 			}
 			
 		}
 		return $this->errors;
+	}
+
+	public function renderErrors()
+	{
+		if (empty($this->errors)) {
+			return;
+		}
+				
+		$html = "";
+		
+		$count = count($this->errors);
+		$message = $count > 1 ? "The following {$count} errors were found:" : "The following error was found:";
+		
+		$html .= "<div class=\"alert alert-error\">";
+		$html .= "<p class=\"alert-heading\">{$message}</p>";
+		$html .= "<ul>";
+		
+		foreach ($this->errors as $k => $v) {
+			$html .= "<li>{$v}</li>";
+		}
+		
+		$html .= "</ul></div>";
+		return $html;
 	}
 
 	/**
@@ -71,7 +98,7 @@ class Validator
 	{
 		$class = get_class($element);
 		$lastSlash = strrpos($class, "\\");
-		return strtolower(substr($class, 17 + 1));
+		return strtolower(substr($class, $lastSlash + 1));
 	}
 
 	/**
@@ -123,8 +150,7 @@ class Validator
 		$min = $element->min;
 		$max = $element->max;
 
-		if (!is_numeric($value)) {
-			$this->errors[] = "{$label} must be a number.";
+		if (!$this->number($label, $value, $element)) {
 			return false;
 		}
 
@@ -148,6 +174,7 @@ class Validator
 	{
 		if (!filter_var($value, FILTER_VALIDATE_URL)) {
 			$this->errors[] = "{$label} must be a valid URL.";
+			return false;
 		}
 
 		return true;
@@ -165,6 +192,7 @@ class Validator
 	{
 		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 			$this->errors[] = "{$label} must be a valid email address.";
+			return false;
 		}
 
 		return true;

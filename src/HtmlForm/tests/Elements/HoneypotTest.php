@@ -20,7 +20,7 @@ class HoneypotTest extends \HtmlForm\tests\Base
 
 	public function testCompile()
 	{
-		$expected = "<div class=\"honeypot\"><label for=\"testField\">Test Field</label><input type=\"text\" name=\"testField\"  value=\"\" /></div>";
+		$expected = "<div class=\"honeypot\" style=\"display: none;\"><label for=\"testField\">Test Field</label><input type=\"text\" name=\"testField\"  value=\"\" /></div>";
 		$this->assertEquals($expected, $this->testClass->compile());
 	}
 }

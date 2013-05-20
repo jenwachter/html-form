@@ -148,26 +148,53 @@ $form->addButton($name, $buttonText, $args);
 #### Parameters
 1. __$name__: (string) Required. Value of the "name" attribute of the text box. Not visible to the user.
 1. __$buttonText__: (string) Required. Readable label of the button. Visible to the user.
-1. __$args__: (array) Optional. Associative array of additional options to pass to the element. _Note: defaultValue, requiredSymbol, and required are not accepted on submit buttons. Below is default usage:
+1. __$args__: (array) Optional. Associative array of additional options to pass to the element. Below is default usage:
 
 ```php
 $args = array(
-	"defaultValue" => "",		// Default value of the field
-	"requiredSymbol" => "*",	// "required" symbol for this element
 	"beforeElement" => "",		// HTML to be displayed before this form element.
 	"afterElement" => "",		// HTML to be displayed after this form element.
-	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
+	"attr" => array()			// Associative array of additional attributes (array("attribute" => "value"))
 								// that should be included in this element's tag
-	"required" => false			// Is this form field required to be completed?
 );
 ```
+
+
+### Adding fieldsets
+```php
+$fieldset = $form->addFieldset($legend, $args);
+
+// Then add fields to the fieldset
+$fieldset->addTextbox($name, $label)
+		 ->addTextbox($name, $label);
+
+// Shorthand
+$form->addFieldset($legend)
+	 ->addTextbox($name, $label)
+	 ->addTextbox($name, $label);
+
+// More fields not contained within a fieldset
+$form->addTextBox("Favorite Color", "fav_color")
+	 ->addSubmit("Submit", "submit");
+```
+
+
+#### Parameters
+1. __$ledgend__: (string) Required. Caption for the fieldset.
+1. __$attr__: (array) Optional. Associative array of additional attributes (array("attribute" => "value")) that should be included in this element's tag
+
 
 
 #### Render the form
 
 Within your HTML document, run the following command:
 ```php
-$form->render();
+$form->display();
+
+// or
+
+$code = $form->render();
+echo $code;
 ````
 
 
@@ -222,4 +249,10 @@ If the form passed validation, `$valid` will evaluate to true and you can contin
 If you have a honeypot, you'll need to check that as well before you continue with form processing. `$honeypot` will evaluate to true if it has been confirmed that the user submitting the form is not a bot. If `$honeypot` evaluates to false, you have a bot on your hands. You can either kill the form right then and there, or you can make the bot think it got its data through by continuing with the submission process, but just not submitting the data.
 
 
+## Changelog
 
+#### v0.2 Noteable Changes/Additions
+
+* HtmlForm\Form
+    * render() is now display()
+    * compileForm() is now render()
