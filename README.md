@@ -99,7 +99,7 @@ $form->addSelect($name, $label, $options, $args)
 #### Parameters
 1. __$name__: (string) Required. Value of the "name" attribute of the form element. Not visible to the user.
 1. __$label__: (string) Required. Readable label attached to the form element. Visible to the user.
-1. __$options__: (array) Required. Numeric or associative array of options. If an associative array is given, the key is used as the option's "value" attribute and the value is used as the visible option to the user. If a numeric array is given, the value is used for both elements in the form field.
+1. __$options__: (array) Required. Numeric or associative array of options. If an associative array is given, the key is used as the option's "value" attribute and the value is used as the visible option to the user. If a numeric array is given, the value is used for both elements. To use the key values of a numeric array as the options' "value" attribute, use the `useNumericValue` argument (see below).
 1. __$args__: (array) Optional. Associative array of additional options to pass to the element. Below is default usage:
 
 ```php
@@ -109,7 +109,9 @@ $args = array(
 	"afterElement" => "",		// HTML to be displayed after this form element.
 	"attr" => array(),			// Associative array of additional attributes (array("attribute" => "value"))
 								// that should be included in this element's tag
-	"required" => false			// Is this form field required to be completed?
+	"required" => false,		// Is this form field required to be completed?
+	"useNumericValue" => false	// Use the key values of a numeric array as the options' "value" attribute
+								// <option value="1">First Option</option> instead of <option value="First Option">First Option</option>
 );
 ```
 

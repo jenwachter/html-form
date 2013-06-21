@@ -12,6 +12,17 @@ abstract class Option extends Field
 	protected $options = array();
 
 	/**
+	 * By default, if an array of options is passed as
+	 * a numeric array, the select box will render with
+	 * the values passed as both the "value" attribute of
+	 * <option> AND the text displayed to the user. This
+	 * variable will override that functionality and
+	 * display the numeric keys as the "value" attribute.
+	 * @var boolean
+	 */
+	protected $useNumericValue = false;
+
+	/**
 	 * Runs the parent constructor and also saves the
 	 * options to the obejct.
 	 * 
@@ -63,15 +74,15 @@ abstract class Option extends Field
 			$html .= "\" ";
 			
 			// handle options in an associative array differently than ones in a numeric array
-			if ($hasOptionValue) {
+			if ($hasOptionValue || $this->useNumericValue) {
 				$html .= "value=\"{$k}\" ";
-				if ($k == $value || (is_array($value) && in_array($k, $value))) {
+				if ($k === $value || (is_array($value) && in_array($k, $value))) {
 					$html .= "checked=\"checked\"";
 				}
 			
 			} else {
 				$html .= "value=\"{$v}\" ";
-				if ($v == $value || (is_array($value) && in_array($v, $value))) {
+				if ($v === $value || (is_array($value) && in_array($v, $value))) {
 					$html .= "checked=\"checked\"";
 				}
 			}

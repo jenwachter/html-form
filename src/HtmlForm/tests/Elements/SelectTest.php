@@ -51,4 +51,14 @@ class SelectTest extends \HtmlForm\tests\Base
 		$value = $this->testClass->compile();
 		$this->assertEquals($expected, $value);
 	}
+
+	public function testCompileWithNumericValue()
+	{
+		$this->testClass = new \HtmlForm\Elements\Select("testField", "Test Field", array("test", "blue"), array("useNumericValue" => true));
+		parent::setUp();
+
+		$expected = "<label for=\"testField\">Test Field</label><select name=\"testField\" ><option value=\"0\">test</option><option value=\"1\">blue</option></select>";
+		$value = $this->testClass->compile();
+		$this->assertEquals($expected, $value);
+	}
 }

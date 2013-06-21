@@ -56,4 +56,14 @@ class CheckboxTest extends \HtmlForm\tests\Base
 		$value = $this->testClass->compile();
 		$this->assertEquals($expected, $value);
 	}
+
+	public function testCompileWithNumericValue()
+	{
+		$this->testClass = new \HtmlForm\Elements\Checkbox("testField", "Test Field", array("test", "blue"), array("useNumericValue" => true));
+		parent::setUp();
+
+		$expected = "<label for=\"testField\">Test Field</label><div class=\"elements\"><div class=\"element\"><input type=\"checkbox\"  name=\"testField[]\" value=\"0\"  /> <span>test</span></div><div class=\"element\"><input type=\"checkbox\"  name=\"testField[]\" value=\"1\"  /> <span>blue</span></div></div>";
+		$value = $this->testClass->compile();
+		$this->assertEquals($expected, $value);
+	}
 }

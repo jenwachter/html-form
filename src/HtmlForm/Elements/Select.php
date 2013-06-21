@@ -19,11 +19,11 @@ class Select extends Parents\Option
 		
 		
 		// handle options in an associative array differently than ones in a numeric array
-		if ($hasOptionValue) {
+		if ($hasOptionValue || $this->useNumericValue) {
 			
 			foreach ($this->options as $k => $v) {
 				$html .= "<option value=\"{$k}\"";
-				if ($value == $k) {
+				if ($value === $k) {
 					$html .= " selected=\"selected\"";
 				}
 				$html .= ">{$v}</option>";
@@ -33,7 +33,7 @@ class Select extends Parents\Option
 		
 			foreach ($this->options as $k => $v) {
 				$html .= "<option value=\"{$v}\"";
-				if ( $value == $v) {
+				if ( $value === $v) {
 					$html .= " selected=\"selected\"";
 				}
 				$html .= ">{$v}</option>";
