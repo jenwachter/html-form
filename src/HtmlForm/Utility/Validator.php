@@ -48,10 +48,8 @@ class Validator
 					$this->honeypot($label, $value, $element);
 				}
 
-				if ($element->required) {
-					
-					$this->required($label, $value, $element);
-					
+				if ($element->required && $this->required($label, $value, $element)) {
+										
 					if (method_exists($this, $class)) {
 						$this->$class($label, $value, $element);
 					}
