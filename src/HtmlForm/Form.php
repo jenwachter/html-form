@@ -116,7 +116,6 @@ class Form extends Abstracts\Addable
 	public function isValid()
 	{
 		$this->saveToSession();
-		$this->validator->validate($this);
 
 		if ($this->validator->validate($this)) {
 			return false;
