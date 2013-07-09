@@ -211,7 +211,7 @@ class Form extends Abstracts\Addable
 	 */
 	protected function getOpeningTag()
 	{
-		return "<form novalidate=\"novalidate\" method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
+		return "<form method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
 	}
 
 	/**
