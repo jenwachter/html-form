@@ -86,6 +86,11 @@ class Validator
 		return $html;
 	}
 
+	public function pushError($error)
+	{
+		$this->errors[] = $error;
+	}
+
 	/**
 	 * Finds the class of the given form element
 	 * 
@@ -110,7 +115,7 @@ class Validator
 	protected function required($label, $value, $element)
 	{
 		if (empty($value)) {
-			$this->errors[] = "{$label} is a required field.";
+			$this->pushError("{$label} is a required field.");
 			return false;
 		}
 
@@ -128,7 +133,7 @@ class Validator
 	protected function number($label, $value, $element)
 	{
 		if (!is_numeric($value)) {
-			$this->errors[] = "{$label} must be a number.";
+			$this->pushError("{$label} must be a number.");
 			return false;
 		}
 
@@ -153,7 +158,7 @@ class Validator
 		}
 
 		if ($value < $min || $value > $max) {
-			$this->errors[] = "{$label} must be a number between {$min} and {$max}.";
+			$this->pushError("{$label} must be a number between {$min} and {$max}.");
 			return false;
 		}
 
@@ -171,7 +176,7 @@ class Validator
 	protected function url($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_URL)) {
-			$this->errors[] = "{$label} must be a valid URL.";
+			$this->pushError("{$label} must be a valid URL.");
 			return false;
 		}
 
@@ -189,7 +194,7 @@ class Validator
 	protected function email($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-			$this->errors[] = "{$label} must be a valid email address.";
+			$this->pushError("{$label} must be a valid email address.");
 			return false;
 		}
 
@@ -209,7 +214,7 @@ class Validator
 		$pattern = trim($element->attr["pattern"], "/");
 
 		if (!preg_match("/{$pattern}/", $value)) {
-			$this->errors[] = "{$label} must be match the specificed pattern.";
+			$this->pushError("{$label} must be match the specificed pattern.");
 			return false;
 		}
 

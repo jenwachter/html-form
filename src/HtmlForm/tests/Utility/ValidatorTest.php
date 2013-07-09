@@ -68,16 +68,14 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$this->assertEquals($expected, $result);
 	}
 
-	public function testFindClassWithFieldset()
+	public function testPushError()
 	{
-		// cannot use a mock object here because the class name comes back as a mock
-		$given = new \HtmlForm\Fieldset("legend");
-		$expected = "fieldset";
+		$method = $this->getMethod("pushError");
 
-		$method = $this->getMethod("findclass");
-		$result = $method->invoke($this->testClass, $given);
+		$given = "Field is a required field.";
+		$method->invoke($this->testClass, $given);
 
-		$this->assertEquals($expected, $result);
+		$this->assertContains($given, $this->getProperty("errors"));
 	}
 
 	public function testRequired()
@@ -86,13 +84,11 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		// no value
 		$result = $method->invoke($this->testClass, "Field", "", "");
-		$this->assertEquals(false, $result);
-		$errorArray = array("Field is a required field.");
-		$this->assertEquals($errorArray, $this->getProperty("errors"));
+		$this->assertFalse($result);
 
 		// value
 		$result = $method->invoke($this->testClass, "Field", "Value", "");
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testNumber()
@@ -101,16 +97,15 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		// not a number
 		$result = $method->invoke($this->testClass, "Field", "three", "");
-		$this->assertEquals(false, $result);
-		$errorArray = array("Field must be a number.");
-		$this->assertEquals($errorArray, $this->getProperty("errors"));
+		$this->assertFalse($result);
 
 		// number
 		$result = $method->invoke($this->testClass, "Field", 3, "");
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 
+		// number like
 		$result = $method->invoke($this->testClass, "Field", "3", "");
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testRange()
@@ -119,22 +114,15 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		// not a number
 		$result = $method->invoke($this->testClass, "Field", "three", $this->mocks["range"]);
-		$this->assertEquals(false, $result);
-
-		$this->setProperty("errors", array());
+		$this->assertFalse($result);
 
 		// number, but not in range
 		$result = $method->invoke($this->testClass, "Field", 15, $this->mocks["range"]);
-		$this->assertEquals(false, $result);
-		$errorArray = array("Field must be a number between 5 and 10.");
-		$this->assertEquals($errorArray, $this->getProperty("errors"));
-
-		$this->setProperty("errors", array());
-		
+		$this->assertFalse($result);
 
 		// number, in range
 		$result = $method->invoke($this->testClass, "Field", 7, $this->mocks["range"]);
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testUrl()
@@ -143,19 +131,17 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		// not a url
 		$result = $method->invoke($this->testClass, "Field", "Not a URL", "");
-		$this->assertEquals(false, $result);
-		$errorArray = array("Field must be a valid URL.");
-		$this->assertEquals($errorArray, $this->getProperty("errors"));
+		$this->assertFalse($result);
 
 		$result = $method->invoke($this->testClass, "Field", "www.google.com", "");
-		$this->assertEquals(false, $result);
+		$this->assertFalse($result);
 
 		$result = $method->invoke($this->testClass, "Field", "google.com", "");
-		$this->assertEquals(false, $result);
+		$this->assertFalse($result);
 
 		// valid url
 		$result = $method->invoke($this->testClass, "Field", "http://google.com", "");
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 
 	}
 
@@ -165,14 +151,11 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		// not an email
 		$result = $method->invoke($this->testClass, "Field", "Not an email", "");
-		$this->assertEquals(false, $result);
-		$errorArray = array("Field must be a valid email address.");
-		$this->assertEquals($errorArray, $this->getProperty("errors"));
-
+		$this->assertFalse($result);
 
 		// valid email
 		$result = $method->invoke($this->testClass, "Field", "test@test.test", "");
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testPattern()
@@ -181,16 +164,14 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 		// does not match
 		$result = $method->invoke($this->testClass, "Field", "Not a match", $this->mocks["textbox"]);
-		$this->assertEquals(false, $result);
-		$errorArray = array("Field must be match the specificed pattern.");
-		$this->assertEquals($errorArray, $this->getProperty("errors"));
+		$this->assertFalse($result);
 
 		// matches
 		$result = $method->invoke($this->testClass, "Field", 5, $this->mocks["textbox"]);
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 
 		$result = $method->invoke($this->testClass, "Field", "5", $this->mocks["textbox"]);
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 	}
 
 	public function testHoneypot()
@@ -198,10 +179,10 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$method = $this->getMethod("honeypot");
 
 		$result = $method->invoke($this->testClass, "Field", "Value", "");
-		$this->assertEquals(false, $result);
+		$this->assertFalse($result);
 
 		$result = $method->invoke($this->testClass, "Field", null, "");
-		$this->assertEquals(true, $result);
+		$this->assertTrue($result);
 	}
 
 }

@@ -129,9 +129,15 @@ class Form extends Abstracts\Addable
 		return !$this->validator->honeypotError;
 	}
 
+	/**
+	 * Sets an error message manually. Useful if you need
+	 * to push an error message from your own logic.
+	 * 
+	 * @param string $message Error message text
+	 */
 	public function setErrorMessage($message)
 	{
-		$this->validator->errors[] = $message;
+		$this->validator->pushError($message);
 	}
 
 	/**
