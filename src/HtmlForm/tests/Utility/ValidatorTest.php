@@ -17,16 +17,10 @@ class ValidatorTest extends \HtmlForm\tests\Base
 
 	public function testValidate()
 	{
-		$method = $this->getMethod("validate");
-
-		$result = $method->invoke($this->testClass, "");
-		$this->assertEquals(false, $result);
-
-		$result = $method->invoke($this->testClass, new \StdClass());
-		$this->assertEquals(false, $result);
+		
 	}
 
-	public function testCompileErrorsWithNoErrors()
+	public function testRenderErrorsWithNoErrors()
 	{
 		$given = array();
 		$expected = null;
@@ -36,7 +30,7 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$this->assertEquals($expected, $errors);
 	}
 
-	public function testCompileErrorswithOneError()
+	public function testRenderErrorswithOneError()
 	{
 		$given = array("Error");
 		$expected = "<div class=\"alert alert-error\"><p class=\"alert-heading\">The following error was found:</p><ul><li>Error</li></ul></div>";
@@ -46,7 +40,7 @@ class ValidatorTest extends \HtmlForm\tests\Base
 		$this->assertEquals($expected, $errors);
 	}
 
-	public function testCompileErrorswithManyErrors()
+	public function testRenderErrorswithManyErrors()
 	{
 		$given = array("Error", "Error");
 		$expected = "<div class=\"alert alert-error\"><p class=\"alert-heading\">The following 2 errors were found:</p><ul><li>Error</li><li>Error</li></ul></div>";

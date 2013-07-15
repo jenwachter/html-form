@@ -45,38 +45,21 @@ class FormTest extends Base
 		$this->assertEquals($expected, $this->getProperty("config"));
 	}
 
-	public function testSetConfigWithUserAction()
+	public function testSetConfigWithData()
 	{
 		$given = array(
-			"action" => "otherPage.php"
+			"action" => "otherPage.php",
+			"method" => "get"
 		);
 
 		$expected = array(
-			"method" => "post",
+			"method" => "get",
 			"action" => "otherPage.php",
 			"id" => "hfc",
 			"repopulate" => true,
 			"attr" => array(),
 			"beforeElement" => "",
 			"afterElement" => ""
-		);
-
-		$method = $this->getMethod("setConfig");
-		$method->invoke($this->testClass, $given);
-
-		$this->assertEquals($expected, $this->getProperty("config"));
-	}
-
-	public function testSetConfigWithAllUserData()
-	{
-		$given = $expected = array(
-			"method" => "get",
-			"action" => "otherPage.php",
-			"id" => "myForm",
-			"repopulate" => false,
-			"attr" => array("class" => "one two"),
-			"beforeElement" => "<div>",
-			"afterElement" => "</div>"
 		);
 
 		$method = $this->getMethod("setConfig");
@@ -139,13 +122,16 @@ class FormTest extends Base
 	{
 		$method = $this->getMethod("getValue");
 
+		// if nothing set
 		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
 		$this->assertEquals("default", $result);
 
+		// if set in $_POST
 		$_POST["name"] = "hi";
 		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
 		$this->assertEquals("hi", $result);
 
+		// if set in $_SESSION
 		$this->setProperty("config", array("id" => "testing"));
 		$_SESSION["testing"]["name"] = "hello";
 		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
@@ -157,12 +143,12 @@ class FormTest extends Base
 		$method = $this->getMethod("cleanValue");
 
 		$given = "Something\'s gotta give";
-		$expected = "Something's gotta give";
+		$expected = stripslashes($given);
 		$result = $method->invoke($this->testClass, $given);
 		$this->assertEquals($expected, $result);
 
-		$given = array("Something\'s gotta give", "You can\'t tell Erol anything");
-		$expected = array("Something's gotta give", "You can't tell Erol anything");
+		$given = array($given);
+		$expected = array($expected);
 		$result = $method->invoke($this->testClass, $given);
 		$this->assertEquals($expected, $result);
 	}
@@ -189,7 +175,7 @@ class FormTest extends Base
 		$this->assertEquals("</form>", $result);
 	}
 
-	public function testRenderElements()
+	public function testRenderElementsWithAddable()
 	{
 		// add fieldset
 		$fieldset = new \HtmlForm\Fieldset("The Legend");
@@ -200,7 +186,7 @@ class FormTest extends Base
 		));
 
 		$this->setProperty("elements", array($fieldset));
-		$expected = "<form novalidate=\"novalidate\" method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><fieldset><legend>The Legend</legend><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></fieldset></form>";
+		$expected = "<form method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><fieldset><legend>The Legend</legend><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></fieldset></form>";
 		
 		$method = $this->getMethod("renderElements");
 

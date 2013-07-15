@@ -255,6 +255,10 @@ If you have a honeypot, you'll need to check that as well before you continue wi
 
 ## Changelog
 
+#### v0.3 Noteable Changes/Additions
+
+* Added a flag that allows option form fields to use the numeric keys of the options array as the option field's value.
+
 #### v0.2 Noteable Changes/Additions
 
 * HtmlForm\Form
