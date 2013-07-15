@@ -141,6 +141,17 @@ $args = array(
 );
 ```
 
+### Adding bits of HTML
+
+#### Usage
+```php
+$form->addText($name, $html);
+```
+
+#### Parameters
+1. __$name__: (string) Required. Short name of the HTML bit.
+1. __$html: (string) Required. HTML to display within the form.
+
 
 ### Adding fieldsets
 

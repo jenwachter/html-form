@@ -37,6 +37,11 @@ class Validator
 
 			$classes = class_parents($element);
 
+			// no validation needed
+			if (in_array("HtmlForm\Elements\Parents\Html", $classes)) {
+				continue;
+			}
+
 			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
 				$this->validate($element);
 			} else {

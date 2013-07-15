@@ -171,8 +171,11 @@ class Form extends Abstracts\Addable
 		} else if (isset($_POST[$name])) {
 			return $this->cleanValue($_POST[$name]);
 		
-		} else {	
+		} else if (property_exists($element, "defaultValue")) {	
 			return $this->cleanValue($element->defaultValue);
+		
+		} else {
+			return "";
 		}
 	}
 

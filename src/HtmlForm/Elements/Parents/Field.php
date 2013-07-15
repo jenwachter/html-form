@@ -8,13 +8,13 @@ abstract class Field
 	 * HTML to appear before an element
 	 * @var string
 	 */
-	protected $beforeElement = null;
+	public $beforeElement = null;
 
 	/**
 	 * HTML to appear after an element
 	 * @var string
 	 */
-	protected $afterElement = null;
+	public $afterElement = null;
 
 
 	/**
