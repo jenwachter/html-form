@@ -1,6 +1,6 @@
 # HTML Form
 
-Hate writing and validating HTML forms? Me too. The HTML Form Class was designed to make creating, validating, and maintaining forms easier.
+Hate writing and validating HTML forms? Me too. The HTML Form library was designed to make creating, validating, and maintaining forms easier.
 
 
 ## Requirements
