@@ -11,6 +11,19 @@ Hate writing and validating HTML forms? Me too. The HTML Form library was design
 
 
 
+## Installation
+
+Via Composer:
+```json
+{
+    "require": {
+        "jenwachter/html-form": "0.3.*"
+    }
+}
+```
+
+
+
 ## Documentation
 
 See below for basic usage or [read the full documentation](http://jenwachter.com/projects/html-form/).
