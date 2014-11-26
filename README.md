@@ -26,7 +26,7 @@ Via Composer:
 
 ## Documentation
 
-See below for basic usage or [read the full documentation](http://jenwachter.com/projects/html-form/).
+See below for basic usage or [see the wiki](https://github.com/jenwachter/html-form/wiki).
 
 
 
