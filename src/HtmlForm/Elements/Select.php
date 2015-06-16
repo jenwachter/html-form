@@ -23,7 +23,7 @@ class Select extends Parents\Option
 			
 			foreach ($this->options as $k => $v) {
 				$html .= "<option value=\"{$k}\"";
-				if ($value === $k) {
+				if ((int) $value === $k) {
 					$html .= " selected=\"selected\"";
 				}
 				$html .= ">{$v}</option>";
