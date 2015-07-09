@@ -62,6 +62,10 @@ if (isset($_POST["submit"]) && $form->isValid()) {
 ## Changelog
 
 
+#### 0.3.2
+
+* Removed rendering of global `beforeElement` and `afterElement` content before and after bits of HTML.
+
 #### 0.3.1
 
 * Bug fix

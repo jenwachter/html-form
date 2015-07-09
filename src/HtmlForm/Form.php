@@ -3,7 +3,7 @@
 namespace HtmlForm;
 
 class Form extends Abstracts\Addable
-{	
+{
 	/**
 	 * Form configuration
 	 * @var array
@@ -28,7 +28,7 @@ class Form extends Abstracts\Addable
 	 * @var array
 	 */
 	public $elements = array();
-		
+
 	/**
 	 * Sets up the form
 	 * @param array $config Associaitve array of configuration overrides
@@ -70,7 +70,7 @@ class Form extends Abstracts\Addable
 	/**
 	 * Fetches the HTML designated to go before
 	 * a specific form element.
-	 * 
+	 *
 	 * @param  object $element Form element object
 	 * @return string The HTML
 	 */
@@ -82,7 +82,7 @@ class Form extends Abstracts\Addable
 	/**
 	 * Fetches the HTML designated to go after
 	 * a specific form element.
-	 * 
+	 *
 	 * @param  object $element Form element object
 	 * @return string The HTML
 	 */
@@ -106,11 +106,11 @@ class Form extends Abstracts\Addable
 
 		return $fieldset;
 	}
-	
+
     /**
      * Checks the validity of the form and enables
      * form field repopulating
-     * 
+     *
      * @return boolean TRUE if form is valid; FALSE if there are errors
      */
 	public function isValid()
@@ -132,7 +132,7 @@ class Form extends Abstracts\Addable
 	/**
 	 * Sets an error message manually. Useful if you need
 	 * to push an error message from your own logic.
-	 * 
+	 *
 	 * @param string $message Error message text
 	 */
 	public function setErrorMessage($message)
@@ -142,14 +142,14 @@ class Form extends Abstracts\Addable
 
 	/**
 	 * Saves form data to the session.
-	 * 
+	 *
 	 * @return null
 	 */
 	protected function saveToSession()
-	{	
+	{
 		if ($this->config["repopulate"]) {
 			$data = strtolower($_SERVER["REQUEST_METHOD"]) == "post" ? $_POST : $_GET;
-			
+
 			foreach ($data as $k => $v) {
 				$_SESSION[$this->config["id"]][$k] = $v;
 			}
@@ -162,18 +162,18 @@ class Form extends Abstracts\Addable
      * @return string 			The form element's current value
      */
 	protected function getValue($element)
-	{	
+	{
 		$name = $element->name;
 
 		if (isset($_SESSION[$this->config["id"]][$name])) {
 			return $this->cleanValue($_SESSION[$this->config["id"]][$name] );
-			
+
 		} else if (isset($_POST[$name])) {
 			return $this->cleanValue($_POST[$name]);
-		
-		} else if (property_exists($element, "defaultValue")) {	
+
+		} else if (property_exists($element, "defaultValue")) {
 			return $this->cleanValue($element->defaultValue);
-		
+
 		} else {
 			return "";
 		}
@@ -191,14 +191,14 @@ class Form extends Abstracts\Addable
 			return stripslashes($value);
 		}
 	}
-	
+
 	/**
 	 * Outputs the HTML form
-	 * 
+	 *
      * @return null
      */
 	public function display()
-	{	
+	{
 		echo $this->render();
 	}
 
@@ -209,7 +209,7 @@ class Form extends Abstracts\Addable
 	public function render()
 	{
 		$html = $this->validator->renderErrors();
-		$html .= $this->renderElements($this);		
+		$html .= $this->renderElements($this);
 
 		return $html;
 	}
@@ -251,6 +251,8 @@ class Form extends Abstracts\Addable
 
 			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
 				$html .= $this->renderElements($element);
+			} else if (in_array("HtmlForm\Elements\Parents\Html", $classes)) {
+				$html .= $element->compile();
 			} else {
 				$value = $this->getValue($element);
 				$html .= $this->beforeElement($element);
@@ -262,5 +264,5 @@ class Form extends Abstracts\Addable
 		$html .= $addable->getClosingTag();
 
 		return $html;
-	}	
+	}
 }
