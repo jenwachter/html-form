@@ -49,7 +49,7 @@ class Form extends Abstracts\Addable
 	 */
 	protected function buildAction()
 	{
-		return $_SERVER["QUERY_STRING"] ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
+		return isset($_SERVER["QUERY_STRING"]) ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
 	}
 
 	public function setConfig($config)
