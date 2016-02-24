@@ -22,8 +22,8 @@ abstract class Field
 	 * is required.
 	 * @var string
 	 */
-	protected $requiredSymbol = "*";
-	
+	protected $requiredSymbol = "<span class='required'>*</span>";
+
 	/**
 	 * Is the field required?
 	 * @var boolean
@@ -36,14 +36,14 @@ abstract class Field
 	 * @var string
 	 */
 	protected $name;
-	
+
 	/**
 	 * Readable label attached
 	 * to the form element.
 	 * @var string
 	 */
 	protected $label;
-	
+
 	/**
 	 * Associative array of additional
 	 * options to pass to the element.
@@ -51,7 +51,7 @@ abstract class Field
 	 * @var array
 	 */
 	protected $attr = array();
-	
+
 	/**
 	 * Default value of the form field
 	 * @var string
@@ -75,7 +75,7 @@ abstract class Field
 	/**
 	 * Assigns variables to object, compiles
 	 * label and attributes.
-	 * 
+	 *
 	 * @param string $name  Value of the "name" attribute of the form element
 	 * @param string $label Readable label attached to the form element.
 	 * @param array  $args  Associative array of additional options to pass
@@ -95,7 +95,7 @@ abstract class Field
 
 	/**
 	 * Builds the HTML of the form field.
-	 * 
+	 *
 	 * @param  string $value Value of the form field
 	 * @return null
 	 */
@@ -105,7 +105,7 @@ abstract class Field
 	 * Loops through a given array and it the key
 	 * exists as a property on this object, it is
 	 * assigned.
-	 * 
+	 *
 	 * @param  array $args Associative array
 	 * @return self
 	 */
@@ -126,7 +126,7 @@ abstract class Field
      * @return self
      */
 	public function compileLabel()
-	{	
+	{
 		$required = !empty($this->required) ? $this->requiredSymbol . " " : "";
 		$this->compiledLabel = "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
 
