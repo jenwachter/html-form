@@ -25,7 +25,7 @@ abstract class Option extends Field
 	/**
 	 * Runs the parent constructor and also saves the
 	 * options to the obejct.
-	 * 
+	 *
 	 * @param string $name  	Value of the "name" attribute of the form element
 	 * @param string $label 	Readable label attached to the form element.
 	 * @param array  $options   Array of options available to the use in the form element.
@@ -41,7 +41,7 @@ abstract class Option extends Field
 	/**
      * Checks an array to see given array is associative. This solution
      * was found on Stack Overflow: http://stackoverflow.com/a/4254008
-     * 
+     *
      * @param  array  $a Array to check
      * @return boolean
      */
@@ -52,18 +52,18 @@ abstract class Option extends Field
 
 	/**
 	 * Builds the HTML of the form field.
-	 * 
+	 *
 	 * @param  string $value Value of the form field
 	 * @return null
 	 */
 	public function compile($value = "")
 	{
 		$html = "{$this->compiledLabel}<div class=\"elements\">";
-		
+
 		$hasOptionValue = $this->hasOptionValue($this->options);
-		
+
 		foreach ($this->options as $k => $v) {
-			
+
 			$html .= "<div class=\"element\"><input type=\"{$this->type}\" {$this->compiledAttr} ";
 			$html .= "name=\"" . $this->name;
 
@@ -72,14 +72,14 @@ abstract class Option extends Field
 			}
 
 			$html .= "\" ";
-			
+
 			// handle options in an associative array differently than ones in a numeric array
 			if ($hasOptionValue || $this->useNumericValue) {
 				$html .= "value=\"{$k}\" ";
 				if ($k === $value || (is_array($value) && in_array($k, $value))) {
 					$html .= "checked=\"checked\"";
 				}
-			
+
 			} else {
 				$html .= "value=\"{$v}\" ";
 				if ($v === $value || (is_array($value) && in_array($v, $value))) {
@@ -91,7 +91,11 @@ abstract class Option extends Field
 		}
 
 		$html .= "</div>";
-		
+
+		if (!empty($this->help)) {
+			$html .= "<div class='help'>{$this->help}</div>";
+		}
+
 		return $html;
 	}
 }

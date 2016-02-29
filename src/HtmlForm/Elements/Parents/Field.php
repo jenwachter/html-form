@@ -16,7 +16,6 @@ abstract class Field
 	 */
 	public $afterElement = null;
 
-
 	/**
 	 * Symbol that denotes this field
 	 * is required.
@@ -29,6 +28,12 @@ abstract class Field
 	 * @var boolean
 	 */
 	protected $required = false;
+
+	/**
+	 * Help text
+	 * @var string
+	 */
+	protected $help = false;
 
 	/**
 	 * Value of the "name" attribute
@@ -127,7 +132,7 @@ abstract class Field
      */
 	public function compileLabel()
 	{
-		$required = !empty($this->required) ? $this->requiredSymbol . " " : "";
+		$required = $this->required ? $this->requiredSymbol . " " : "";
 		$this->compiledLabel = "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
 
 		return $this;
