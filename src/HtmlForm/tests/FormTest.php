@@ -22,7 +22,7 @@ class FormTest extends Base
 
 	public function testBuildAction()
 	{
-		
+
 	}
 
 	public function testSetConfigWithNoUserConfig()
@@ -160,7 +160,7 @@ class FormTest extends Base
 
 	public function testRender()
 	{
-		
+
 	}
 
 	public function testGetOpeningTag()
@@ -186,8 +186,8 @@ class FormTest extends Base
 		));
 
 		$this->setProperty("elements", array($fieldset));
-		$expected = "<form method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><fieldset><legend>The Legend</legend><div class=\"form_field clearfix\"><label for=\"firstName\">* first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></fieldset></form>";
-		
+		$expected = "<form method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><fieldset><legend>The Legend</legend><div class=\"form_field clearfix\"><label for=\"firstName\"><span class='required'>*</span> first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></fieldset></form>";
+
 		$method = $this->getMethod("renderElements");
 
 		$result = $method->invoke($this->testClass, $this->testClass);

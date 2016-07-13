@@ -47,7 +47,7 @@ class FieldTest extends \HtmlForm\tests\Base
 	public function testCompileLabelWithGivenArgs()
 	{
 		// Method already ran in constructor, so no need to run again
-		$expected = "<label for=\"testField\">* Test Field</label>";
+		$expected = "<label for=\"testField\"><span class='required'>*</span> Test Field</label>";
 		$this->assertEquals($expected, $this->testClass->compiledLabel);
 	}
 
@@ -92,6 +92,6 @@ class FieldTest extends \HtmlForm\tests\Base
 	public function test__Get()
 	{
 		$value = $this->testClass->requiredSymbol;
-		$this->assertEquals("*", $value);
+		$this->assertEquals("<span class='required'>*</span>", $value);
 	}
 }

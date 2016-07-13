@@ -33,7 +33,7 @@ class TextboxTest extends \HtmlForm\tests\Base
 	{
 		$this->setProperty("required", true);
 		$this->testClass->compileLabel();
-		$expected = "<label for=\"testField\">* Test Field</label><input type=\"text\" name=\"testField\"  value=\"\" />";
+		$expected = "<label for=\"testField\"><span class='required'>*</span> Test Field</label><input type=\"text\" name=\"testField\"  value=\"\" />";
 		$this->assertEquals($expected, $this->testClass->compile());
 	}
 
