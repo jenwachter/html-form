@@ -17,13 +17,12 @@ class Select extends Parents\Option
 		$html = "{$this->compiledLabel}";
 		$html .= "<select name=\"{$this->name}\" {$this->compiledAttr}>";
 
-
 		// handle options in an associative array differently than ones in a numeric array
 		if ($hasOptionValue || $this->useNumericValue) {
 
 			foreach ($this->options as $k => $v) {
 				$html .= "<option value=\"{$k}\"";
-				if ($value === $k || (int) $value === $k) {
+				if ($value === $k || (is_numeric($value) && (int) $value === $k)) {
 					$html .= " selected=\"selected\"";
 				}
 				$html .= ">{$v}</option>";
