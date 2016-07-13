@@ -93,7 +93,7 @@ class Form extends Abstracts\Addable
 
 	public function addHoneypot($args = array())
 	{
-		$element = new \HtmlForm\Elements\Honeypot(sha1($this->config["id"]), "Do not enter content here", $args);
+		$element = new \HtmlForm\Elements\Honeypot(sha1($this->config["id"]), "", $args);
 		$this->elements[] = $element;
 
 		return $this;
