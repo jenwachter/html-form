@@ -30,7 +30,6 @@ class FormTest extends Base
 		$given = array();
 
 		$expected = array(
-			"method" => "post",
 			"action" => "index.php?test=aha",
 			"id" => "hfc",
 			"repopulate" => true,
@@ -48,12 +47,10 @@ class FormTest extends Base
 	public function testSetConfigWithData()
 	{
 		$given = array(
-			"action" => "otherPage.php",
-			"method" => "get"
+			"action" => "otherPage.php"
 		);
 
 		$expected = array(
-			"method" => "get",
 			"action" => "otherPage.php",
 			"id" => "hfc",
 			"repopulate" => true,

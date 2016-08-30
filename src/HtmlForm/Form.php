@@ -55,7 +55,6 @@ class Form extends Abstracts\Addable
 	public function setConfig($config)
 	{
 		$defaults = array(
-			"method" => "post",
 			"action" => $this->buildAction(),
 			"id" => "hfc",
 			"repopulate" => true,
@@ -148,9 +147,7 @@ class Form extends Abstracts\Addable
 	protected function saveToSession()
 	{
 		if ($this->config["repopulate"]) {
-			$data = strtolower($_SERVER["REQUEST_METHOD"]) == "post" ? $_POST : $_GET;
-
-			foreach ($data as $k => $v) {
+			foreach ($_POST as $k => $v) {
 				$_SESSION[$this->config["id"]][$k] = $v;
 			}
 		}
