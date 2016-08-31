@@ -35,7 +35,7 @@ class FieldTest extends \HtmlForm\tests\Base
 		);
 
 		$this->testClass->extractArgs($given);
-        $this->assertEquals(true, $this->testClass->required);
+    $this->assertEquals(true, $this->testClass->required);
 	}
 
 	public function testExtractArgsWithInvalidArgument()
@@ -77,6 +77,41 @@ class FieldTest extends \HtmlForm\tests\Base
 		$this->setProperty("name", "doesNotExist");
 		$value = $this->testClass->getRawValue();
 		$this->assertNull($value);
+	}
+
+	public function testGetDisplayValue()
+	{
+		$method = $this->getMethod("getDisplayValue");
+
+		// // if nothing set
+		// $result = $method->invoke($this->testClass);
+		// $this->assertEquals("default", $result);
+
+		// if set in $_POST
+		$_POST["testField"] = "hi";
+		$result = $method->invoke($this->testClass);
+		$this->assertEquals("hi", $result);
+
+		// // if set in $_SESSION
+		// $this->setProperty("formid", "theformid");
+		// $_SESSION["theformid"]["testField"] = "hello";
+		// $result = $method->invoke($this->testClass);
+		// $this->assertEquals("hello", $result);
+	}
+
+	public function testCleanValue()
+	{
+		$method = $this->getMethod("cleanValue");
+
+		$given = "Something\'s gotta give";
+		$expected = stripslashes($given);
+		$result = $method->invoke($this->testClass, $given);
+		$this->assertEquals($expected, $result);
+
+		$given = array($given);
+		$expected = array($expected);
+		$result = $method->invoke($this->testClass, $given);
+		$this->assertEquals($expected, $result);
 	}
 
 	public function testIsPattern()

@@ -81,10 +81,10 @@ abstract class Field
 	 * Assigns variables to object, compiles
 	 * label and attributes.
 	 *
-	 * @param string $name  Value of the "name" attribute of the form element
-	 * @param string $label Readable label attached to the form element.
-	 * @param array  $args  Associative array of additional options to pass
-	 *                      to the element. "attribute" => "value"
+	 * @param string $name   Value of the "name" attribute of the form element
+	 * @param string $label  Readable label attached to the form element.
+	 * @param array  $args   Associative array of additional options to pass
+	 *                       to the element. "attribute" => "value"
 	 */
 	public function __construct($name, $label, $args = array())
 	{
@@ -146,6 +146,41 @@ abstract class Field
 	{
 		$name = $this->name;
 		return !empty($_POST[$name]) ? $_POST[$name] : null;
+	}
+
+	/**
+	 * Get the value to display in the form field.
+	 * Either the value in the session, post data,
+	 * the default value, or nothing.
+	 * @return [type] [description]
+	 */
+	public function getDisplayValue()
+	{
+		// if (isset($_SESSION[$this->formid][$this->name])) {
+		// 	$value = $_SESSION[$this->formid][$this->name];
+		if (isset($_POST[$this->name])) {
+			$value = $_POST[$this->name];
+		} else {
+			$value = $this->defaultValue;
+		}
+
+		return $this->cleanValue($value);
+	}
+
+	/**
+	 * Clean a value up for repopulation in a form field
+	 * @param  mixed $value String or array
+	 * @return mixed
+	 */
+	protected function cleanValue($value)
+	{
+		if (is_array($value)) {
+			return array_map(function ($v) {
+				return $this->cleanValue($v);
+			}, $value);
+		} else {
+			return stripslashes($value);
+		}
 	}
 
 	/**

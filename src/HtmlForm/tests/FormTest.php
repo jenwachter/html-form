@@ -115,41 +115,6 @@ class FormTest extends Base
 
 	}
 
-	public function testGetValue()
-	{
-		$method = $this->getMethod("getValue");
-
-		// if nothing set
-		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
-		$this->assertEquals("default", $result);
-
-		// if set in $_POST
-		$_POST["name"] = "hi";
-		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
-		$this->assertEquals("hi", $result);
-
-		// if set in $_SESSION
-		$this->setProperty("config", array("id" => "testing"));
-		$_SESSION["testing"]["name"] = "hello";
-		$result = $method->invoke($this->testClass, $this->mocks["textbox"]);
-		$this->assertEquals("hello", $result);
-	}
-
-	public function testCleanValue()
-	{
-		$method = $this->getMethod("cleanValue");
-
-		$given = "Something\'s gotta give";
-		$expected = stripslashes($given);
-		$result = $method->invoke($this->testClass, $given);
-		$this->assertEquals($expected, $result);
-
-		$given = array($given);
-		$expected = array($expected);
-		$result = $method->invoke($this->testClass, $given);
-		$this->assertEquals($expected, $result);
-	}
-
 	public function testDisplay()
 	{
 

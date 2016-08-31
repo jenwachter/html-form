@@ -154,42 +154,6 @@ class Form extends Abstracts\Addable
 	}
 
 	/**
-     * Gets the current value attribute of a form element
-     * @param  object $name 	Form element object
-     * @return string 			The form element's current value
-     */
-	protected function getValue($element)
-	{
-		$name = $element->name;
-
-		if (isset($_SESSION[$this->config["id"]][$name])) {
-			return $this->cleanValue($_SESSION[$this->config["id"]][$name] );
-
-		} else if (isset($_POST[$name])) {
-			return $this->cleanValue($_POST[$name]);
-
-		} else if (property_exists($element, "defaultValue")) {
-			return $this->cleanValue($element->defaultValue);
-
-		} else {
-			return "";
-		}
-	}
-
-	protected function cleanValue($value)
-	{
-		if (is_array($value)) {
-			$a = array();
-			foreach ($value as $v) {
-				$a[] = stripslashes($v);
-			}
-			return $a;
-		} else {
-			return stripslashes($value);
-		}
-	}
-
-	/**
 	 * Outputs the HTML form
 	 *
      * @return null
@@ -217,7 +181,7 @@ class Form extends Abstracts\Addable
 	 */
 	protected function getOpeningTag()
 	{
-		return "<form method=\"{$this->config["method"]}\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
+		return "<form method=\"post\" action=\"{$this->config["action"]}\" id=\"{$this->config["id"]}\" {$this->compiledAttr}>";
 	}
 
 	/**
@@ -251,7 +215,7 @@ class Form extends Abstracts\Addable
 			} else if (in_array("HtmlForm\Elements\Parents\Html", $classes)) {
 				$html .= $element->compile();
 			} else {
-				$value = $this->getValue($element);
+				$value = $element->getDisplayValue();
 				$html .= $this->beforeElement($element);
 				$html .= $element->compile($value);
 				$html .= $this->afterElement($element);
