@@ -13,7 +13,7 @@ class Form extends Abstracts\Addable
 	/**
 	 * Stores the compiled additional
 	 * attributes string.
-	 * @var [string
+	 * @var string
 	 */
 	protected $compiledAttr;
 
@@ -37,25 +37,19 @@ class Form extends Abstracts\Addable
 	{
 		$this->setConfig($config);
 		$this->validator = new \HtmlForm\Utility\Validator();
-
 		$this->compiledAttr = Utility\TextManipulator::arrayToTagAttributes($this->config["attr"]);
 	}
 
 	/**
-	 * Builds the "action" attribute, which defaults to
-	 * the current page plus any query sting
-	 *
-	 * @return string Form action
+	 * Merge passed config with default config.
+	 * @param array $config Form configuration
 	 */
-	protected function buildAction()
+	protected function setConfig($config)
 	{
-		return isset($_SERVER["QUERY_STRING"]) ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
-	}
+		$action = isset($_SERVER["QUERY_STRING"]) ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
 
-	public function setConfig($config)
-	{
 		$defaults = array(
-			"action" => $this->buildAction(),
+			"action" => $action,
 			"id" => "hfc",
 			"repopulate" => true,
 			"attr" => array(),
