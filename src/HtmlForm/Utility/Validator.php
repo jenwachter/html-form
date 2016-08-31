@@ -46,7 +46,7 @@ class Validator
 				$this->validate($element);
 			} else {
 				$label = $element->label;
-				$value = $element->getPostValue();
+				$value = $element->getRawValue();
 				$class = $this->findclass($element);
 
 				if ($class == "honeypot") {

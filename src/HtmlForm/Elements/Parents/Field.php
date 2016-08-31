@@ -139,11 +139,10 @@ abstract class Field
 	}
 
 	/**
-	 * Get the value of a specific field
-	 * in the post data
-	 * @return string Post value
+	 * Get the raw $_POST value of a field
+	 * @return string
 	 */
-	public function getPostValue()
+	public function getRawValue()
 	{
 		$name = $this->name;
 		return !empty($_POST[$name]) ? $_POST[$name] : null;

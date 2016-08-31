@@ -68,14 +68,14 @@ class FieldTest extends \HtmlForm\tests\Base
 		$this->assertEquals($expected, $this->testClass->compiledAttr);
 	}
 
-	public function testGetPostValue()
+	public function testgetRawValue()
 	{
 		// Uses value assigned in constructor
-		$value = $this->testClass->getPostValue();
+		$value = $this->testClass->getRawValue();
 		$this->assertEquals("test", $value);
 
 		$this->setProperty("name", "doesNotExist");
-		$value = $this->testClass->getPostValue();
+		$value = $this->testClass->getRawValue();
 		$this->assertNull($value);
 	}
 
