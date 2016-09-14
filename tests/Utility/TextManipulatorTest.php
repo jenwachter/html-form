@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Utility;
+namespace HtmlForm\Utility;
 
-class TextManipulatorTest extends \HtmlForm\tests\Base
+class TextManipulatorTest extends \HtmlForm\Base
 {
 	public function setUp()
 	{

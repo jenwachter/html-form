@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm;
 
 class FieldsetTest extends Base
 {

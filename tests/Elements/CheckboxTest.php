@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements;
+namespace HtmlForm\Elements;
 
-class CheckboxTest extends \HtmlForm\tests\Base
+class CheckboxTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;

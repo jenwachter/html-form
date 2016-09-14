@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements;
+namespace HtmlForm\Elements;
 
-class RadioTest extends \HtmlForm\tests\Base
+class RadioTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;

@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements\Parents;
+namespace HtmlForm\Elements\Parents;
 
-class OptionTest extends \HtmlForm\tests\Base
+class OptionTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;

@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Abstracts;
+namespace HtmlForm\Abstracts;
 
-class AddableTest extends \HtmlForm\tests\Base
+class AddableTest extends \HtmlForm\Base
 {
 	public function setUp()
 	{

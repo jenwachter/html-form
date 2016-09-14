@@ -18,8 +18,8 @@
     "php-mock/php-mock-phpunit": "^1.1"
   },
   "autoload": {
-    "psr-0" : {
-      "HtmlForm" : "src/"
+    "psr-4" : {
+      "HtmlForm\\" : ["src/", "tests/"]
     }
   }
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements\Parents;
+namespace HtmlForm\Elements\Parents;
 
-class TextboxTest extends \HtmlForm\tests\Base
+class TextboxTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;

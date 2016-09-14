@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Utility;
+namespace HtmlForm\Utility;
 
-class ValidatorTest extends \HtmlForm\tests\Base
+class ValidatorTest extends \HtmlForm\Base
 {
 	public function setUp()
 	{

@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements;
+namespace HtmlForm\Elements;
 
-class RangeTest extends \HtmlForm\tests\Base
+class RangeTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;

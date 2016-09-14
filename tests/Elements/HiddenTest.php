@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements;
+namespace HtmlForm\Elements;
 
-class HiddenTest extends \HtmlForm\tests\Base
+class HiddenTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;

@@ -1,6 +1,6 @@
 <?php
 
-namespace HtmlForm\tests;
+namespace HtmlForm;
 
 abstract class Base extends \PHPUnit_Framework_TestCase
 {

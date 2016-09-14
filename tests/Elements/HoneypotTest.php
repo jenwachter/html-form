@@ -1,8 +1,8 @@
 <?php
 
-namespace HtmlForm\tests\Elements\Parents;
+namespace HtmlForm\Elements\Parents;
 
-class HoneypotTest extends \HtmlForm\tests\Base
+class HoneypotTest extends \HtmlForm\Base
 {
 	protected $testClass;
 	protected $reflection;
