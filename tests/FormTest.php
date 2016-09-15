@@ -59,7 +59,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 	public function testRender()
 	{
-		$form = new \HtmlForm\Form();
+		$form = new \HtmlForm\Form(array("attr" => array("something" => "cool")));
 
 		$fieldset = $form->addFieldset("The Legend");
 		$fieldset->addTextbox("firstName", "first name", array(
@@ -70,7 +70,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$form->addText("testing", "<p>testing text</p>");
 		$form->addHoneypot();
 
-		$expected = '<form method="post" action="index.php?test=aha" id="hfc" ><fieldset><legend>The Legend</legend><div class="form_field clearfix"><label for="firstName"><span class=\'required\'>*</span> first name</label><input type="text" name="firstName"  value="" /></div></fieldset><p>testing text</p><div class="honeypot" style="display: none;"><input type="text" name="b2cedb9c4cedce6bd311f6e9c2c861e31dd3baf2"  value="" /></div></form>';
+		$expected = '<form method="post" action="index.php?test=aha" id="hfc" something="cool"><fieldset><legend>The Legend</legend><div class="form_field clearfix"><label for="firstName"><span class=\'required\'>*</span> first name</label><input type="text" name="firstName"  value="" /></div></fieldset><p>testing text</p><div class="honeypot" style="display: none;"><input type="text" name="b2cedb9c4cedce6bd311f6e9c2c861e31dd3baf2"  value="" /></div></form>';
 
 		$result = $form->render();
 		$this->assertEquals($expected, $result);
@@ -88,7 +88,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 	public function testIsValidNoValue()
 	{
-		$form = new \HtmlForm\Form(array("repopulate" => true));
+		$form = new \HtmlForm\Form();
 		$form->addTextbox("firstName", "first name", array("required" => true));
 
 		// no value found in post, returns false
@@ -96,12 +96,11 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($result);
 	}
 
-	public function testIsValidPostValue()
+	public function testIsValid()
 	{
-		$form = new \HtmlForm\Form(array("repopulate" => true));
-		$form->addTextbox("testField", "test field", array("required" => true));
+		$form = new \HtmlForm\Form();
 
-		// post value, return true
+		// nothing in form to check, value
 		$result = $form->isValid();
 		$this->assertTrue($result);
 	}
