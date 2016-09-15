@@ -4,5 +4,7 @@
 		<server name="PHP_SELF" value="index.php"/>
 		<server name="QUERY_STRING" value="test=aha"/>
 		<post name="testField" value="test"/>
+		<post name="number" value="1"/>
+		<post name="numberPattern" value="11"/>
 	</php>
 </phpunit>

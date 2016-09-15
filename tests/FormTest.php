@@ -85,23 +85,4 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$result = $form->render();
 		$this->assertEquals($expected, $result);
 	}
-
-	public function testIsValidNoValue()
-	{
-		$form = new \HtmlForm\Form();
-		$form->addTextbox("firstName", "first name", array("required" => true));
-
-		// no value found in post, returns false
-		$result = $form->isValid();
-		$this->assertFalse($result);
-	}
-
-	public function testIsValid()
-	{
-		$form = new \HtmlForm\Form();
-
-		// nothing in form to check, value
-		$result = $form->isValid();
-		$this->assertTrue($result);
-	}
 }
