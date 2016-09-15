@@ -8,7 +8,7 @@ class Form extends Abstracts\Addable
 	 * Form configuration
 	 * @var array
 	 */
-	protected $config = array();
+	public $config = array();
 
 	/**
 	 * Stores the compiled additional
@@ -44,7 +44,7 @@ class Form extends Abstracts\Addable
 	 * Merge passed config with default config.
 	 * @param array $config Form configuration
 	 */
-	protected function setConfig($config)
+	public function setConfig($config)
 	{
 		$action = isset($_SERVER["QUERY_STRING"]) ? $_SERVER["PHP_SELF"] . "?" . $_SERVER["QUERY_STRING"] : $_SERVER["PHP_SELF"];
 
@@ -205,7 +205,7 @@ class Form extends Abstracts\Addable
 			} else if (in_array("HtmlForm\Elements\Parents\Html", $classes)) {
 				$html .= $element->compile();
 			} else {
-				$value = $element->getDisplayValue();
+				$value = $element->getDisplayValue($this->config["id"]);
 				$html .= $this->beforeElement($element);
 				$html .= $element->compile($value);
 				$html .= $this->afterElement($element);

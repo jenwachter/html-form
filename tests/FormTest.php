@@ -2,31 +2,12 @@
 
 namespace HtmlForm;
 
-class FormTest extends Base
+class FormTest extends \PHPUnit_Framework_TestCase
 {
-	protected $testClass;
-
-	public function setUp()
-	{
-		$this->testClass = new \HtmlForm\Form();
-		parent::setUp();
-
-		$this->mocks = array(
-			"textbox" => $this->getMock("\\HtmlForm\\Elements\\Textbox", array("compileLabel"), array("name", "label", array(
-				"beforeElement" => "<div class=\"before\">",
-				"afterElement" => "</div>",
-				"defaultValue" => "default"
-			)))
-		);
-	}
-
-	public function testBuildAction()
-	{
-
-	}
-
 	public function testSetConfigWithNoUserConfig()
 	{
+		$form = new \HtmlForm\Form();
+
 		$given = array();
 
 		$expected = array(
@@ -38,14 +19,14 @@ class FormTest extends Base
 			"afterElement" => ""
 		);
 
-		$method = $this->getMethod("setConfig");
-		$method->invoke($this->testClass, $given);
-
-		$this->assertEquals($expected, $this->getProperty("config"));
+		$result = $form->setConfig($given);
+		$this->assertEquals($expected, $form->config);
 	}
 
 	public function testSetConfigWithData()
 	{
+		$form = new \HtmlForm\Form();
+
 		$given = array(
 			"action" => "otherPage.php"
 		);
@@ -59,110 +40,69 @@ class FormTest extends Base
 			"afterElement" => ""
 		);
 
-		$method = $this->getMethod("setConfig");
-		$method->invoke($this->testClass, $given);
-
-		$this->assertEquals($expected, $this->getProperty("config"));
-	}
-
-	public function testBeforeElement()
-	{
-		$method = $this->getMethod("beforeElement");
-
-		$beforeElement = $method->invoke($this->testClass, $this->mocks["textbox"]);
-		$this->assertEquals("<div class=\"before\">", $beforeElement);
-	}
-
-	public function testAfterElement()
-	{
-		$method = $this->getMethod("afterElement");
-
-		$afterElement = $method->invoke($this->testClass, $this->mocks["textbox"]);
-		$this->assertEquals("</div>", $afterElement);
-	}
-
-	public function testAddHoneypot()
-	{
-
-	}
-
-	public function testAddFieldset()
-	{
-
-	}
-
-	public function testIsValid()
-	{
-
-	}
-
-	public function testPassedHoneypot()
-	{
-
+		$result = $form->setConfig($given);
+		$this->assertEquals($expected, $form->config);
 	}
 
 	public function testSetErrorMessage()
 	{
+		$form = new \HtmlForm\Form();
+
 		$given = "My custom error.";
-		$this->testClass->setErrorMessage($given);
+		$expected = '<div class="alert alert-error"><p class="alert-heading">The following error was found:</p><ul><li>My custom error.</li></ul></div><form method="post" action="index.php?test=aha" id="hfc" ></form>';
 
-		$validator = $this->getProperty("validator");
-		$this->assertContains($given, $validator->errors);
-	}
+		$form->setErrorMessage($given);
+		$result = $form->render();
 
-	public function testSaveToSession()
-	{
-
-	}
-
-	public function testDisplay()
-	{
-
+		$this->assertContains($expected, $result);
 	}
 
 	public function testRender()
 	{
+		$form = new \HtmlForm\Form();
 
-	}
-
-	public function testGetOpeningTag()
-	{
-
-	}
-
-	public function testGetClosingTag()
-	{
-		$method = $this->getMethod("getClosingTag");
-		$result = $method->invoke($this->testClass);
-		$this->assertEquals("</form>", $result);
-	}
-
-	public function testRenderElementsWithAddable()
-	{
-		// add fieldset
-		$fieldset = new \HtmlForm\Fieldset("The Legend");
-		$fieldset->elements[] = new \HtmlForm\Elements\Textbox("firstName", "first name", array(
+		$fieldset = $form->addFieldset("The Legend");
+		$fieldset->addTextbox("firstName", "first name", array(
 			"required" => true,
 			"beforeElement" => "<div class=\"form_field clearfix\">",
 			"afterElement" => "</div>"
 		));
+		$form->addText("testing", "<p>testing text</p>");
+		$form->addHoneypot();
 
-		$this->setProperty("elements", array($fieldset));
-		$expected = "<form method=\"post\" action=\"index.php?test=aha\" id=\"hfc\" ><fieldset><legend>The Legend</legend><div class=\"form_field clearfix\"><label for=\"firstName\"><span class='required'>*</span> first name</label><input type=\"text\" name=\"firstName\"  value=\"\" /></div></fieldset></form>";
+		$expected = '<form method="post" action="index.php?test=aha" id="hfc" ><fieldset><legend>The Legend</legend><div class="form_field clearfix"><label for="firstName"><span class=\'required\'>*</span> first name</label><input type="text" name="firstName"  value="" /></div></fieldset><p>testing text</p><div class="honeypot" style="display: none;"><input type="text" name="b2cedb9c4cedce6bd311f6e9c2c861e31dd3baf2"  value="" /></div></form>';
 
-		$method = $this->getMethod("renderElements");
-
-		$result = $method->invoke($this->testClass, $this->testClass);
-
+		$result = $form->render();
 		$this->assertEquals($expected, $result);
 	}
 
-	public function testRenderElementsWithoutAddable()
+	public function testRenderWithEmptyForm()
 	{
-		$method = $this->getMethod("renderElements");
+		$form = new \HtmlForm\Form();
 
-		$result = $method->invoke($this->testClass, array());
+		$expected = '<form method="post" action="index.php?test=aha" id="hfc" ></form>';
 
-		$this->assertEquals(null, $result);
+		$result = $form->render();
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testIsValidNoValue()
+	{
+		$form = new \HtmlForm\Form(array("repopulate" => true));
+		$form->addTextbox("firstName", "first name", array("required" => true));
+
+		// no value found in post, returns false
+		$result = $form->isValid();
+		$this->assertFalse($result);
+	}
+
+	public function testIsValidPostValue()
+	{
+		$form = new \HtmlForm\Form(array("repopulate" => true));
+		$form->addTextbox("testField", "test field", array("required" => true));
+
+		// post value, return true
+		$result = $form->isValid();
+		$this->assertTrue($result);
 	}
 }

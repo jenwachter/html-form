@@ -152,13 +152,14 @@ abstract class Field
 	 * Get the value to display in the form field.
 	 * Either the value in the session, post data,
 	 * the default value, or nothing.
+	 * @param  string Form ID
 	 * @return [type] [description]
 	 */
-	public function getDisplayValue()
+	public function getDisplayValue($formid = null)
 	{
-		// if (isset($_SESSION[$this->formid][$this->name])) {
-		// 	$value = $_SESSION[$this->formid][$this->name];
-		if (isset($_POST[$this->name])) {
+		if ($formid && isset($_SESSION[$formid][$this->name])) {
+			$value = $_SESSION[$formid][$this->name];
+		} else if (isset($_POST[$this->name])) {
 			$value = $_POST[$this->name];
 		} else {
 			$value = $this->defaultValue;
