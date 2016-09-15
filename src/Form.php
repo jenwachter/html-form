@@ -194,10 +194,6 @@ class Form extends Abstracts\Addable
 	 */
 	protected function renderElements($addable)
 	{
-		if (!is_object($addable) || is_object($addable) && !in_array("HtmlForm\Abstracts\Addable", class_parents($addable))) {
-			return;
-		}
-
 		$html = $addable->getOpeningTag();
 
 		foreach ($addable->elements as $element) {
