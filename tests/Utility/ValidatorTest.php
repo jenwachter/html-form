@@ -37,21 +37,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals(array(), $result);
   }
 
-  public function testHoneypot()
-  {
-    // test pass
-    $form = new \HtmlForm\Form();
-    $form->addHoneypot();
-
-    $result = $this->testClass->validate($form);
-    $this->assertEquals(array(), $result);
-
-    // test fail
-    $element = $this->mocks["pattern"];
-    $result = $this->testClass->honeypot("label", "string", $element);
-    $this->assertFalse($result);
-  }
-
   public function testValidateElement()
   {
     // hit all the element checks
@@ -87,6 +72,32 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
 
     $result = $this->testClass->required("label", "a value", $element);
     $this->assertTrue($result);
+  }
+
+  public function testEmail()
+  {
+    $element = $this->mocks["textbox"];
+
+    $result = $this->testClass->email("label", "test@test.com", $element);
+    $this->assertTrue($result);
+
+    $result = $this->testClass->email("label", "test@test", $element);
+    $this->assertFalse($result);
+  }
+
+  public function testHoneypot()
+  {
+    // test pass
+    $form = new \HtmlForm\Form();
+    $form->addHoneypot();
+
+    $result = $this->testClass->validate($form);
+    $this->assertEquals(array(), $result);
+
+    // test fail
+    $element = $this->mocks["pattern"];
+    $result = $this->testClass->honeypot("label", "string", $element);
+    $this->assertFalse($result);
   }
 
   public function testNumber()
@@ -128,17 +139,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($result);
 
     $result = $this->testClass->url("label", "www.google.com", $element);
-    $this->assertFalse($result);
-  }
-
-  public function testEmail()
-  {
-    $element = $this->mocks["textbox"];
-
-    $result = $this->testClass->email("label", "test@test.com", $element);
-    $this->assertTrue($result);
-
-    $result = $this->testClass->email("label", "test@test", $element);
     $this->assertFalse($result);
   }
 

@@ -123,6 +123,52 @@ class Validator
 		return true;
 	}
 
+	public function date($label, $value, $element)
+	{
+		
+	}
+
+	/**
+	 * Validates an email form element.
+	 *
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
+	public function email($label, $value, $element)
+	{
+		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+			$this->pushError("\"{$label}\" must be a valid email address.");
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validates a honeypot form attribute. If there is an
+	 * error, it is not added to the regular errors array,
+	 * but is added to the $honeypotError property. If the
+	 * form failed the honeypot test, you can catch this and
+	 * make the bot think you submitted the form, but
+	 * on the backend, just ignore it.
+	 *
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
+	public function honeypot($label, $value, $element)
+	{
+		if (!is_null($value)) {
+			$this->honeypotError = true;
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * Validates a number form element.
 	 *
@@ -185,24 +231,6 @@ class Validator
 	}
 
 	/**
-	 * Validates an email form element.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function email($label, $value, $element)
-	{
-		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-			$this->pushError("\"{$label}\" must be a valid email address.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Validates a form element with a pattern attribute.
 	 *
 	 * @param  string $label   Form element label
@@ -216,29 +244,6 @@ class Validator
 
 		if (!preg_match("/{$pattern}/", $value)) {
 			$this->pushError("\"{$label}\" must be match the specificed pattern.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Validates a honeypot form attribute. If there is an
-	 * error, it is not added to the regular errors array,
-	 * but is added to the $honeypotError property. If the
-	 * form failed the honeypot test, you can catch this and
-	 * make the bot think you submitted the form, but
-	 * on the backend, just ignore it.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function honeypot($label, $value, $element)
-	{
-		if (!is_null($value)) {
-			$this->honeypotError = true;
 			return false;
 		}
 
