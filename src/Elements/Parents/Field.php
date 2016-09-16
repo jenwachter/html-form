@@ -55,7 +55,7 @@ abstract class Field
 	 * "attribute" => "value"
 	 * @var array
 	 */
-	protected $attr = array();
+	public $attr = array();
 
 	/**
 	 * Default value of the form field
@@ -92,6 +92,8 @@ abstract class Field
 		$this->label = $label;
 
 		$textManipulator = new \HtmlForm\Utility\TextManipulator();
+		$this->attr = !empty($args["attr"]) ? $args["attr"] : array();
+
 		$this->compiledAttr = !empty($args["attr"]) ? $textManipulator->arrayToTagAttributes($args["attr"]) : null;
 
 		$this->extractArgs($args);
