@@ -113,7 +113,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function required($label, $value, $element)
+	public function required($label, $value, $element)
 	{
 		if (empty($value)) {
 			$this->pushError("\"{$label}\" is a required field.");
@@ -131,7 +131,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function number($label, $value, $element)
+	public function number($label, $value, $element)
 	{
 		if (!is_numeric($value)) {
 			$this->pushError("\"{$label}\" must be a number.");
@@ -149,7 +149,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function range($label, $value, $element)
+	public function range($label, $value, $element)
 	{
 		$min = $element->min;
 		$max = $element->max;
@@ -174,7 +174,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function url($label, $value, $element)
+	public function url($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_URL)) {
 			$this->pushError("\"{$label}\" must be a valid URL.");
@@ -192,7 +192,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function email($label, $value, $element)
+	public function email($label, $value, $element)
 	{
 		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
 			$this->pushError("\"{$label}\" must be a valid email address.");
@@ -210,7 +210,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function pattern($label, $value, $element)
+	public function pattern($label, $value, $element)
 	{
 		$pattern = trim($element->attr["pattern"], "/");
 
@@ -235,7 +235,7 @@ class Validator
 	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	protected function honeypot($label, $value, $element)
+	public function honeypot($label, $value, $element)
 	{
 		if (!is_null($value)) {
 			$this->honeypotError = true;
