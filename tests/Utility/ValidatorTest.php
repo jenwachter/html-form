@@ -74,6 +74,26 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase
     $this->assertTrue($result);
   }
 
+  public function testDate()
+  {
+    $element = $this->mocks["textbox"];
+
+    $result = $this->testClass->date("label", "2014-10-22", $element);
+    $this->assertTrue($result);
+
+    $result = $this->testClass->date("label", "2014-1-20", $element);
+    $this->assertFalse($result);
+
+    $result = $this->testClass->date("label", "2014-11-2", $element);
+    $this->assertFalse($result);
+
+    $result = $this->testClass->date("label", "2014-20-30", $element);
+    $this->assertFalse($result);
+
+    $result = $this->testClass->date("label", "2014-11-40", $element);
+    $this->assertFalse($result);
+  }
+
   public function testEmail()
   {
     $element = $this->mocks["textbox"];
