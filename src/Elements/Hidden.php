@@ -18,12 +18,6 @@ class Hidden extends Parents\Textbox
 	 */
 	public function compile($value = "")
 	{
-		$html = "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
-
-		if (!empty($this->help)) {
-			$html .= "<div class='help'>{$this->help}</div>";
-		}
-		
-		return $html;
+		return "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
 	}
 }
