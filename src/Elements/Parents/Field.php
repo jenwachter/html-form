@@ -94,8 +94,8 @@ abstract class Field
 		$textManipulator = new \HtmlForm\Utility\TextManipulator();
 		$this->compiledAttr = !empty($args["attr"]) ? $textManipulator->arrayToTagAttributes($args["attr"]) : null;
 
-		$this->extractArgs($args)
-			->compileLabel();
+		$this->extractArgs($args);
+		$this->compileLabel();
 	}
 
 	/**
@@ -123,7 +123,6 @@ abstract class Field
 				throw new \InvalidArgumentException("{$k} is not a valid option.");
 			}
 		}
-		return $this;
 	}
 
 	/**
