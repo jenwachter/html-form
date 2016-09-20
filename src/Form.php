@@ -109,12 +109,7 @@ class Form extends Abstracts\Addable
 	public function isValid()
 	{
 		$this->saveToSession();
-
-		if ($this->validator->validate($this)) {
-			return false;
-		} else {
-			return true;
-		}
+		return $this->validator->validate($this);
 	}
 
 	public function passedHoneypot()

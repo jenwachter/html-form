@@ -78,6 +78,12 @@ abstract class Field
 	protected $compiledAttr;
 
 	/**
+	 * Errors found on this fild
+	 * @var array
+	 */
+	public $errors = array();
+
+	/**
 	 * Assigns variables to object, compiles
 	 * label and attributes.
 	 *
@@ -186,14 +192,81 @@ abstract class Field
 	}
 
 	/**
-	 * Determines whether this form field has a
-	 * "pattern" attribute.
+	 * Validate a field
+	 * @return boolean TRUE is valid; FALSE if invalid
+	 */
+	public function validate()
+	{
+		$this->errors = array();
+		$value = $this->getRawValue();
+
+		if ($this->required) {
+
+			$passed = $this->validateRequired($value);
+
+			// don't do anymore validation until it passes the required validation
+			if (!$passed) return $this->errors;
+
+			// validate by field type
+			$this->validateType($value);
+
+			// validate by pattern, if defined
+			$this->validatePattern($value);
+
+			// hook for users?
+
+		}
+
+		return $this->errors;
+	}
+
+	/**
+	 * Validates a required form element.
+	 *
+	 * @param  string $value   Current value of form field
 	 * @return boolean
 	 */
-	public function isPattern()
+	public function validateRequired($value)
 	{
-		$attr = array_keys($this->attr);
-		return in_array("pattern", $attr);
+		if (empty($value)) {
+			$this->errors[] = "\"{$this->label}\" is a required field.";
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validation function based on field type
+	 * Can be overwritten by user if needed
+	 * @param  string $value   Current value of form field
+	 * @return boolean
+	 */
+	public function validateType($value)
+	{
+		return true;
+	}
+
+	/**
+	 * Validates a form element with a pattern attribute.
+	 *
+	 * @param  string $label   Form element label
+	 * @param  string $value   Current value of form field
+	 * @param  string $element Form element object
+	 * @return boolean TRUE if passed validation; FALSE if failed validation
+	 */
+	public function validatePattern($value)
+	{
+		if (!isset($this->attr["pattern"])) return true;
+
+		$pattern = trim($this->attr["pattern"], "/");
+
+		if (!preg_match("/{$pattern}/", $value)) {
+			$this->errors[] = "\"{$this->label}\" must match the specified pattern.";
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

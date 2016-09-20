@@ -14,4 +14,14 @@ class EmailTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals($expected, $value);
 	}
 
+	public function testValidateType()
+  {
+    $field = new Email("test", "Test");
+
+		$result = $field->validateType("test@test.com");
+		$this->assertTrue($result);
+
+		$result = $field->validateType("test@test");
+		$this->assertFalse($result);
+  }
 }

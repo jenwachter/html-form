@@ -14,4 +14,14 @@ class UrlTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals($expected, $value);
 	}
 
+	public function testValidateType()
+	{
+		$field = new Url("test", "Test");
+
+		$result = $field->validateType("https://www.google.com");
+    $this->assertTrue($result);
+
+    $result = $field->validateType("www.google.com");
+    $this->assertFalse($result);
+	}
 }

@@ -9,4 +9,14 @@ class Number extends Parents\Textbox
 	 * @var string
 	 */
 	protected $type = "number";
+
+	public function validateType($value)
+	{
+		if (!is_numeric($value)) {
+			$this->errors[] = "\"{$this->label}\" must be a number.";
+			return false;
+		}
+
+		return true;
+	}
 }
