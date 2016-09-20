@@ -39,29 +39,31 @@ class Validator
 			}
 
 			if (in_array("HtmlForm\Abstracts\Addable", $classes)) {
-				$this->validate($element);
+
+				// validate this addable (fieldset)
+				$moreErrors = $this->validate($element);
+
 			} else {
-				$label = $element->label;
-				$value = $element->getRawValue();
+
 				$class = $this->findclass($element);
 
 				if ($class == "honeypot") {
-					$this->honeypot($label, $value, $element);
+					$value = $element->getRawValue();
+					$this->honeypot($value);
+					continue;
 				}
 
-				if ($element->required && $this->required($label, $value, $element)) {
+				// validate this element
+				$elementErrors = $element->validate();
 
-					if (method_exists($this, $class)) {
-						$this->$class($label, $value, $element);
-					}
-					if ($element->isPattern()) {
-						$this->pattern($label, $value, $element);
-					}
-				}
+				// add new errors to the list
+				$this->errors = array_merge($this->errors, $elementErrors);
+
 			}
 
 		}
-		return $this->errors;
+
+		return empty($this->errors);
 	}
 
 	public function renderErrors()
@@ -106,123 +108,6 @@ class Validator
 	}
 
 	/**
-	 * Validates a required form element.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function required($label, $value, $element)
-	{
-		if (empty($value)) {
-			$this->pushError("\"{$label}\" is a required field.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Validates a number form element.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function number($label, $value, $element)
-	{
-		if (!is_numeric($value)) {
-			$this->pushError("\"{$label}\" must be a number.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Validates a range form element.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function range($label, $value, $element)
-	{
-		$min = $element->min;
-		$max = $element->max;
-
-		if (!$this->number($label, $value, $element)) {
-			return false;
-		}
-
-		if ($value < $min || $value > $max) {
-			$this->pushError("\"{$label}\" must be a number between {$min} and {$max}.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Validates a URL form element.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function url($label, $value, $element)
-	{
-		if (!filter_var($value, FILTER_VALIDATE_URL)) {
-			$this->pushError("\"{$label}\" must be a valid URL.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Validates an email form element.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function email($label, $value, $element)
-	{
-		if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-			$this->pushError("\"{$label}\" must be a valid email address.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * Validates a form element with a pattern attribute.
-	 *
-	 * @param  string $label   Form element label
-	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
-	 * @return boolean TRUE if passed validation; FALSE if failed validation
-	 */
-	public function pattern($label, $value, $element)
-	{
-		$pattern = trim($element->attr["pattern"], "/");
-
-		if (!preg_match("/{$pattern}/", $value)) {
-			$this->pushError("\"{$label}\" must be match the specificed pattern.");
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Validates a honeypot form attribute. If there is an
 	 * error, it is not added to the regular errors array,
 	 * but is added to the $honeypotError property. If the
@@ -230,18 +115,13 @@ class Validator
 	 * make the bot think you submitted the form, but
 	 * on the backend, just ignore it.
 	 *
-	 * @param  string $label   Form element label
 	 * @param  string $value   Current value of form field
-	 * @param  string $element Form element object
 	 * @return boolean TRUE if passed validation; FALSE if failed validation
 	 */
-	public function honeypot($label, $value, $element)
+	public function honeypot($value)
 	{
 		if (!is_null($value)) {
 			$this->honeypotError = true;
-			return false;
 		}
-
-		return true;
 	}
 }

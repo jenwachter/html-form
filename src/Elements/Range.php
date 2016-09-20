@@ -27,7 +27,7 @@ class Range extends Parents\Textbox
 	/**
 	 * Runs the parent constructor and also saves the minimum
 	 * and maximum values acceptable to this object.
-	 * 
+	 *
 	 * @param string $name  	Value of the "name" attribute of the form element
 	 * @param string $label 	Readable label attached to the form element.
 	 * @param string $min 		Minimum value this form field can have to pass validation
@@ -43,5 +43,19 @@ class Range extends Parents\Textbox
 
 		$this->min = $min;
 		$this->max = $max;
+	}
+
+	public function validateType($value)
+	{
+		if (!$this->number($label, $value, $element)) {
+			return false;
+		}
+
+		if ($value < $this->min || $value > $this->max) {
+			$this->errors[] = "\"{$this->label}\" must be a number between {$this->min} and {$this->max}.";
+			return false;
+		}
+
+		return true;
 	}
 }

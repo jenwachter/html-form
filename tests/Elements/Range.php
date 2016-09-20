@@ -14,4 +14,18 @@ class RangeTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals($expected, $value);
 	}
 
+	public function testValidateType()
+  {
+    $field = new Range("range", "range", 10, 20);
+
+		$result = $field->validateType("range", "NaN", $element);
+    $this->assertFalse($result);
+
+    $result = $field->validateType("range", 5, $element);
+    $this->assertFalse($result);
+
+    $result = $field->validateType("range", 15, $element);
+    $this->assertTrue($result);
+
+	}
 }
