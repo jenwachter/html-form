@@ -4,10 +4,10 @@ namespace HtmlForm\Utility;
 
 class SanitizerTest extends \PHPUnit_Framework_TestCase
 {
-  public function testValidateHtmlAndAddable()
+  public function testSanitize()
   {
     $given = array(
-      "field1" => "A string with an escaped apostrophe: it\'s",
+      "field1" => "<p>A <strong>string</strong> with an <script></script>escaped apostrophe: it\'s</p>",
       "field2" => array(
         "it\'s cool",
         "yeah it\'s cool"
@@ -15,7 +15,7 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase
     );
 
     $expected = array(
-      "field1" => "A string with an escaped apostrophe: it's",
+      "field1" => "<p>A <strong>string</strong> with an escaped apostrophe: it's</p>",
       "field2" => array(
         "it's cool",
         "yeah it's cool"
@@ -25,7 +25,8 @@ class SanitizerTest extends \PHPUnit_Framework_TestCase
     $sanitizer = new Sanitizer($given);
 
     $sanitizer
-      ->stripslashes();
+      ->stripslashes()
+      ->striptags(array("<p>", "<strong>"));
 
     $this->assertEquals($expected, $sanitizer->data);
   }
