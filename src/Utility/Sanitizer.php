@@ -22,7 +22,15 @@ class Sanitizer
   public function stripslashes()
   {
     foreach ($this->data as $key => &$value) {
-      $value = stripslashes($value);
+
+      if (!is_array($value)) {
+        $value = stripslashes($value);
+      } else {
+        $value = array_map(function ($v) {
+          return stripslashes($v);
+        }, $value);
+      }
+
     }
 
     return $this;
