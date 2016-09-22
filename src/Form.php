@@ -69,7 +69,7 @@ class Form extends Abstracts\Addable
 	 */
 	protected function beforeElement($element)
 	{
-		return $element->beforeElement ? $element->beforeElement : $this->config["beforeElement"];
+		return !is_null($element->beforeElement) ? $element->beforeElement : $this->config["beforeElement"];
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Form extends Abstracts\Addable
 	 */
 	protected function afterElement($element)
 	{
-		return $element->afterElement ? $element->afterElement : $this->config["afterElement"];
+		return !is_null($element->afterElement) ? $element->afterElement : $this->config["afterElement"];
 	}
 
 	public function addHoneypot($args = array())
