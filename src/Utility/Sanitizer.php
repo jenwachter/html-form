@@ -62,6 +62,16 @@ class Sanitizer
     $this->apply("stripslashes");
     return $this;
   }
+  
+  /**
+   * Convert special characters to HTML entities
+   * @return object self
+   */
+  public function htmlspecialchars()
+  {
+    $this->apply("htmlspecialchars");
+    return $this;
+  }
 
   /**
    * Remove tags from data
