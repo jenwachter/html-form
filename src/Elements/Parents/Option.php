@@ -58,7 +58,13 @@ abstract class Option extends Field
 	 */
 	public function compile($value = "")
 	{
-		$html = "{$this->compiledLabel}<div class=\"elements\">";
+		$html = $this->compiledLabel;
+
+		if (!empty($this->help)) {
+			$html .= "<div class='help'>{$this->help}</div>";
+		}
+
+		$html .= "<div class=\"elements\">";
 
 		$hasOptionValue = $this->hasOptionValue($this->options);
 
@@ -91,10 +97,6 @@ abstract class Option extends Field
 		}
 
 		$html .= "</div>";
-
-		if (!empty($this->help)) {
-			$html .= "<div class='help'>{$this->help}</div>";
-		}
 
 		return $html;
 	}

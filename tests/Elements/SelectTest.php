@@ -8,7 +8,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 	{
     $field = new Select("test", "Test", array("test", "blue"), array("help" => "help text"));
 
-    $expected = "<label for=\"test\">Test</label><select name=\"test\" ><option value=\"test\" selected=\"selected\">test</option><option value=\"blue\">blue</option></select><div class='help'>help text</div>";
+    $expected = "<label for=\"test\">Test</label><div class='help'>help text</div><select name=\"test\" ><option value=\"test\" selected=\"selected\">test</option><option value=\"blue\">blue</option></select>";
 		$value = $field->compile("test");
 
     $this->assertEquals($expected, $value);

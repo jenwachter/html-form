@@ -18,11 +18,13 @@ abstract class Textbox extends Field
 	 */
 	public function compile($value = "")
 	{
-		$html = "{$this->compiledLabel}<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
+		$html = $this->compiledLabel;
 
 		if (!empty($this->help)) {
 			$html .= "<div class='help'>{$this->help}</div>";
 		}
+
+		$html .= "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
 
 		return $html;
 	}

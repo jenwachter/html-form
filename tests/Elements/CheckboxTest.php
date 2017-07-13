@@ -10,7 +10,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase
       "help" => "help text"
     ));
 
-    $expected = "<label for=\"test\">Test</label><div class=\"elements\"><div class=\"element\"><input type=\"checkbox\"  name=\"test[]\" value=\"test\" checked=\"checked\" /> <span>test</span></div><div class=\"element\"><input type=\"checkbox\"  name=\"test[]\" value=\"blue\"  /> <span>blue</span></div></div><div class='help'>help text</div>";
+    $expected = "<label for=\"test\">Test</label><div class='help'>help text</div><div class=\"elements\"><div class=\"element\"><input type=\"checkbox\"  name=\"test[]\" value=\"test\" checked=\"checked\" /> <span>test</span></div><div class=\"element\"><input type=\"checkbox\"  name=\"test[]\" value=\"blue\"  /> <span>blue</span></div></div>";
 		$value = $field->compile("test");
 
     $this->assertEquals($expected, $value);

@@ -12,11 +12,13 @@ class Textarea extends Parents\Field
 	 */
 	public function compile($value = "")
 	{
-		$html = "{$this->compiledLabel}<textarea name=\"{$this->name}\" {$this->compiledAttr}>{$value}</textarea>";
-		
+		$html = $this->compiledLabel;
+
 		if (!empty($this->help)) {
 			$html .= "<div class='help'>{$this->help}</div>";
 		}
+
+		$html .= "<textarea name=\"{$this->name}\" {$this->compiledAttr}>{$value}</textarea>";
 
 		return $html;
 	}

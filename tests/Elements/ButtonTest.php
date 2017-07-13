@@ -11,7 +11,7 @@ class ButtonTest extends \PHPUnit_Framework_TestCase
       "help" => "help text"
     ));
 
-		$expected = "<input type=\"button\" name=\"testField\" something=\"cool\" value=\"Test Field\" /><div class='help'>help text</div>";
+		$expected = "<div class='help'>help text</div><input type=\"button\" name=\"testField\" something=\"cool\" value=\"Test Field\" />";
 		$this->assertEquals($expected, $field->compile());
 	}
 }

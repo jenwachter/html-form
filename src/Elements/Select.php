@@ -12,9 +12,14 @@ class Select extends Parents\Option
 	 */
 	public function compile($value = "")
 	{
+		$html = $this->compiledLabel;
+
+		if (!empty($this->help)) {
+			$html .= "<div class='help'>{$this->help}</div>";
+		}
+
 		$hasOptionValue = $this->hasOptionValue($this->options);
 
-		$html = "{$this->compiledLabel}";
 		$html .= "<select name=\"{$this->name}\" {$this->compiledAttr}>";
 
 		// handle options in an associative array differently than ones in a numeric array
@@ -40,10 +45,6 @@ class Select extends Parents\Option
 		}
 
 		$html .= "</select>";
-
-		if (!empty($this->help)) {
-			$html .= "<div class='help'>{$this->help}</div>";
-		}
 
 		return $html;
 	}
