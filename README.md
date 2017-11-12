@@ -61,25 +61,32 @@ if (isset($_POST["submit"]) && $form->isValid()) {
 
 ## Changelog
 
+* 0.7
+  * Moved location of help text to after label for accessibility
+* 0.6.2
+  * Added htmlspecialchars method
+* 0.6.1
+  * Bugfix
+* 0.6
+  * Added striptags sanitizer
+* 0.5
+  * Moved validation functions into element classes.
+  * Added sanitizer class
+* 0.4
+  * Removed `$_GET` support
+  * Improved unit tests
+* 0.3.3
+  * Removed label from honeypot
+* 0.3.2
+  * Removed rendering of global `beforeElement` and `afterElement` content before and after bits of HTML.
+* 0.3.1
+  * Bug fix
+* 0.3
+  * Added a flag that allows option form fields to use the numeric keys of the options array as the option field's value. [Issue #13](https://github.com/jenwachter/html-form/issues/13)
 
-#### 0.3.2
-
-* Removed rendering of global `beforeElement` and `afterElement` content before and after bits of HTML.
-
-#### 0.3.1
-
-* Bug fix
-
-#### 0.3
-
-* Added a flag that allows option form fields to use the numeric keys of the options array as the option field's value. [Issue #13](https://github.com/jenwachter/html-form/issues/13)
-
-#### 0.2
-
-* HtmlForm\Form
+* 0.2
+  * Method name changes in HtmlForm\Form:
     * render() is now display()
     * compileForm() is now render()
-
-#### 0.1
-
-* Initial release
+* 0.1
+  * Initial release
