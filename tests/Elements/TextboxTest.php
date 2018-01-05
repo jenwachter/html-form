@@ -29,12 +29,15 @@ class TextboxTest extends \PHPUnit_Framework_TestCase
 
 	public function testPattern()
   {
-    $field = new Textbox("test", "Test", array("attr" => array("pattern" => "/\d{4}/")));
+    $field = new Textbox("test", "Test", array("attr" => array("pattern" => "\d{4}")));
 
-    $result = $field->validatePattern("2016");
+    $result = $field->validatePattern(2016);
     $this->assertTrue($result);
 
     $result = $field->validatePattern("string");
+    $this->assertFalse($result);
+
+    $result = $field->validatePattern(123);
     $this->assertFalse($result);
   }
 }
