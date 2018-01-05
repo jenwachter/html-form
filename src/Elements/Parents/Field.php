@@ -213,6 +213,9 @@ abstract class Field
 			// validate by pattern, if defined
 			$this->validatePattern($value);
 
+      // validate by maxlength, if defined
+      $this->validateMaxLength($value);
+
 			// hook for users?
 
 		}
@@ -235,6 +238,27 @@ abstract class Field
 
 		return true;
 	}
+
+  /**
+	 * Validates the maximum length of a form element.
+	 *
+	 * @param  string $value   Current value of form field
+	 * @return boolean
+	 */
+  public function validateMaxLength($value)
+  {
+    if (!isset($this->attr["maxlength"])) return true;
+
+		$maxlength = trim($this->attr["maxlength"]);
+    $length = strlen($value);
+
+    if ($length > $maxlength) {
+      $this->errors[] =  "\"{$this->label}\" contains {$length} characters, but it is limited to {$maxlength} characters. Please shorten the length.";
+			return false;
+		}
+
+		return true;
+  }
 
 	/**
 	 * Validation function based on field type

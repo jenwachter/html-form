@@ -27,7 +27,7 @@ class TextboxTest extends \PHPUnit_Framework_TestCase
     $this->assertEquals($expected, $field->errors);
 	}
 
-	public function testPattern()
+  public function testPattern()
   {
     $field = new Textbox("test", "Test", array("attr" => array("pattern" => "\d{4}")));
 
@@ -39,5 +39,19 @@ class TextboxTest extends \PHPUnit_Framework_TestCase
 
     $result = $field->validatePattern(123);
     $this->assertFalse($result);
+  }
+
+  public function testMaxlength()
+  {
+    $field = new Textbox("test", "Test", array("attr" => array("maxlength" => 10)));
+
+    $result = $field->validateMaxlength("12345678901234");
+    $this->assertFalse($result);
+
+    $result = $field->validateMaxlength("1234567890");
+    $this->assertTrue($result);
+
+    $result = $field->validateMaxlength("1234");
+    $this->assertTrue($result);
   }
 }
