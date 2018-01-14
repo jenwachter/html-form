@@ -61,6 +61,8 @@ if (isset($_POST["submit"]) && $form->isValid()) {
 
 ## Changelog
 
+* 0.8
+  * Added server-side validation for maxlength attribute
 * 0.7
   * Moved location of help text to after label for accessibility
 * 0.6.2
