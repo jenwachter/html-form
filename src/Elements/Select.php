@@ -20,7 +20,7 @@ class Select extends Parents\Option
 
 		$hasOptionValue = $this->hasOptionValue($this->options);
 
-		$html .= "<select name=\"{$this->name}\" {$this->compiledAttr}>";
+		$html .= "<select id=\"{$this->name}_id\" name=\"{$this->name}\" {$this->compiledAttr}>";
 
 		// handle options in an associative array differently than ones in a numeric array
 		if ($hasOptionValue || $this->useNumericValue) {

@@ -18,7 +18,7 @@ class Textarea extends Parents\Field
 			$html .= "<div class='help'>{$this->help}</div>";
 		}
 
-		$html .= "<textarea name=\"{$this->name}\" {$this->compiledAttr}>{$value}</textarea>";
+		$html .= "<textarea id=\"{$this->name}_id\" name=\"{$this->name}\" {$this->compiledAttr}>{$value}</textarea>";
 
 		return $html;
 	}

@@ -24,7 +24,7 @@ abstract class Textbox extends Field
 			$html .= "<div class='help'>{$this->help}</div>";
 		}
 
-		$html .= "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
+		$html .= "<input id=\"{$this->name}_id\" type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$value}\" />";
 
 		return $html;
 	}

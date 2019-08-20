@@ -133,6 +133,12 @@ abstract class Field
 		}
 	}
 
+	protected function getLabelText()
+	{
+		$required = $this->required ? $this->requiredSymbol . " " : "";
+		return "{$required}{$this->label}";
+	}
+
 	/**
      * Builds the HTML for the label of a form element
      * @return self
@@ -140,7 +146,7 @@ abstract class Field
 	public function compileLabel()
 	{
 		$required = $this->required ? $this->requiredSymbol . " " : "";
-		$this->compiledLabel = "<label for=\"{$this->name}\">{$required}{$this->label}</label>";
+		$this->compiledLabel = "<label for=\"{$this->name}_id\">{$this->getLabelText()}</label>";
 
 		return $this;
 	}
