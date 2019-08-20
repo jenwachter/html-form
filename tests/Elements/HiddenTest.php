@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements;
 
-class HiddenTest extends \PHPUnit_Framework_TestCase
+class HiddenTest extends \PHPUnit\Framework\TestCase
 {
 	public function testCompile()
 	{

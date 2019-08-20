@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements;
 
-class ButtonTest extends \PHPUnit_Framework_TestCase
+class ButtonTest extends \PHPUnit\Framework\TestCase
 {
   public function testCompile()
 	{
