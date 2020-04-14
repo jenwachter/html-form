@@ -21,7 +21,7 @@ class Form extends Abstracts\Addable
 	 * Validator object
 	 * @var object
 	 */
-	protected $validator;
+	public $validator;
 
 	/**
 	 * Form elements contained within this object
