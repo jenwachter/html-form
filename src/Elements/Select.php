@@ -20,37 +20,37 @@ class Select extends Parents\Option
 			$html .= "<div class='help'>{$this->help}</div>";
 		}
 
-		$hasOptionValue = $this->hasOptionValue($this->options);
-
     $name = $this->multiple ? "{$this->name}[]" : $this->name;
     $attr = $this->multiple ? "{$this->compiledAttr} multiple=\"true\"" : $this->compiledAttr;
 
 		$html .= "<select id=\"{$this->name}_id\" name=\"{$name}\" {$attr}>";
 
-		// handle options in an associative array differently than ones in a numeric array
-		if ($hasOptionValue || $this->useNumericValue) {
-
-			foreach ($this->options as $k => $v) {
-				$html .= "<option value=\"{$k}\"";
-				if ($value === $k || (is_numeric($value) && (int) $value === $k)) {
-					$html .= " selected=\"selected\"";
-				}
-				$html .= ">{$v}</option>";
-			}
-
-		} else {
-
-			foreach ($this->options as $k => $v) {
-				$html .= "<option value=\"{$v}\"";
-				if ( $value === $v) {
-					$html .= " selected=\"selected\"";
-				}
-				$html .= ">{$v}</option>";
-			}
-		}
+    foreach ($this->options as $k => $v) {
+      $html .= "<option value=\"{$k}\"";
+      if ($this->isSelected($value, $k, $v)) {
+        $html .= " selected=\"selected\"";
+      }
+      $html .= ">{$v}</option>";
+    }
 
 		$html .= "</select>";
 
 		return $html;
 	}
+
+  protected function isSelected($postValue, $optionKey, $optionValue): bool
+  {
+    if (empty($postValue)) {
+      return false;
+    }
+
+    $postValue = (array) $postValue;
+
+    if ($this->hasOptionValue($this->options) || $this->useNumericValue) {
+      // handle options in an associative array differently than ones in a numeric array
+      return in_array($optionKey, $postValue);
+    } else {
+      return in_array($optionValue, $postValue);
+    }
+  }
 }
