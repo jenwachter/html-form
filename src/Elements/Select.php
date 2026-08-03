@@ -4,6 +4,8 @@ namespace HtmlForm\Elements;
 
 class Select extends Parents\Option
 {
+  protected $multiple = false;
+
 	/**
 	 * Builds the HTML of the form field.
 	 *
@@ -20,7 +22,10 @@ class Select extends Parents\Option
 
 		$hasOptionValue = $this->hasOptionValue($this->options);
 
-		$html .= "<select id=\"{$this->name}_id\" name=\"{$this->name}\" {$this->compiledAttr}>";
+    $name = $this->multiple ? "{$this->name}[]" : $this->name;
+    $attr = $this->multiple ? "{$this->compiledAttr} multiple=\"true\"" : $this->compiledAttr;
+
+		$html .= "<select id=\"{$this->name}_id\" name=\"{$name}\" {$attr}>";
 
 		// handle options in an associative array differently than ones in a numeric array
 		if ($hasOptionValue || $this->useNumericValue) {
