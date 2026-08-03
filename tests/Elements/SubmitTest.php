@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements;
 
-class SubmitTest extends \PHPUnit_Framework_TestCase
+class SubmitTest extends \PHPUnit\Framework\TestCase
 {
 	public function testCompile()
 	{

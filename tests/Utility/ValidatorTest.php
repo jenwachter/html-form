@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Utility;
 
-class ValidatorTest extends \PHPUnit_Framework_TestCase
+class ValidatorTest extends \PHPUnit\Framework\TestCase
 {
   public function testValidateHtmlAndAddable()
   {

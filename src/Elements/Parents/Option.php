@@ -58,13 +58,19 @@ abstract class Option extends Field
 	 */
 	public function compile($value = "")
 	{
-		$html = "{$this->compiledLabel}<div class=\"elements\">";
+		$html = "<div class=\"label\">{$this->getLabelText()}</div>";
+
+		if (!empty($this->help)) {
+			$html .= "<div class='help'>{$this->help}</div>";
+		}
+
+		$html .= "<div class=\"elements\">";
 
 		$hasOptionValue = $this->hasOptionValue($this->options);
 
 		foreach ($this->options as $k => $v) {
 
-			$html .= "<div class=\"element\"><input type=\"{$this->type}\" {$this->compiledAttr} ";
+			$html .= "<div class=\"element\"><label><input type=\"{$this->type}\" {$this->compiledAttr} ";
 			$html .= "name=\"" . $this->name;
 
 			if ($this->type == "checkbox") {
@@ -87,14 +93,10 @@ abstract class Option extends Field
 				}
 			}
 
-			$html .= " /> <span>{$v}</span></div>";
+			$html .= " /> <span>{$v}</span></label></div>";
 		}
 
 		$html .= "</div>";
-
-		if (!empty($this->help)) {
-			$html .= "<div class='help'>{$this->help}</div>";
-		}
 
 		return $html;
 	}

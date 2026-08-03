@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Utility;
 
-class SanitizerTest extends \PHPUnit_Framework_TestCase
+class SanitizerTest extends \PHPUnit\Framework\TestCase
 {
   public function testSanitize()
   {

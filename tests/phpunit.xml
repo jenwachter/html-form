@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit bootstrap="./bootstrap.php" colors="true">
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="false">
+      <directory suffix=".php">../src</directory>
+      <exclude>
+        <directory suffix=".php">../vendor</directory>
+      </exclude>
+    </whitelist>
+  </filter>
 	<php>
 		<server name="PHP_SELF" value="index.php"/>
 		<server name="QUERY_STRING" value="test=aha"/>

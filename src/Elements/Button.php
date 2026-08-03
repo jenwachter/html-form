@@ -18,11 +18,13 @@ class Button extends Parents\Field
 	 */
 	public function compile($value = "")
 	{
-		$html = "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$this->label}\" />";
-		
+		$html = "";
+
 		if (!empty($this->help)) {
 			$html .= "<div class='help'>{$this->help}</div>";
 		}
+
+		$html .= "<input type=\"{$this->type}\" name=\"{$this->name}\" {$this->compiledAttr} value=\"{$this->label}\" />";
 
 		return $html;
 	}

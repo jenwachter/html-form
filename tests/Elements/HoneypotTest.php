@@ -2,7 +2,7 @@
 
 namespace HtmlForm\Elements;
 
-class HoneypotTest extends \PHPUnit_Framework_TestCase
+class HoneypotTest extends \PHPUnit\Framework\TestCase
 {
 	public function testCompile()
 	{

@@ -2,13 +2,13 @@
 
 namespace HtmlForm\Elements;
 
-class EmailTest extends \PHPUnit_Framework_TestCase
+class EmailTest extends \PHPUnit\Framework\TestCase
 {
 	public function testCompile()
 	{
     $field = new Email("test", "Test");
 
-    $expected = "<label for=\"test\">Test</label><input type=\"email\" name=\"test\"  value=\"\" />";
+    $expected = "<label for=\"test_id\">Test</label><input id=\"test_id\" type=\"email\" name=\"test\"  value=\"\" />";
 		$value = $field->compile();
 
     $this->assertEquals($expected, $value);
