@@ -21,7 +21,7 @@ abstract class Field
 	 * is required.
 	 * @var string
 	 */
-	protected $requiredSymbol = "<span class='required'>*</span>";
+	protected $requiredSymbol = "<span class=\"required\">*</span>";
 
 	/**
 	 * Is the field required?

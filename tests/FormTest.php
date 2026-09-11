@@ -11,16 +11,16 @@ class FormTest extends \PHPUnit\Framework\TestCase
 
 		$form = new \HtmlForm\Form();
 
-		$given = array();
+		$given = [];
 
-		$expected = array(
-			"action" => "index.php?test=aha",
-			"id" => "hfc",
-			"repopulate" => true,
-			"attr" => array(),
-			"beforeElement" => "",
-			"afterElement" => ""
-		);
+		$expected = [
+      "action" => "index.php?test=aha",
+      "id" => "hfc",
+      "repopulate" => true,
+      "attr" => array(),
+      "beforeElement" => "",
+      "afterElement" => ""
+    ];
 
 		$result = $form->setConfig($given);
 		$this->assertEquals($expected, $form->config);
@@ -85,7 +85,7 @@ class FormTest extends \PHPUnit\Framework\TestCase
 		$form->addText("testing", "<p>testing text</p>");
 		$form->addHoneypot();
 
-		$expected = '<form method="post" action="index.php?test=aha" id="hfc" something="cool"><fieldset><legend>The Legend</legend><div class="form_field clearfix"><label for="firstName_id"><span class=\'required\'>*</span> first name</label><div class=\'help\'>help text</div><input id="firstName_id" type="text" name="firstName"  value="" /></div><label for="testField_id">test field</label><input id="testField_id" type="text" name="testField"  value="test" /></fieldset><p>testing text</p><div class="honeypot" style="display: none;"><input type="text" name="b2cedb9c4cedce6bd311f6e9c2c861e31dd3baf2"  value="" /></div></form>';
+		$expected = '<form method="post" action="index.php?test=aha" id="hfc" something="cool"><fieldset><legend>The Legend</legend><div class="form_field clearfix"><label for="firstName_id"><span class="required">*</span> first name</label><div class=\'help\'>help text</div><input id="firstName_id" type="text" name="firstName" required  value="" /></div><label for="testField_id">test field</label><input id="testField_id" type="text" name="testField"   value="test" /></fieldset><p>testing text</p><div class="honeypot" style="display: none;"><input type="text" name="b2cedb9c4cedce6bd311f6e9c2c861e31dd3baf2"  value="" /></div></form>';
 
 		$result = $form->render();
 		$this->assertEquals($expected, $result);

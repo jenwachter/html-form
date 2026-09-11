@@ -21,9 +21,11 @@ class Select extends Parents\Option
 		}
 
     $name = $this->multiple ? "{$this->name}[]" : $this->name;
+    $required = $this->required ? 'required' : '';
     $attr = $this->multiple ? "{$this->compiledAttr} multiple=\"true\"" : $this->compiledAttr;
 
-		$html .= "<select id=\"{$this->name}_id\" name=\"{$name}\" {$attr}>";
+		$html .= "<select id=\"{$this->name}_id\" name=\"{$name}\" {$required} {$attr}>";
+
     $assocOptions = !array_is_list($this->options);
 
     foreach ($this->options as $k => $v) {
