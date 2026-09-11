@@ -39,18 +39,6 @@ abstract class Option extends Field
 	}
 
 	/**
-     * Checks an array to see given array is associative. This solution
-     * was found on Stack Overflow: http://stackoverflow.com/a/4254008
-     *
-     * @param  array  $a Array to check
-     * @return boolean
-     */
-	protected function hasOptionValue($a)
-	{
-		return (bool) count(array_filter(array_keys($a), "is_string"));
-	}
-
-	/**
 	 * Builds the HTML of the form field.
 	 *
 	 * @param  string $value Value of the form field
@@ -66,7 +54,7 @@ abstract class Option extends Field
 
 		$html .= "<div class=\"elements\">";
 
-		$hasOptionValue = $this->hasOptionValue($this->options);
+		$assocOptions = !array_is_list($this->options);
 
 		foreach ($this->options as $k => $v) {
 
@@ -80,7 +68,7 @@ abstract class Option extends Field
 			$html .= "\" ";
 
 			// handle options in an associative array differently than ones in a numeric array
-			if ($hasOptionValue || $this->useNumericValue) {
+			if ($assocOptions || $this->useNumericValue) {
 				$html .= "value=\"{$k}\" ";
 				if ($k === $value || (is_array($value) && in_array($k, $value))) {
 					$html .= "checked=\"checked\"";
