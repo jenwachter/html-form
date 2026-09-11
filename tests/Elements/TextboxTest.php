@@ -14,18 +14,23 @@ class TextboxTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($expected, $value);
 	}
 
-	public function testRequiredValidation()
-	{
-		$field = new Textbox("test", "Test", array("required" => true));
-		$expected = array('"Test" is a required field.');
-		$field->validate();
+  public function testRequiredValidation__invalid()
+  {
+    $field = new Textbox("test", "Test", array("required" => true));
+    $expected = array('"Test" is a required field.');
+    $field->validate();
     $this->assertEquals($expected, $field->errors);
+  }
 
-		$field = new Textbox("testField", "Test", array("required" => true));
-		$expected = array();
-		$field->validate();
+  public function testRequiredValidation__valid()
+  {
+    $_POST['testField'] = 'test';
+
+    $field = new Textbox("testField", "Test", array("required" => true));
+    $expected = array();
+    $field->validate();
     $this->assertEquals($expected, $field->errors);
-	}
+  }
 
   public function testPattern()
   {

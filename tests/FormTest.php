@@ -6,6 +6,9 @@ class FormTest extends \PHPUnit\Framework\TestCase
 {
 	public function testSetConfigWithNoUserConfig()
 	{
+    $_SERVER['PHP_SELF'] = 'index.php';
+    $_SERVER['QUERY_STRING'] = 'test=aha';
+
 		$form = new \HtmlForm\Form();
 
 		$given = array();
@@ -25,6 +28,9 @@ class FormTest extends \PHPUnit\Framework\TestCase
 
 	public function testSetConfigWithData()
 	{
+    $_SERVER['PHP_SELF'] = 'index.php';
+    $_SERVER['QUERY_STRING'] = 'test=aha';
+
 		$form = new \HtmlForm\Form();
 
 		$given = array(
@@ -46,6 +52,9 @@ class FormTest extends \PHPUnit\Framework\TestCase
 
 	public function testSetErrorMessage()
 	{
+    $_SERVER['PHP_SELF'] = 'index.php';
+    $_SERVER['QUERY_STRING'] = 'test=aha';
+
 		$form = new \HtmlForm\Form();
 
 		$given = "My custom error.";
@@ -59,6 +68,10 @@ class FormTest extends \PHPUnit\Framework\TestCase
 
 	public function testRender()
 	{
+    $_SERVER['PHP_SELF'] = 'index.php';
+    $_SERVER['QUERY_STRING'] = 'test=aha';
+    $_POST['testField'] = 'test';
+
 		$form = new \HtmlForm\Form(array("attr" => array("something" => "cool")));
 
 		$fieldset = $form->addFieldset("The Legend");
@@ -80,6 +93,9 @@ class FormTest extends \PHPUnit\Framework\TestCase
 
 	public function testRenderWithEmptyForm()
 	{
+    $_SERVER['PHP_SELF'] = 'index.php';
+    $_SERVER['QUERY_STRING'] = 'test=aha';
+
 		$form = new \HtmlForm\Form();
 
 		$expected = '<form method="post" action="index.php?test=aha" id="hfc" ></form>';
