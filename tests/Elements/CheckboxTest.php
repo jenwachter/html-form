@@ -7,10 +7,11 @@ class CheckboxTest extends \PHPUnit\Framework\TestCase
 	public function testCompileWithValue()
 	{
     $field = new Checkbox("test", "Test", array("test", "blue"), array(
-      "help" => "help text"
+      "help" => "help text",
+      "required" => "required",
     ));
 
-    $expected = "<div class=\"label\">Test</div><div class='help'>help text</div><div class=\"elements\"><div class=\"element\"><label><input type=\"checkbox\"  name=\"test[]\" value=\"test\" checked=\"checked\" /> <span>test</span></label></div><div class=\"element\"><label><input type=\"checkbox\"  name=\"test[]\" value=\"blue\"  /> <span>blue</span></label></div></div>";
+    $expected = "<div class=\"label\"><span class=\"required\">*</span> Test</div><div class='help'>help text</div><div class=\"elements\"><div class=\"element\"><label><input type=\"checkbox\"  name=\"test[]\" value=\"test\" checked=\"checked\" /> <span>test</span></label></div><div class=\"element\"><label><input type=\"checkbox\"  name=\"test[]\" value=\"blue\"  /> <span>blue</span></label></div></div>";
 		$value = $field->compile("test");
 
     $this->assertEquals($expected, $value);
