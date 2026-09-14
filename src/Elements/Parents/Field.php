@@ -101,8 +101,12 @@ abstract class Field
 		$this->attr = !empty($args["attr"]) ? $args["attr"] : array();
 
 		$this->compiledAttr = !empty($args["attr"]) ? $textManipulator->arrayToTagAttributes($args["attr"]) : null;
+    $this->extractArgs($args);
 
-		$this->extractArgs($args);
+    if ($this->required) {
+      $this->compiledAttr .= ' required';
+    }
+
 		$this->compileLabel();
 	}
 
